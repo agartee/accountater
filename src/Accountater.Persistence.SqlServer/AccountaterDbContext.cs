@@ -8,18 +8,18 @@ namespace Accountater.Persistence.SqlServer
         public AccountaterDbContext(DbContextOptions<AccountaterDbContext> options) : base(options) { }
 
         public DbSet<AccountData> Accounts { get; set; }
-        public DbSet<TransactionData> Transactions { get; set; }
-
+        public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
+        public DbSet<TagData> Tags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TransactionData>()
+            modelBuilder.Entity<FinancialTransactionData>()
                 .HasOne(t => t.Account)
                 .WithMany(a => a.Transactions)
                 .HasForeignKey(t => t.AccountId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<TransactionData>()
+            modelBuilder.Entity<FinancialTransactionData>()
                 .HasMany(v => v.Tags)
                 .WithMany(t => t.Transactions)
                 .UsingEntity<TransactionTagData>(

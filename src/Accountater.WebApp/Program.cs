@@ -17,8 +17,7 @@ builder.Services.AddMediatR(config =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<ICheckingTransactionCsvParser, CheckingTransactionCsvParser>();
 builder.Services.AddTransient<ICreditTransactionCsvParser, CreditTransactionCsvParser>();
-builder.Services.AddTransient<ICheckingTransactionRepository, SqlServerCheckingTransactionRepository>();
-builder.Services.AddTransient<ICreditTransactionRepository, SqlServerCreditTransactionRepository>();
+builder.Services.AddTransient<IFinancialTransactionRepository, SqlServerFinancialTransactionRepository>();
 
 builder.Services.AddDbContext<AccountaterDbContext>(options =>
     options.UseSqlServer(builder.Configuration[$"connectionStrings:database"]));

@@ -3,7 +3,7 @@
 namespace Accountater.Persistence.SqlServer.Models
 {
     [Table(TableName)]
-    public record TransactionData
+    public record FinancialTransactionData
     {
         public const string TableName = "Transaction";
 

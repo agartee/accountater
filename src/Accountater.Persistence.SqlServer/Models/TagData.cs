@@ -14,6 +14,6 @@ namespace Accountater.Persistence.SqlServer.Models
         [MaxLength(200)]
         public required string Value { get; set; }
 
-        public List<TransactionData> Transactions { get; set; } = new();
+        public List<FinancialTransactionData> Transactions { get; set; } = new();
     }
 }

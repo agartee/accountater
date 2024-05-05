@@ -10,7 +10,7 @@ namespace Accountater.Persistence.SqlServer.Models
         public required Guid TransactionId { get; set; }
         public required Guid TagId { get; set; }
 
-        public TransactionData? Transaction { get; set; }
+        public FinancialTransactionData? Transaction { get; set; }
         public TagData? Tag { get; set; }
     }
 }

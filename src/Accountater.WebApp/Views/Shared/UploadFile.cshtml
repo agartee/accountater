@@ -1,6 +1,6 @@
 ﻿@model UploadCsvFileViewModel
 
-<form asp-action="UploadFile" method="post" enctype="multipart/form-data">
+<form asp-controller="FileUpload" asp-action="UploadFile" method="post" enctype="multipart/form-data">
     <div>
         <div>
             <label>Choose CSV file type:</label>
