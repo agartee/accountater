@@ -28,7 +28,7 @@ namespace Accountater.WebApp.Controllers
 
         [HttpGet]
         [Route("/transaction/{id}")]
-        public async Task<IActionResult> Get([FromRoute] FinancialTransactionId id)
+        public async Task<IActionResult> Edit([FromRoute] FinancialTransactionId id)
         {
             var financialTransactions = await mediator.Send(new DemandFinancialTransaction { Id = id });
 
@@ -37,7 +37,7 @@ namespace Accountater.WebApp.Controllers
 
         [HttpPost]
         [Route("/transaction/{id}")]
-        public async Task<IActionResult> Get([FromForm] FinancialTransactionViewModel viewModel)
+        public async Task<IActionResult> Edit([FromForm] FinancialTransactionViewModel viewModel)
         {
             await mediator.Send(new UpdateFinancialTransaction
             {

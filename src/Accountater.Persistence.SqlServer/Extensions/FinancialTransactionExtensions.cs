@@ -20,7 +20,10 @@ namespace Accountater.Persistence.SqlServer.Extensions
                 TransactionDate = model.TransactionDate,
                 Description = model.Description,
                 Amount = model.Amount,
-                Tags = model.Tags.Select(t => t.Value).ToImmutableList(),
+                Tags = model.Tags
+                    .OrderBy(t => t.Value)
+                    .Select(t => t.Value)
+                    .ToImmutableList(),
             };
         }
     }
