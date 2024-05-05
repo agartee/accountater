@@ -22,6 +22,7 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpPost]
+        [Route("/fileupload")]
         public async Task<IActionResult> UploadFile(UploadCsvFileViewModel model)
         {
             using var stream = model.File.OpenReadStream();

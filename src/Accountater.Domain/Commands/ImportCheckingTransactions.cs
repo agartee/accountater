@@ -11,16 +11,16 @@ namespace Accountater.Domain.Commands
 
     public class ImportCheckingTransactionsHandler : IRequestHandler<ImportCheckingTransactions>
     {
-        private readonly IFinancialTransactionRepository fincialTransactionRepository;
+        private readonly IFinancialTransactionRepository financialTransactionRepository;
 
-        public ImportCheckingTransactionsHandler(IFinancialTransactionRepository fincialTransactionRepository)
+        public ImportCheckingTransactionsHandler(IFinancialTransactionRepository financialTransactionRepository)
         {
-            this.fincialTransactionRepository = fincialTransactionRepository;
+            this.financialTransactionRepository = financialTransactionRepository;
         }
 
         public async Task Handle(ImportCheckingTransactions request, CancellationToken cancellationToken)
         {
-            await fincialTransactionRepository.InsertCheckingTransactions(request.Transactions);
+            await financialTransactionRepository.InsertCheckingTransactions(request.Transactions, cancellationToken);
         }
     }
 }

@@ -11,7 +11,12 @@ namespace Accountater.Persistence.SqlServer.Extensions
             return new FinancialTransactionInfo
             {
                 Id = new FinancialTransactionId(model.Id),
-                AccountId = new AccountId(model.AccountId),
+                Account = new AccountInfo
+                {
+                    AccountId = new AccountId(model.AccountId),
+                    Name = model.Account!.Name,
+                    Description = model.Account!.Description
+                },
                 TransactionDate = model.TransactionDate,
                 Description = model.Description,
                 Amount = model.Amount,

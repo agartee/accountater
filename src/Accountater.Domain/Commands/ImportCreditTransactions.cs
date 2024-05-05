@@ -20,7 +20,7 @@ namespace Accountater.Domain.Commands
 
         public async Task Handle(ImportCreditTransactions request, CancellationToken cancellationToken)
         {
-            await financialTransactionRepository.InsertCreditTransactions(request.Transactions);
+            await financialTransactionRepository.InsertCreditTransactions(request.Transactions, cancellationToken);
         }
     }
 }

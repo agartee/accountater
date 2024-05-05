@@ -1,13 +1,14 @@
-﻿namespace Accountater.Domain.Models
-{
+﻿using Accountater.Domain.Models;
 
-    public record FinancialTransactionInfo
+namespace Accountater.WebApp.Models
+{
+    public class FinancialTransactionViewModel
     {
         public required FinancialTransactionId Id { get; init; }
         public required AccountInfo Account { get; init; }
         public required DateTime TransactionDate { get; init; }
         public required string Description { get; init; }
         public required decimal Amount { get; init; }
-        public IEnumerable<string> Tags { get; init; } = new List<string>().AsReadOnly();
+        public string? Tags { get; init; }
     }
 }

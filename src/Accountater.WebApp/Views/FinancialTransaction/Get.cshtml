@@ -1,0 +1,32 @@
+﻿@model FinancialTransactionViewModel
+
+@{
+    ViewData["Title"] = "Transaction Details";
+}
+
+<form method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="TransactionDate">Transaction Date</label>
+        <input asp-for="TransactionDate" readonly />
+    </div>
+
+    <div>
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" readonly />
+    </div>
+
+    <div>
+        <label asp-for="Amount">Amount</label>
+        <input asp-for="Amount" readonly />
+    </div>
+
+    <div>
+        <label>Tags</label>
+        <input asp-for="Tags" />
+    </div>
+
+    <!-- If editing functionality is needed, buttons can be added here -->
+    <button type="submit">Update</button>
+</form>

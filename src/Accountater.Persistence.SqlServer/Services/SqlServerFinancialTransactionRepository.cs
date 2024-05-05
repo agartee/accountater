@@ -16,11 +16,12 @@ namespace Accountater.Persistence.SqlServer.Services
             this.dbContext = dbContext;
         }
 
-        public async Task InsertCreditTransactions(IEnumerable<CreditTransaction> transactions)
+        public async Task InsertCreditTransactions(IEnumerable<CreditTransaction> transactions,
+            CancellationToken cancellationToken)
         {
             foreach (var transaction in transactions)
             {
-                var account = await GetOrAddAccount(transaction.AccountName);
+                var account = await GetOrAddAccount(transaction.AccountName, cancellationToken);
 
                 account.Transactions.Add(new FinancialTransactionData
                 {
@@ -32,14 +33,15 @@ namespace Accountater.Persistence.SqlServer.Services
                 });
             }
 
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task InsertCheckingTransactions(IEnumerable<CheckingTransaction> transactions)
+        public async Task InsertCheckingTransactions(IEnumerable<CheckingTransaction> transactions,
+            CancellationToken cancellationToken)
         {
             foreach (var transaction in transactions)
             {
-                var account = await GetOrAddAccount("Checking");
+                var account = await GetOrAddAccount("Checking", cancellationToken);
 
                 account.Transactions.Add(new FinancialTransactionData
                 {
@@ -51,14 +53,14 @@ namespace Accountater.Persistence.SqlServer.Services
                 });
             }
 
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<(IEnumerable<FinancialTransactionInfo> FinancialTransactions, int TotalCount)> GetFinancialTransactions(
             FinancialTransactionSearchCriteria criteria, CancellationToken cancellationToken)
         {
-            Expression<Func<FinancialTransactionData, bool>> predicate = v => v.Tags
-                .Any(t => t.Value.Contains(criteria.SearchText ?? ""));
+            Expression<Func<FinancialTransactionData, bool>> predicate = v => criteria.SearchText == null
+                || v.Tags.Any(t => t.Value.Contains(criteria.SearchText ?? ""));
 
             var totalResults = await dbContext.FinancialTransactions
                 .AsNoTracking()
@@ -66,15 +68,27 @@ namespace Accountater.Persistence.SqlServer.Services
 
             var financialTransactions = await dbContext.FinancialTransactions
                 .AsNoTracking()
-                .Include(v => v.Tags)
+                .Include(t => t.Account)
+                .Include(t => t.Tags)
                 .Where(predicate)
-                .OrderByDescending(v => v.TransactionDate)
-                .Skip((criteria.PageIndex - 1) * criteria.PageSize)
+                .OrderByDescending(t => t.TransactionDate)
+                .Skip((criteria.PageIndex) * criteria.PageSize)
                 .Take(criteria.PageSize)
-                .Select(v => v.ToFinancialTransactionInfo())
+                .Select(t => t.ToFinancialTransactionInfo())
                 .ToListAsync(cancellationToken);
 
             return (financialTransactions, totalResults);
+        }
+
+        public async Task<FinancialTransactionInfo> DemandFinancialTransaction(FinancialTransactionId id,
+            CancellationToken cancellationToken)
+        {
+            return await dbContext.FinancialTransactions
+                .Include(t => t.Account)
+                .Include(t => t.Tags)
+                .Where(t => t.Id == id.Value)
+                .Select(t => t.ToFinancialTransactionInfo())
+                .SingleAsync(cancellationToken);
         }
 
         public async Task UpdateFinancialTransactionTags(FinancialTransactionId id, IEnumerable<string> tags,
@@ -85,9 +99,11 @@ namespace Accountater.Persistence.SqlServer.Services
                 .SingleAsync(v => v.Id == id.Value, cancellationToken);
 
             await UpdateTags(data, tags);
+
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task<AccountData> GetOrAddAccount(string accountName)
+        private async Task<AccountData> GetOrAddAccount(string accountName, CancellationToken cancellationToken)
         {
             var localAccount = dbContext.Accounts.Local
                 .Where(a => a.Name == accountName)
@@ -96,7 +112,7 @@ namespace Accountater.Persistence.SqlServer.Services
             var account = localAccount
                 ?? await dbContext.Accounts
                     .Where(a => a.Name == accountName)
-                    .SingleOrDefaultAsync();
+                    .SingleOrDefaultAsync(cancellationToken);
 
             if (account == null)
             {

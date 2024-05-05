@@ -2,6 +2,7 @@ using Accountater.Domain.Commands;
 using Accountater.Domain.Services;
 using Accountater.Persistence.SqlServer;
 using Accountater.Persistence.SqlServer.Services;
+using Accountater.WebApp.ModelBinders;
 using Accountater.WebApp.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,12 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 var domainAssemblies = new[] { typeof(ImportCheckingTransactions).Assembly };
 
-builder.Services.AddMediatR(config =>
+builder.Services.AddMediatR(options =>
 {
-    config.RegisterServicesFromAssemblies(domainAssemblies);
+    options.RegisterServicesFromAssemblies(domainAssemblies);
 });
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.ModelBinderProviders.Insert(0, new IdModelBinderProvider());
+});
+
 builder.Services.AddTransient<ICheckingTransactionCsvParser, CheckingTransactionCsvParser>();
 builder.Services.AddTransient<ICreditTransactionCsvParser, CreditTransactionCsvParser>();
 builder.Services.AddTransient<IFinancialTransactionRepository, SqlServerFinancialTransactionRepository>();
