@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Accountater.WebApp.Controllers
 {
-    public class FileUploadController : ControllerBase
+    public class FileUploadController : Controller
     {
         private readonly IMediator mediator;
         private readonly ICheckingTransactionCsvParser checkingTransactionCsvParser;
@@ -19,6 +19,13 @@ namespace Accountater.WebApp.Controllers
             this.mediator = mediator;
             this.checkingTransactionCsvParser = checkingTransactionCsvParser;
             this.creditTransactionCsvParser = creditTransactionCsvParser;
+        }
+
+        [HttpGet]
+        [Route("/fileupload")]
+        public IActionResult Index()
+        {
+            return View();
         }
 
         [HttpPost]
@@ -45,7 +52,7 @@ namespace Accountater.WebApp.Controllers
             // TODO: process models
             await mediator.Send(request);
 
-            return Redirect("/");
+            return Redirect("/fileupload");
         }
     }
 }

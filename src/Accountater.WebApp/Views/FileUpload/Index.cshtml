@@ -1,0 +1,36 @@
+﻿@model UploadCsvFileViewModel
+
+<h1>Upload Data File</h1>
+
+<form asp-controller="FileUpload" asp-action="UploadFile" class="pure-form pure-form" method="post" enctype="multipart/form-data">
+    <div class="pure-control-group radio-button-list">
+        <label>Choose CSV file type:</label>
+        @foreach (var type in Enum.GetValues(typeof(CsvFileType)))
+        {
+            <div>
+            <label for="csv-file-type-@(type)" class="pure-radio">
+                <input type="radio" id="csv-file-type-@(type)" name="CsvFileType" value="@type" />
+                @type
+            </label>
+            </div>
+        }
+    </div>
+
+    <div class="pure-control-group file-input">
+        <label for="file" class="pure-button pure-button-secondary">Choose CSV file</label>
+        <input type="file" id="file" name="file" accept=".csv" required style="display:none;" onchange="updateFileName(this)">
+        
+        <span id="file-chosen" class="file-name">No file chosen</span>
+    </div>
+
+    <div class="pure-controls">
+        <button type="submit" class="pure-button pure-button-primary">Upload</button>
+    </div>
+</form>
+
+<script>
+    function updateFileName(input) {
+        var fileNameSpan = document.getElementById('file-chosen');
+        fileNameSpan.textContent = input.files.length > 0 ? input.files[0].name : 'No file chosen';
+    }
+</script>
