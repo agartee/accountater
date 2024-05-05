@@ -1,3 +1,4 @@
+using Accountater.Domain.Commands;
 using Accountater.Domain.Services;
 using Accountater.Persistence.SqlServer;
 using Accountater.Persistence.SqlServer.Services;
@@ -6,10 +7,16 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var domainAssemblies = new[] { typeof(ImportCheckingTransactions).Assembly };
+
+builder.Services.AddMediatR(config =>
+{
+    config.RegisterServicesFromAssemblies(domainAssemblies);
+});
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<ICheckingTransactionCsvParser, CheckingTransactionCsvParser>();
 builder.Services.AddTransient<ICreditTransactionCsvParser, CreditTransactionCsvParser>();
-
 builder.Services.AddTransient<ICheckingTransactionRepository, SqlServerCheckingTransactionRepository>();
 builder.Services.AddTransient<ICreditTransactionRepository, SqlServerCreditTransactionRepository>();
 

@@ -8,12 +8,15 @@ namespace Accountater.WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMediator mediator;
         private readonly ICheckingTransactionCsvParser checkingTransactionCsvParser;
         private readonly ICreditTransactionCsvParser creditTransactionCsvParser;
 
-        public HomeController(ICheckingTransactionCsvParser checkingTransactionCsvParser,
+        public HomeController(IMediator mediator,
+            ICheckingTransactionCsvParser checkingTransactionCsvParser,
             ICreditTransactionCsvParser creditTransactionCsvParser)
         {
+            this.mediator = mediator;
             this.checkingTransactionCsvParser = checkingTransactionCsvParser;
             this.creditTransactionCsvParser = creditTransactionCsvParser;
         }
@@ -50,7 +53,7 @@ namespace Accountater.WebApp.Controllers
             }
 
             // TODO: process models
-
+            await mediator.Send(request);
 
             return View("Index");
         }

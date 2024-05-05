@@ -35,9 +35,14 @@ namespace Accountater.Persistence.SqlServer.Services
 
         private async Task<AccountData> GetOrAddAccount(string accountName)
         {
-            var account = await dbContext.Accounts
+            var localAccount = dbContext.Accounts.Local
                 .Where(a => a.Name == accountName)
-                .SingleOrDefaultAsync();
+                .SingleOrDefault();
+
+            var account = localAccount
+                ?? await dbContext.Accounts
+                    .Where(a => a.Name == accountName)
+                    .SingleOrDefaultAsync();
 
             if (account == null)
             {

@@ -1,4 +1,5 @@
 ﻿using Accountater.Domain.Models;
+using Accountater.Domain.Services;
 using MediatR;
 
 namespace Accountater.Domain.Commands
@@ -10,9 +11,16 @@ namespace Accountater.Domain.Commands
 
     public class ImportCreditTransactionsHandler : IRequestHandler<ImportCreditTransactions>
     {
+        private readonly ICreditTransactionRepository creditTransactionRepository;
+
+        public ImportCreditTransactionsHandler(ICreditTransactionRepository creditTransactionRepository)
+        {
+            this.creditTransactionRepository = creditTransactionRepository;
+        }
+
         public async Task Handle(ImportCreditTransactions request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            await creditTransactionRepository.InsertCreditTransactions(request.Transactions);
         }
     }
 }

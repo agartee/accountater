@@ -11,6 +11,8 @@ namespace Accountater.Persistence.SqlServer.Models
         public required Guid AccountId { get; init; }
         public required DateTime TransactionDate { get; init; }
         public required string Description { get; init; }
+
+        [Column(TypeName = "decimal(10,2)")]
         public required decimal Amount { get; init; }
 
         public AccountData? Account { get; set; }
