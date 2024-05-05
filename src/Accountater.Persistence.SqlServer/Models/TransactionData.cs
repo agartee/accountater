@@ -16,5 +16,6 @@ namespace Accountater.Persistence.SqlServer.Models
         public required decimal Amount { get; init; }
 
         public AccountData? Account { get; set; }
+        public List<TagData> Tags { get; set; } = new();
     }
 }

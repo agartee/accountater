@@ -11,6 +11,6 @@ namespace Accountater.Persistence.SqlServer.Models
         public required string Name { get; init; }
         public string? Description { get; init; }
 
-        public List<TransactionData> Transactions { get; set; } = new List<TransactionData>();
+        public List<TransactionData> Transactions { get; set; } = new();
     }
 }
