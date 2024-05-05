@@ -19,7 +19,7 @@ namespace Accountater.WebApp.Controllers
 
         [HttpGet]
         [Route("/transaction")]
-        public async Task<IActionResult> Index([FromQuery] GetFinancialTransactions request)
+        public async Task<IActionResult> Index([FromQuery] SearchFinancialTransactions request)
         {
             var financialTransactions = await mediator.Send(request);
 

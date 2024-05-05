@@ -4,26 +4,25 @@ using MediatR;
 
 namespace Accountater.Domain.Queries
 {
-    public record GetFinancialTransactions
-        : IRequest<(IEnumerable<FinancialTransactionInfo> FinancialTransactions, int TotalCount)>
+    public record SearchFinancialTransactions : IRequest<FinancialTransactionSearchResults>
     {
         public string? SearchText { get; init; }
         public int PageSize { get; init; } = 50;
         public int PageIndex { get; init; } = 0;
     }
 
-    public class GetFinancialTransactionsHandler : IRequestHandler<GetFinancialTransactions,
-        (IEnumerable<FinancialTransactionInfo> FinancialTransactions, int TotalCount)>
+    public class SearchFinancialTransactionsHandler
+        : IRequestHandler<SearchFinancialTransactions, FinancialTransactionSearchResults>
     {
         private readonly IFinancialTransactionRepository financialTransactionRepository;
 
-        public GetFinancialTransactionsHandler(IFinancialTransactionRepository financialTransactionRepository)
+        public SearchFinancialTransactionsHandler(IFinancialTransactionRepository financialTransactionRepository)
         {
             this.financialTransactionRepository = financialTransactionRepository;
         }
 
-        public async Task<(IEnumerable<FinancialTransactionInfo> FinancialTransactions, int TotalCount)> Handle(
-            GetFinancialTransactions request, CancellationToken cancellationToken)
+        public async Task<FinancialTransactionSearchResults> Handle(
+            SearchFinancialTransactions request, CancellationToken cancellationToken)
         {
             return await financialTransactionRepository.GetFinancialTransactions(
                 new FinancialTransactionSearchCriteria

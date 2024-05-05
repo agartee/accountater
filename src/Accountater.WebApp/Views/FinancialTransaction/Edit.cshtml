@@ -4,29 +4,35 @@
     ViewData["Title"] = "Transaction Details";
 }
 
-<form method="post">
+<h1>Edit Transaction</h1>
+
+<form method="post" class="pure-form pure-form-aligned">
+    
     <input type="hidden" asp-for="Id" />
 
-    <div>
+    <div class="pure-control-group">
         <label asp-for="TransactionDate">Transaction Date</label>
         <input asp-for="TransactionDate" readonly />
     </div>
 
-    <div>
+    <div class="pure-control-group">
         <label asp-for="Description">Description</label>
         <input asp-for="Description" readonly />
     </div>
 
-    <div>
+    <div class="pure-control-group">
         <label asp-for="Amount">Amount</label>
         <input asp-for="Amount" readonly />
     </div>
 
-    <div>
+    <div class="pure-control-group">
         <label>Tags</label>
         <input asp-for="Tags" />
     </div>
 
-    <!-- If editing functionality is needed, buttons can be added here -->
-    <button type="submit">Update</button>
+    <div class="pure-controls">
+        <button type="submit" class="pure-button pure-button-primary">Update</button>
+        <a href="/transaction" class="pure-button pure-button-secondary">Back</a>
+    </div>
+
 </form>

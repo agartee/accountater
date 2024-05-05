@@ -1,4 +1,4 @@
-﻿@model (IEnumerable<FinancialTransactionInfo> FinancialTransactions, int TotalCount)
+﻿@model FinancialTransactionSearchResults
 
 @{
     ViewData["Title"] = "Transactions";
@@ -6,7 +6,9 @@
 
 <h1>Financial Transactions</h1>
 
-<table>
+<partial name="Pagination" model="Model" />
+
+<table id="transactionsTable" class="pure-table pure-table-striped">
     <thead>
         <tr>
             <th>Transaction Date</th>
@@ -31,3 +33,16 @@
         }
     </tbody>
 </table>
+
+<partial name="Pagination" model="Model" />
+
+<script>
+    $(document).ready(function () {
+        $('#transactionsTable').DataTable({
+            paging: false,
+            searching: false,
+            info: false,
+            order: [[0, "desc"]]
+        });
+    });
+</script>
