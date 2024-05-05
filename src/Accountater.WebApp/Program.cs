@@ -1,11 +1,23 @@
+using Accountater.Domain.Services;
+using Accountater.Persistence.SqlServer;
+using Accountater.Persistence.SqlServer.Services;
+using Accountater.WebApp.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<ICheckingTransactionCsvParser, CheckingTransactionCsvParser>();
+builder.Services.AddTransient<ICreditTransactionCsvParser, CreditTransactionCsvParser>();
+
+builder.Services.AddTransient<ICheckingTransactionRepository, SqlServerCheckingTransactionRepository>();
+builder.Services.AddTransient<ICreditTransactionRepository, SqlServerCreditTransactionRepository>();
+
+builder.Services.AddDbContext<AccountaterDbContext>(options =>
+    options.UseSqlServer(builder.Configuration[$"connectionStrings:database"]));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -13,7 +25,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();

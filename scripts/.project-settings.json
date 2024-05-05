@@ -1,0 +1,38 @@
+{
+  "solutionFile": "Accountater.sln",
+  "userSecretsId": "accountater",
+  "webApp": {
+    "name": "Accountater.WebApp",
+    "projectFile": "src/Accountater.WebApp/Accountater.WebApp.csproj"
+  },
+  "dbMigrations": {
+    "projectFile": "src/Accountater.Persistence.SqlServer/Accountater.Persistence.SqlServer.csproj"
+  },
+  "docker": {
+    "imageName": "accountater",
+    "containerName": "accountater",
+    "tagName": "dev"
+  },
+  "scripts": {
+    "start-server-docker": {
+      "databaseConnectionStringName": "dockerDatabase"
+    }
+  },
+  "test": {
+    "exclusions": [
+      {
+        "project": "Accountater.Domain",
+        "exclude": [
+          "Accountater.Domain.Models.*"
+        ]
+      },
+      {
+        "project": "Accountater.Persistence.SqlServer",
+        "exclude": [
+          "Accountater.Persistence.SqlServer.Migrations.*",
+          "Accountater.Persistence.SqlServer.Models.*"
+        ]
+      }
+    ]
+  }
+}
