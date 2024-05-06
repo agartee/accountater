@@ -1,0 +1,25 @@
+﻿@model SearchResults
+
+@{
+    var totalPages = (int)Math.Ceiling((double)Model.TotalCount / Model.PageSize);
+    var showPrevious = Model.PageIndex > 0;
+    var showNext = Model.PageIndex + 1 < totalPages;
+    var baseUrl = ViewData["PaginationBaseUrl"] as string;
+}
+
+<nav aria-label="Page navigation">
+    <ul class="pure-menu-list">
+        <li class="pure-menu-item @(showPrevious ? "" : "pure-menu-disabled")">
+            <a class="pure-menu-link" 
+               href="@(showPrevious ? $"/{baseUrl}?SearchText={Model.SearchText}&PageSize={Model.PageSize}&PageIndex={Model.PageIndex - 1}" : "javascript:void(0);")"
+               aria-label="Previous">&laquo; Previous
+            </a>
+        </li>
+        <li class="pure-menu-item @(showNext ? "" : "pure-menu-disabled")">
+            <a class="pure-menu-link" 
+               href="@(showNext ? $"/{baseUrl}?SearchText={Model.SearchText}&PageSize={Model.PageSize}&PageIndex={Model.PageIndex + 1}" : "javascript:void(0);")"
+               aria-label="Next">Next &raquo;
+            </a>
+        </li>
+    </ul>
+</nav>

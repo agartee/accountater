@@ -1,0 +1,33 @@
+﻿@model TagRuleViewModel
+
+@{
+    ViewData["Title"] = "Tag Rule Details";
+}
+
+<h1>Edit Transaction</h1>
+
+<form method="post" class="pure-form pure-form-aligned">
+    
+    <input type="hidden" asp-for="Id" />
+
+    <div class="pure-control-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" readonly />
+    </div>
+
+    <div class="pure-control-group">
+        <label asp-for="Expression">Expression</label>
+        <input asp-for="Expression" readonly />
+    </div>
+
+    <div class="pure-control-group">
+        <label asp-for="Tag">Tag</label>
+        <input asp-for="Tag" readonly />
+    </div>
+
+    <div class="pure-controls">
+        <button type="submit" class="pure-button pure-button-primary">Update</button>
+        <a href="/tagrule" class="pure-button pure-button-secondary">Back</a>
+    </div>
+
+</form>

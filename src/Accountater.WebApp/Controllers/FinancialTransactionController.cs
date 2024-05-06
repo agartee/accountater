@@ -21,18 +21,18 @@ namespace Accountater.WebApp.Controllers
         [Route("/transaction")]
         public async Task<IActionResult> Index([FromQuery] SearchFinancialTransactions request)
         {
-            var financialTransactions = await mediator.Send(request);
+            var results = await mediator.Send(request);
 
-            return View(financialTransactions);
+            return View(results);
         }
 
         [HttpGet]
         [Route("/transaction/{id}")]
         public async Task<IActionResult> Edit([FromRoute] FinancialTransactionId id)
         {
-            var financialTransactions = await mediator.Send(new DemandFinancialTransaction { Id = id });
+            var results = await mediator.Send(new DemandFinancialTransaction { Id = id });
 
-            return View(financialTransactions.ToFinancialTransactionViewModel());
+            return View(results.ToFinancialTransactionViewModel());
         }
 
         [HttpPost]

@@ -24,7 +24,7 @@ namespace Accountater.Domain.Queries
         public async Task<FinancialTransactionSearchResults> Handle(
             SearchFinancialTransactions request, CancellationToken cancellationToken)
         {
-            return await financialTransactionRepository.GetFinancialTransactions(
+            return await financialTransactionRepository.SearchFinancialTransactions(
                 new FinancialTransactionSearchCriteria
                 {
                     SearchText = request.SearchText,

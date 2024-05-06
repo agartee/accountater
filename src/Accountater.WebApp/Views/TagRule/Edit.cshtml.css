@@ -1,0 +1,8 @@
+﻿::deep input {
+    min-width: 400px;
+    max-width: 100%;
+}
+
+.pure-form .pure-controls {
+    margin-left: 0;
+}

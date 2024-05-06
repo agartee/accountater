@@ -56,11 +56,12 @@ namespace Accountater.Persistence.SqlServer.Services
             await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<FinancialTransactionSearchResults> GetFinancialTransactions(
+        public async Task<FinancialTransactionSearchResults> SearchFinancialTransactions(
             FinancialTransactionSearchCriteria criteria, CancellationToken cancellationToken)
         {
-            Expression<Func<FinancialTransactionData, bool>> predicate = v => criteria.SearchText == null
-                || v.Tags.Any(t => t.Value.Contains(criteria.SearchText ?? ""));
+            Expression<Func<FinancialTransactionData, bool>> predicate = t => criteria.SearchText == null
+                || t.Tags.Any(t => t.Value.Contains(criteria.SearchText ?? ""))
+                || t.Description.Contains(criteria.SearchText!);
 
             var totalCount = await dbContext.FinancialTransactions
                 .AsNoTracking()

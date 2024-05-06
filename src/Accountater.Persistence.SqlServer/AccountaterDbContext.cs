@@ -10,6 +10,7 @@ namespace Accountater.Persistence.SqlServer
         public DbSet<AccountData> Accounts { get; set; }
         public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
         public DbSet<TagData> Tags { get; set; }
+        public DbSet<TagRuleData> TagRules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,6 +30,20 @@ namespace Accountater.Persistence.SqlServer
                     {
                         vt.HasKey(xref => new { xref.TransactionId, xref.TagId });
                     });
+
+            modelBuilder.Entity<TagData>()
+                .HasIndex(t => t.Value)
+                .IsUnique();
+
+            modelBuilder.Entity<TagRuleData>()
+                .HasOne(r => r.Tag)
+                .WithMany(r => r.TagRules)
+                .HasForeignKey(r => r.TagId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TagRuleData>()
+                .HasIndex(r => r.Name)
+                .IsUnique();
         }
     }
 }
