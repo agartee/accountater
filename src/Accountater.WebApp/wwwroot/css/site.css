@@ -1,3 +1,39 @@
 .main {
-    margin:10px;
+    margin: 10px;
+}
+
+.button-success,
+.button-danger,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65);
+}
+
+.button-danger {
+    background: rgb(202, 60, 60);
+}
+
+.button-warning {
+    background: rgb(223, 117, 20);
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221);
+}
+
+.control-panel {
+    padding: 20px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.control-panel button {
+    margin: 0 10px;
 }

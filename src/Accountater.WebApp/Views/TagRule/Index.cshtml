@@ -9,11 +9,14 @@
 
 <partial name="Pagination" model="Model" />
 
+<a href="/tagrule/create">Create New...</a>
+
 <table id="tagRulesTable" class="pure-table pure-table-striped">
     <thead>
         <tr>
             <th>Name</th>
             <th>Expression</th>
+            <th>Tag</th>
             <th>Details</th>
         </tr>
     </thead>
@@ -23,8 +26,9 @@
             <tr>
                 <td>@tagRule.Name</td>
                 <td>@tagRule.Expression</td>
+                <td>@tagRule.Tag</td>
                 <td>
-                    <a href="/tagrule/@tagRule.Id.Value">View Details</a>
+                    <a href="/tagrule/@tagRule.Id.Value/edit">View Details</a>
                 </td>
             </tr>
         }

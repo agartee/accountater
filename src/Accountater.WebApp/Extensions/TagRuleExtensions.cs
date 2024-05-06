@@ -5,9 +5,9 @@ namespace Accountater.WebApp.Extensions
 {
     public static class TagRuleExtensions
     {
-        public static TagRuleViewModel ToTagRuleViewModel(this TagRuleInfo model)
+        public static EditTagRuleViewModel ToTagRuleViewModel(this TagRuleInfo model)
         {
-            return new TagRuleViewModel
+            return new EditTagRuleViewModel
             {
                 Id = model.Id,
                 Name = model.Name,

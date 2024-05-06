@@ -2,7 +2,7 @@
 
 namespace Accountater.WebApp.Models
 {
-    public class FinancialTransactionViewModel
+    public class EditFinancialTransactionViewModel
     {
         public required FinancialTransactionId Id { get; init; }
         public required AccountInfo Account { get; init; }

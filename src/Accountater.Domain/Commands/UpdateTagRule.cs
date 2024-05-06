@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Accountater.Domain.Commands
 {
-    public record SaveTagRule : IRequest<TagRuleInfo>
+    public record UpdateTagRule : IRequest<TagRuleInfo>
     {
         public required TagRuleId Id { get; init; }
         public string? Name { get; init; }
@@ -12,16 +12,16 @@ namespace Accountater.Domain.Commands
         public string? Tag { get; init; }
     }
 
-    public class SaveTagRuleHandler : IRequestHandler<SaveTagRule, TagRuleInfo>
+    public class UpdateTagRuleHandler : IRequestHandler<UpdateTagRule, TagRuleInfo>
     {
         private readonly ITagRuleRepository tagRuleRepository;
 
-        public SaveTagRuleHandler(ITagRuleRepository tagRuleRepository)
+        public UpdateTagRuleHandler(ITagRuleRepository tagRuleRepository)
         {
             this.tagRuleRepository = tagRuleRepository;
         }
 
-        public async Task<TagRuleInfo> Handle(SaveTagRule request, CancellationToken cancellationToken)
+        public async Task<TagRuleInfo> Handle(UpdateTagRule request, CancellationToken cancellationToken)
         {
             var tagRule = await tagRuleRepository.DemandTagRule(request.Id, cancellationToken);
 

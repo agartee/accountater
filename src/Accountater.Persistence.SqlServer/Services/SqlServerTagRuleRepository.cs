@@ -98,7 +98,7 @@ namespace Accountater.Persistence.SqlServer.Services
 
             var tagId = tagData?.Id ?? Guid.NewGuid();
 
-            return new TagRuleData
+            var data = new TagRuleData
             {
                 Id = tagRule.Id.Value,
                 Name = tagRule.Name,
@@ -108,6 +108,10 @@ namespace Accountater.Persistence.SqlServer.Services
                     : null,
                 Expression = tagRule.Expression,
             };
+
+            dbContext.TagRules.Add(data);
+
+            return data;
         }
 
         private async Task UpdateTagRule(TagRule tagRule, TagRuleData data, CancellationToken cancellationToken)
@@ -120,7 +124,10 @@ namespace Accountater.Persistence.SqlServer.Services
             data.TagId = tagData?.Id ?? Guid.NewGuid();
 
             if (tagData == null)
-                data.Tag = new TagData { Id = data.TagId, Value = tagRule.Tag };
+            {
+                var tag = new TagData { Id = data.TagId, Value = tagRule.Tag };
+                dbContext.Tags.Add(tag);
+            }
         }
     }
 }

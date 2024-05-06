@@ -6,3 +6,11 @@
 .pure-form .pure-controls {
     margin-left: 0;
 }
+
+.danger-zone ::deep form {
+    padding: 20px;
+    background-color: #ffc0ba;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

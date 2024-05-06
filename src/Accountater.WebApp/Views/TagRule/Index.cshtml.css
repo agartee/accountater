@@ -1,13 +1,13 @@
-﻿#transactionsTable {
+﻿#tagRulesTable {
     width: 100%;
 }
 
-    #transactionsTable th {
+    #tagRulesTable th {
         text-align: left;
         padding: 4px 0px;
     }
 
-    #transactionsTable td {
+    #tagRulesTable td {
         padding: 4px 0px;
     }
 

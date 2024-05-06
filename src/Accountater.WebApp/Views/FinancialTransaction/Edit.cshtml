@@ -1,4 +1,4 @@
-﻿@model FinancialTransactionViewModel
+﻿@model EditFinancialTransactionViewModel
 
 @{
     ViewData["Title"] = "Transaction Details";
@@ -30,9 +30,13 @@
         <input asp-for="Tags" />
     </div>
 
-    <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Update</button>
+    <div class="pure-controls control-panel">
+        <button type="submit" class="pure-button pure-button-primary">Save</button>
         <a href="/transaction" class="pure-button pure-button-secondary">Back</a>
     </div>
 
 </form>
+
+@section Scripts {
+    <script src="~/js/formModifiedChecks.js"></script>
+}

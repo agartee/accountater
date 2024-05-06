@@ -27,7 +27,29 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpGet]
-        [Route("/tagrule/{id}")]
+        [Route("/tagrule/create")]
+        public IActionResult Create()
+        {
+            return View("Edit");
+        }
+
+        [HttpPost]
+        [Route("/tagrule/create")]
+        public async Task<IActionResult> Create([FromForm] CreateTagRuleViewModel viewModel)
+        {
+            var result = await mediator.Send(new CreateTagRule
+            {
+                Id = TagRuleId.NewId(),
+                Name = viewModel.Name,
+                Expression = viewModel.Expression,
+                Tag = viewModel.Tag,
+            });
+
+            return Redirect($"/tagrule/{result.Id.Value}/edit");
+        }
+
+        [HttpGet]
+        [Route("/tagrule/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] TagRuleId id)
         {
             var results = await mediator.Send(new DemandTagRule { Id = id });
@@ -36,18 +58,27 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpPost]
-        [Route("/tagrule/{id}")]
-        public async Task<IActionResult> Edit([FromForm] TagRuleViewModel viewModel)
+        [Route("/tagrule/{id}/edit")]
+        public async Task<IActionResult> Edit([FromForm] EditTagRuleViewModel viewModel)
         {
-            await mediator.Send(new SaveTagRule
+            var result = await mediator.Send(new UpdateTagRule
             {
-                Id = viewModel.Id,
+                Id = viewModel.Id ?? TagRuleId.NewId(),
                 Name = viewModel.Name,
                 Expression = viewModel.Expression,
                 Tag = viewModel.Tag,
             });
 
-            return Redirect($"/tagrule/{viewModel.Id.Value}");
+            return Redirect($"/tagrule/{result.Id.Value}/edit");
+        }
+
+        [HttpPost]
+        [Route("/tagrule/{id}/delete")]
+        public async Task<IActionResult> Delete([FromRoute] TagRuleId id)
+        {
+            await mediator.Send(new DeleteTagRule { Id = id });
+
+            return Redirect($"/tagrule");
         }
     }
 }

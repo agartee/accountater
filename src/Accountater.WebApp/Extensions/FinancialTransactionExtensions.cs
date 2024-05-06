@@ -5,10 +5,10 @@ namespace Accountater.WebApp.Extensions
 {
     public static class FinancialTransactionExtensions
     {
-        public static FinancialTransactionViewModel ToFinancialTransactionViewModel(
+        public static EditFinancialTransactionViewModel ToFinancialTransactionViewModel(
             this FinancialTransactionInfo model)
         {
-            return new FinancialTransactionViewModel
+            return new EditFinancialTransactionViewModel
             {
                 Id = model.Id,
                 Account = model.Account,
