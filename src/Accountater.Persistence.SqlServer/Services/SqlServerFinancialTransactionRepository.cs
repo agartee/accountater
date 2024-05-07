@@ -27,7 +27,7 @@ namespace Accountater.Persistence.SqlServer.Services
                 {
                     Id = Guid.NewGuid(),
                     AccountId = account.Id,
-                    TransactionDate = transaction.Date,
+                    Date = transaction.Date,
                     Description = transaction.Merchant,
                     Amount = transaction.Amount,
                 });
@@ -47,7 +47,7 @@ namespace Accountater.Persistence.SqlServer.Services
                 {
                     Id = Guid.NewGuid(),
                     AccountId = account.Id,
-                    TransactionDate = transaction.Date,
+                    Date = transaction.Date,
                     Description = transaction.Description,
                     Amount = transaction.Amount,
                 });
@@ -72,7 +72,7 @@ namespace Accountater.Persistence.SqlServer.Services
                 .Include(t => t.Account)
                 .Include(t => t.Tags)
                 .Where(predicate)
-                .OrderByDescending(t => t.TransactionDate)
+                .OrderByDescending(t => t.Date)
                 .Skip((criteria.PageIndex) * criteria.PageSize)
                 .Take(criteria.PageSize)
                 .Select(t => t.ToFinancialTransactionInfo())

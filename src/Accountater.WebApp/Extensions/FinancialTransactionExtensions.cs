@@ -12,7 +12,7 @@ namespace Accountater.WebApp.Extensions
             {
                 Id = model.Id,
                 Account = model.Account,
-                TransactionDate = model.TransactionDate,
+                TransactionDate = model.Date,
                 Description = model.Description,
                 Amount = model.Amount,
                 Tags = string.Join(", ", model.Tags)

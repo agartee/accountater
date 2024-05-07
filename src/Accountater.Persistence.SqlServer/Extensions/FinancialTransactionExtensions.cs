@@ -17,7 +17,7 @@ namespace Accountater.Persistence.SqlServer.Extensions
                     Name = model.Account!.Name,
                     Description = model.Account!.Description
                 },
-                TransactionDate = model.TransactionDate,
+                Date = model.Date,
                 Description = model.Description,
                 Amount = model.Amount,
                 Tags = model.Tags

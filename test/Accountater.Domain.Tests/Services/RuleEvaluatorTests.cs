@@ -21,14 +21,15 @@ namespace Accountater.Domain.Tests.Services
                 },
                 Amount = 11,
                 Description = "description",
-                TransactionDate = DateTime.UtcNow,
+                Date = DateTime.UtcNow,
+                Tags = new[] { "VERIZON" }
             };
 
             var rule = new TagRule
             {
                 Id = TagRuleId.NewId(),
                 Name = "test rule",
-                Expression = "transaction.Amount > 10",
+                Expression = "transaction.tags.includes('VERIZON')",
                 Tag = "tag"
             };
 

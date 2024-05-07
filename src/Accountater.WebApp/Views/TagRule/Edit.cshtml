@@ -4,6 +4,12 @@
     ViewData["Title"] = "Tag Rule Details";
 }
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+
 <h1>Edit Tag Rule</h1>
 
 <form method="post" class="pure-form pure-form-aligned">
@@ -15,9 +21,11 @@
         <input asp-for="Name" />
     </div>
 
-    <div class="pure-control-group">
+    <div class="pure-control-group code-group">
         <label asp-for="Expression">Expression</label>
-        <input asp-for="Expression" />
+        <div class="code">
+            <textarea asp-for="Expression" id="Expression"></textarea>
+        </div>
     </div>
 
     <div class="pure-control-group">
@@ -37,7 +45,8 @@
     <h3>Danger Zone</h3>
 
     <div class="danger-zone">
-        <form action="@Url.Action("Delete", "TagRule", new { id = Model.Id.Value })" method="post" class="pure-form pure-form-aligned"
+        <form action="@Url.Action("Delete", "TagRule", new { id = Model.Id.Value })" method="post" 
+              class="pure-form pure-form-aligned"
               onsubmit="return confirm('Are you sure you want to delete this tag rule?');">
 
             @Html.AntiForgeryToken()
@@ -54,3 +63,82 @@
 @section Scripts {
     <script src="~/js/formModifiedChecks.js"></script>
 }
+
+<script>
+    const modelHints = {
+        transaction: {
+            account: {
+                id: null,
+                name: null,
+                description: null
+            },
+            date: null,
+            description: null,
+            amount: null,
+            tags: {
+                _type: "array",  // Indicate that 'tags' is an array
+                _methods: ["includes(str)"]  // Array methods
+            }
+        }
+    };
+
+    var editor = CodeMirror.fromTextArea(document.getElementById('Expression'), {
+        lineNumbers: true,
+        mode: 'javascript',
+        extraKeys: {
+            'Ctrl-Space': 'autocomplete'
+        },
+        hintOptions: { hint: customHint }
+    });
+
+    editor.on('inputRead', function (instance, change) {
+        if (change.text[0] === '.' && change.origin === '+input') {
+            instance.showHint({ hint: customHint, completeSingle: false });
+        }
+    });
+
+    function customHint(editor) {
+        const cursor = editor.getCursor();
+        const token = editor.getTokenAt(cursor);
+        const line = editor.getLine(cursor.line);
+        const end = cursor.ch;
+
+        // Extracting the string up to the cursor to parse the context
+        const stringUpToCursor = line.substring(0, end);
+
+        function findSuggestions(obj, parts, fullPath) {
+            const currentPart = parts.shift();
+            const nextObject = obj[currentPart];
+
+            if (!parts.length && nextObject) {
+                // If no more parts and there's a next object, suggest methods or further properties
+                let suggestions = [];
+                if (nextObject._methods) {
+                    suggestions = nextObject._methods.map(method => `${method}`);
+                }
+                suggestions.push(...Object.keys(nextObject).filter(k => !k.startsWith('_')).map(key => `${key}`));
+                return suggestions;
+            } else if (nextObject && parts.length > 0) {
+                // More parts to process, continue recursion
+                return findSuggestions(nextObject, parts, `${fullPath}.${currentPart}`);
+            }
+            return []; // No valid path found
+        }
+
+        // Determine where the last segment starts
+        const lastDotIndex = stringUpToCursor.lastIndexOf('.');
+        const prefix = stringUpToCursor.substring(0, lastDotIndex + 1); // Include the dot in prefix
+
+        // Split the string by dots, include path parts for context
+        const pathParts = stringUpToCursor.split('.').filter(Boolean);
+        const suggestions = findSuggestions(modelHints, [...pathParts], pathParts.slice(0, -1).join('.')) || [];
+
+        return {
+            list: suggestions,
+            from: CodeMirror.Pos(cursor.line, lastDotIndex + 1), // Start replacing right after the last dot
+            to: CodeMirror.Pos(cursor.line, end)
+        };
+    }
+
+
+</script>

@@ -1,6 +1,5 @@
-﻿::deep input {
-    min-width: 400px;
-    max-width: 100%;
+﻿::deep input, .code {
+    width: 400px;
 }
 
 .pure-form .pure-controls {
@@ -13,4 +12,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.code {
+    display: inline-block;
+}
+
+.code-group ::deep label {
+    vertical-align: top;
 }

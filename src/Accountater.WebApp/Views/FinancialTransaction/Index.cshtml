@@ -25,7 +25,7 @@
         {
             <tr>
                 <td>@transaction.Account.Name</td>
-                <td>@transaction.TransactionDate.ToString("yyyy-MM-dd")</td>
+                <td>@transaction.Date.ToString("yyyy-MM-dd")</td>
                 <td>@transaction.Description</td>
                 <td>$@transaction.Amount.ToString("N2")</td>
                 <td>@string.Join(", ", transaction.Tags)</td>

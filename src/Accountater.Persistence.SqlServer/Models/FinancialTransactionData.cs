@@ -9,7 +9,7 @@ namespace Accountater.Persistence.SqlServer.Models
 
         public required Guid Id { get; init; }
         public required Guid AccountId { get; init; }
-        public required DateTime TransactionDate { get; init; }
+        public required DateTime Date { get; init; }
         public required string Description { get; init; }
 
         [Column(TypeName = "decimal(10,2)")]
