@@ -22,7 +22,7 @@
     </div>
 
     <div class="pure-control-group code-group">
-        <label asp-for="Expression">Expression</label>
+        <label asp-for="Expression">Expression (<i>transaction</i>)</label>
         <div class="code">
             <textarea asp-for="Expression" id="Expression"></textarea>
         </div>
@@ -68,16 +68,27 @@
     const modelHints = {
         transaction: {
             account: {
-                id: null,
-                name: null,
-                description: null
+                name: {
+                    _type: 'string',
+                    _methods: ['charAt(index)', 'concat(string)', 'includes(searchString)', 'startsWith(searchString)', 'endsWith(searchString)']
+                },
+                description: {
+                    _type: 'string',
+                    _methods: ['charAt(index)', 'concat(string)', 'includes(searchString)', 'startsWith(searchString)', 'endsWith(searchString)']
+                }
             },
-            date: null,
-            description: null,
+            date: {
+                _type: 'date',
+                _methods: ['getDay()', 'getMonth()', 'getFullYear()']
+            },
+            description: {
+                _type: 'string',
+                _methods: ['includes(searchString)', 'startsWith(searchString)', 'endsWith(searchString)']
+            },
             amount: null,
             tags: {
                 _type: "array",  // Indicate that 'tags' is an array
-                _methods: ["includes(str)"]  // Array methods
+                _methods: ["includes(string)"]  // Array methods
             }
         }
     };
