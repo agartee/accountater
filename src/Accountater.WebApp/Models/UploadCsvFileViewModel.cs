@@ -1,11 +1,13 @@
-﻿using Accountater.WebApp.Attributes;
+﻿using Accountater.Domain.Models;
+using Accountater.WebApp.Attributes;
 
 namespace Accountater.WebApp.Models
 {
     public record UploadCsvFileViewModel
     {
+        public required AccountId SelectedAccountId { get; init; }
+
         [ValidCsvFile]
-        public required IFormFile File { get; init; }
-        public required CsvFileType CsvFileType { get; init; }
+        public IFormFile? File { get; init; }
     }
 }

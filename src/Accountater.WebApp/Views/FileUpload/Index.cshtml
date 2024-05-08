@@ -3,17 +3,11 @@
 <h1>Upload Data File</h1>
 
 <form asp-controller="FileUpload" asp-action="UploadFile" class="pure-form pure-form" method="post" enctype="multipart/form-data">
-    <div class="pure-control-group radio-button-list">
-        <label>Choose CSV file type:</label>
-        @foreach (var type in Enum.GetValues(typeof(CsvFileType)))
-        {
-            <div>
-            <label for="csv-file-type-@(type)" class="pure-radio">
-                <input type="radio" id="csv-file-type-@(type)" name="CsvFileType" value="@type" />
-                @type
-            </label>
-            </div>
-        }
+    
+    <div class="pure-control-group">
+        <select asp-for="SelectedAccountId" asp-items="@(new SelectList(ViewBag.Accounts, "Id.Value", "Name"))">
+            <option value="">Select Account...</option>
+        </select>
     </div>
 
     <div class="pure-control-group file-input">

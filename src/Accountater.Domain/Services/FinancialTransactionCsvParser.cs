@@ -3,7 +3,7 @@ using System.Text;
 using TinyCsvParser;
 using TinyCsvParser.Mapping;
 
-namespace Accountater.WebApp.Services
+namespace Accountater.Domain.Services
 {
     public interface IFinancialTransactionCsvParser
     {

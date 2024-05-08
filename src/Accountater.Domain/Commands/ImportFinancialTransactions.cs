@@ -7,19 +7,22 @@ namespace Accountater.Domain.Commands
     public class ImportFinancialTransactions : IRequest
     {
         public required AccountId AccountId { get; init; }
-        public required IEnumerable<FinancialTransactionImport> Transactions { get; init; }
+        public required Stream CsvFileStream { get; init; }
     }
 
     public class ImportFinancialTransactionsHandler : IRequestHandler<ImportFinancialTransactions>
     {
+        private readonly IFinancialTransactionCsvParser financialTransactionCsvParser;
         private readonly IFinancialTransactionRepository financialTransactionRepository;
         private readonly IAccountRepository accountRepository;
         private readonly ITagRuleRepository tagRuleRepository;
         private readonly IRuleEvaluator ruleEvaluator;
 
-        public ImportFinancialTransactionsHandler(IFinancialTransactionRepository financialTransactionRepository,
-            IAccountRepository accountRepository, ITagRuleRepository tagRuleRepository, IRuleEvaluator ruleEvaluator)
+        public ImportFinancialTransactionsHandler(IFinancialTransactionCsvParser financialTransactionCsvParser,
+            IFinancialTransactionRepository financialTransactionRepository, IAccountRepository accountRepository,
+            ITagRuleRepository tagRuleRepository, IRuleEvaluator ruleEvaluator)
         {
+            this.financialTransactionCsvParser = financialTransactionCsvParser;
             this.financialTransactionRepository = financialTransactionRepository;
             this.accountRepository = accountRepository;
             this.tagRuleRepository = tagRuleRepository;
@@ -28,12 +31,13 @@ namespace Accountater.Domain.Commands
 
         public async Task Handle(ImportFinancialTransactions request, CancellationToken cancellationToken)
         {
+            var imports = financialTransactionCsvParser.Parse(request.CsvFileStream);
             var account = await accountRepository.DemandAccountInfo(request.AccountId, cancellationToken);
             var tagRules = await tagRuleRepository.GetAllTagRules(cancellationToken);
 
             var financialTransactions = new List<FinancialTransaction>();
 
-            foreach (var financialTransactionImport in request.Transactions)
+            foreach (var financialTransactionImport in imports)
             {
                 // rich object graph for rule processing
                 var financialTransactionInfo = financialTransactionImport.ToFinancialTransactionInfo(
