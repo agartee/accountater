@@ -1,13 +1,13 @@
-﻿#tagRulesTable {
+﻿#accountsTable {
     width: 100%;
 }
 
-    #tagRulesTable th {
-        text-align: left;
-        padding: 4px 0px;
-    }
+#accountsTable th {
+    text-align: left;
+    padding: 4px 0px;
+}
 
-    #tagRulesTable td {
+    #accountsTable td {
         padding: 4px 0px;
     }
 
