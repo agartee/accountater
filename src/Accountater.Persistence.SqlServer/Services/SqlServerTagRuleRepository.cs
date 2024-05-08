@@ -46,7 +46,16 @@ namespace Accountater.Persistence.SqlServer.Services
                 .SingleAsync(cancellationToken);
         }
 
-        public async Task<TagRuleSearchResults> SearchTagRules(TagRuleSearchCriteria criteria, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TagRuleInfo>> GetAllTagRules(CancellationToken cancellationToken)
+        {
+            return await dbContext.TagRules
+                .Include(r => r.Tag)
+                .OrderBy(r => r.Name)
+                .Select(r => r.ToTagRuleInfo())
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<TagRuleSearchResults> SearchTagRules(SearchCriteria criteria, CancellationToken cancellationToken)
         {
             Expression<Func<TagRuleData, bool>> predicate = r => criteria.SearchText == null
                 || r.Tag!.Value.Contains(criteria.SearchText)

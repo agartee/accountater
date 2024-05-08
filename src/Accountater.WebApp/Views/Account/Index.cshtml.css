@@ -1,0 +1,16 @@
+﻿#tagRulesTable {
+    width: 100%;
+}
+
+    #tagRulesTable th {
+        text-align: left;
+        padding: 4px 0px;
+    }
+
+    #tagRulesTable td {
+        padding: 4px 0px;
+    }
+
+a:visited {
+    color: blue;
+}

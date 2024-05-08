@@ -18,7 +18,7 @@ namespace Accountater.Persistence.SqlServer
                 .HasOne(t => t.Account)
                 .WithMany(a => a.Transactions)
                 .HasForeignKey(t => t.AccountId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<FinancialTransactionData>()
                 .HasMany(v => v.Tags)

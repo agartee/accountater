@@ -1,6 +1,6 @@
 ﻿namespace Accountater.Domain.Models
 {
-    public class TagRuleSearchCriteria
+    public class SearchCriteria
     {
         public string? SearchText { get; init; }
         public int PageSize { get; init; } = 50;

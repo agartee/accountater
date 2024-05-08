@@ -11,14 +11,17 @@ namespace Accountater.WebApp.Controllers
         private readonly IMediator mediator;
         private readonly ICheckingTransactionCsvParser checkingTransactionCsvParser;
         private readonly ICreditTransactionCsvParser creditTransactionCsvParser;
+        private readonly IFinancialTransactionCsvParser financialTransactionCsvParser;
 
         public FileUploadController(IMediator mediator,
             ICheckingTransactionCsvParser checkingTransactionCsvParser,
-            ICreditTransactionCsvParser creditTransactionCsvParser)
+            ICreditTransactionCsvParser creditTransactionCsvParser,
+            IFinancialTransactionCsvParser financialTransactionCsvParser)
         {
             this.mediator = mediator;
             this.checkingTransactionCsvParser = checkingTransactionCsvParser;
             this.creditTransactionCsvParser = creditTransactionCsvParser;
+            this.financialTransactionCsvParser = financialTransactionCsvParser;
         }
 
         [HttpGet]

@@ -18,7 +18,7 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpGet]
-        [Route("/transaction")]
+        [Route("/financialTransaction")]
         public async Task<IActionResult> Index([FromQuery] SearchFinancialTransactions request)
         {
             var results = await mediator.Send(request);
@@ -27,7 +27,7 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpGet]
-        [Route("/transaction/{id}/edit")]
+        [Route("/financialTransaction/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] FinancialTransactionId id)
         {
             var results = await mediator.Send(new DemandFinancialTransaction { Id = id });
@@ -36,7 +36,7 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpPost]
-        [Route("/transaction/{id}/edit")]
+        [Route("/financialTransaction/{id}/edit")]
         public async Task<IActionResult> Edit([FromForm] EditFinancialTransactionViewModel viewModel)
         {
             await mediator.Send(new UpdateFinancialTransaction
@@ -47,7 +47,7 @@ namespace Accountater.WebApp.Controllers
                     : Enumerable.Empty<string>()
             });
 
-            return Redirect($"/transaction/{viewModel.Id.Value}/edit");
+            return Redirect($"/financialTransaction/{viewModel.Id.Value}/edit");
         }
     }
 }

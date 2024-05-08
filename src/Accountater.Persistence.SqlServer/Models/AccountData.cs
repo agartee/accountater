@@ -8,8 +8,8 @@ namespace Accountater.Persistence.SqlServer.Models
         public const string TableName = "Account";
 
         public required Guid Id { get; init; }
-        public required string Name { get; init; }
-        public string? Description { get; init; }
+        public required string Name { get; set; }
+        public string? Description { get; set; }
 
         public List<FinancialTransactionData> Transactions { get; set; } = new();
     }

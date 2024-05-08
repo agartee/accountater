@@ -19,17 +19,17 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task InsertCreditTransactions(IEnumerable<CreditTransaction> transactions,
             CancellationToken cancellationToken)
         {
-            foreach (var transaction in transactions)
+            foreach (var financialTransaction in transactions)
             {
-                var account = await GetOrAddAccount(transaction.AccountName, cancellationToken);
+                var account = await GetOrAddAccount(financialTransaction.AccountName, cancellationToken);
 
                 account.Transactions.Add(new FinancialTransactionData
                 {
                     Id = Guid.NewGuid(),
                     AccountId = account.Id,
-                    Date = transaction.Date,
-                    Description = transaction.Merchant,
-                    Amount = transaction.Amount,
+                    Date = financialTransaction.Date,
+                    Description = financialTransaction.Merchant,
+                    Amount = financialTransaction.Amount,
                 });
             }
 
@@ -39,7 +39,7 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task InsertCheckingTransactions(IEnumerable<CheckingTransaction> transactions,
             CancellationToken cancellationToken)
         {
-            foreach (var transaction in transactions)
+            foreach (var financialTransaction in transactions)
             {
                 var account = await GetOrAddAccount("Checking", cancellationToken);
 
@@ -47,13 +47,62 @@ namespace Accountater.Persistence.SqlServer.Services
                 {
                     Id = Guid.NewGuid(),
                     AccountId = account.Id,
-                    Date = transaction.Date,
-                    Description = transaction.Description,
-                    Amount = transaction.Amount,
+                    Date = financialTransaction.Date,
+                    Description = financialTransaction.Description,
+                    Amount = financialTransaction.Amount,
                 });
             }
 
             await dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task InsertFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
+            CancellationToken cancellationToken)
+        {
+            var tags = await GetAndStageMissingTags(transactions);
+
+            foreach (var financialTransaction in transactions)
+            {
+                dbContext.FinancialTransactions.Add(new FinancialTransactionData
+                {
+                    Id = financialTransaction.Id.Value,
+                    AccountId = financialTransaction.AccountId.Value,
+                    Date = financialTransaction.Date,
+                    Description = financialTransaction.Description,
+                    Amount = financialTransaction.Amount,
+                    Tags = tags
+                        .Where(t => financialTransaction.Tags.Contains(t.Value))
+                        .ToList()
+                });
+            }
+
+            await dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        private async Task<IEnumerable<TagData>> GetAndStageMissingTags(IEnumerable<FinancialTransaction> transactions)
+        {
+            var tags = transactions
+                .SelectMany(x => x.Tags)
+                .Distinct()
+                .ToList();
+
+            var existingTags = await dbContext.Tags
+                .Where(t => tags.Contains(t.Value))
+                .ToListAsync();
+
+            var newTags = tags
+                .Where(t => !existingTags.Any(et => et.Value == t))
+                .Select(t => new TagData
+                {
+                    Id = Guid.NewGuid(),
+                    Value = t.Truncate(200)
+                })
+                .ToList();
+
+            foreach (var newTag in newTags)
+                dbContext.Tags.Add(newTag);
+
+            return existingTags.Concat(newTags);
         }
 
         public async Task<FinancialTransactionSearchResults> SearchFinancialTransactions(

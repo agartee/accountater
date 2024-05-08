@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Transactions";
-    ViewData["PaginationBaseUrl"] = "transaction";
+    ViewData["PaginationBaseUrl"] = "financialTransaction";
 }
 
 <h1>Financial Transactions</h1>
@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>Account</th>
-            <th>Transaction Date</th>
+            <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
             <th>Tags</th>
@@ -21,16 +21,16 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var transaction in Model.FinancialTransactions)
+        @foreach (var financialTransaction in Model.FinancialTransactions)
         {
             <tr>
-                <td>@transaction.Account.Name</td>
-                <td>@transaction.Date.ToString("yyyy-MM-dd")</td>
-                <td>@transaction.Description</td>
-                <td>$@transaction.Amount.ToString("N2")</td>
-                <td>@string.Join(", ", transaction.Tags)</td>
+                <td>@financialTransaction.Account.Name</td>
+                <td>@financialTransaction.Date.ToString("yyyy-MM-dd")</td>
+                <td>@financialTransaction.Description</td>
+                <td>$@financialTransaction.Amount.ToString("N2")</td>
+                <td>@string.Join(", ", financialTransaction.Tags)</td>
                 <td>
-                    <a href="/transaction/@transaction.Id.Value/edit">View Details</a>
+                    <a href="/financialTransaction/@financialTransaction.Id.Value/edit">View Details</a>
                 </td>
             </tr>
         }

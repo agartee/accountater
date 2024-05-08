@@ -4,27 +4,27 @@ using MediatR;
 
 namespace Accountater.Domain.Queries
 {
-    public record SearchTagRules : IRequest<TagRuleSearchResults>
+    public record SearchAccounts : IRequest<AccountSearchResults>
     {
         public string? SearchText { get; init; }
         public int PageSize { get; init; } = 50;
         public int PageIndex { get; init; } = 0;
     }
 
-    public class SearchTagRulesHandler
-        : IRequestHandler<SearchTagRules, TagRuleSearchResults>
+    public class SearchAccountsHandler
+        : IRequestHandler<SearchAccounts, AccountSearchResults>
     {
-        private readonly ITagRuleRepository tagRuleRepository;
+        private readonly IAccountRepository accountRepository;
 
-        public SearchTagRulesHandler(ITagRuleRepository tagRuleRepository)
+        public SearchAccountsHandler(IAccountRepository accountRepository)
         {
-            this.tagRuleRepository = tagRuleRepository;
+            this.accountRepository = accountRepository;
         }
 
-        public async Task<TagRuleSearchResults> Handle(
-            SearchTagRules request, CancellationToken cancellationToken)
+        public async Task<AccountSearchResults> Handle(
+            SearchAccounts request, CancellationToken cancellationToken)
         {
-            return await tagRuleRepository.SearchTagRules(
+            return await accountRepository.SearchAccounts(
                 new SearchCriteria
                 {
                     SearchText = request.SearchText,

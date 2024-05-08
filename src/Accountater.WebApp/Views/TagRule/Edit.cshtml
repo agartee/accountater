@@ -22,7 +22,7 @@
     </div>
 
     <div class="pure-control-group code-group">
-        <label asp-for="Expression">Expression (<i>transaction</i>)</label>
+        <label asp-for="Expression">Expression (<i>financialTransaction</i>)</label>
         <div class="code">
             <textarea asp-for="Expression" id="Expression"></textarea>
         </div>
@@ -66,7 +66,7 @@
 
 <script>
     const modelHints = {
-        transaction: {
+        financialTransaction: {
             account: {
                 name: {
                     _type: 'string',

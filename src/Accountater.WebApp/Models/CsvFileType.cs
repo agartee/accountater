@@ -3,6 +3,7 @@
     public enum CsvFileType
     {
         Checking,
-        Credit
+        Credit,
+        Other
     }
 }

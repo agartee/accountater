@@ -1,0 +1,35 @@
+﻿using Accountater.Domain.Models;
+using Accountater.Domain.Services;
+using MediatR;
+
+namespace Accountater.Domain.Commands
+{
+    public record CreateAccount : IRequest<AccountInfo>
+    {
+        public required AccountId Id { get; init; }
+        public required string Name { get; init; }
+        public required string Description { get; init; }
+    }
+
+    public class CreateAccountHandler : IRequestHandler<CreateAccount, AccountInfo>
+    {
+        private readonly IAccountRepository accountRepository;
+
+        public CreateAccountHandler(IAccountRepository accountRepository)
+        {
+            this.accountRepository = accountRepository;
+        }
+
+        public async Task<AccountInfo> Handle(CreateAccount request, CancellationToken cancellationToken)
+        {
+            var account = new Account
+            {
+                Id = request.Id,
+                Name = request.Name,
+                Description = request.Description
+            };
+
+            return await accountRepository.SaveAccount(account, cancellationToken);
+        }
+    }
+}

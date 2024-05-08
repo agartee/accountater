@@ -11,7 +11,7 @@ namespace Accountater.Domain.Tests.Services
         [Fact]
         public void SimpleTest()
         {
-            var transaction = new FinancialTransactionInfo
+            var financialTransaction = new FinancialTransactionInfo
             {
                 Id = FinancialTransactionId.NewId(),
                 Account = new AccountInfo
@@ -29,11 +29,11 @@ namespace Accountater.Domain.Tests.Services
             {
                 Id = TagRuleId.NewId(),
                 Name = "test rule",
-                Expression = "transaction.tags.includes('VERIZON')",
+                Expression = "financialTransaction.tags.includes('VERIZON')",
                 Tag = "tag"
             };
 
-            var result = ruleEvaluator.Evaluate(rule.Expression, transaction);
+            var result = ruleEvaluator.Evaluate(rule.Expression, financialTransaction);
 
             result.Should().BeTrue();
         }

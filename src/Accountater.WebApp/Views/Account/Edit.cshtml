@@ -1,0 +1,52 @@
+﻿@model EditAccountViewModel
+
+@{
+    ViewData["Title"] = "Tag Rule Details";
+}
+
+<h1>Edit Account</h1>
+
+<form method="post" class="pure-form pure-form-aligned">
+    
+    <input type="hidden" asp-for="Id" />
+
+    <div class="pure-control-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" />
+    </div>
+
+    <div class="pure-control-group">
+        <label asp-for="Description">Description</label>
+        <input asp-for="Description" />
+    </div>
+
+    <div class="pure-controls control-panel">
+        <button type="submit" class="pure-button pure-button-primary">Save</button>
+        <a href="/account" class="pure-button pure-button-secondary">Back</a>
+    </div>
+
+</form>
+
+@if(Model != null)
+{
+    <h3>Danger Zone</h3>
+
+    <div class="danger-zone">
+        <form action="@Url.Action("Delete", "Account", new { id = Model.Id.Value })" method="post" 
+              class="pure-form pure-form-aligned"
+              onsubmit="return confirm('Are you sure you want to delete this account?');">
+
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <label>Delete this Account?</label>
+
+            <button type="submit" class="pure-button button-danger delete-button">Delete</button>
+            
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/js/formModifiedChecks.js"></script>
+}
