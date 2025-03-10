@@ -19,7 +19,7 @@ namespace Accountater.Domain.Queries
 
         public async Task<IEnumerable<AccountInfo>> Handle(GetAllAccounts request, CancellationToken cancellationToken)
         {
-            return await accountRepository.GetAllAccounts(cancellationToken);
+            return await accountRepository.GetAccounts(cancellationToken);
         }
     }
 }

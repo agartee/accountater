@@ -34,9 +34,6 @@ namespace Accountater.WebApp.Controllers
         public async Task<IActionResult> UploadFile(UploadCsvFileViewModel model)
         {
             using var csvFileStream = model.File!.OpenReadStream();
-            //using var reader = new StreamReader(csvFileStream);
-
-            // TODO: process models
             await mediator.Send(new ImportFinancialTransactions
             {
                 AccountId = model.SelectedAccountId,

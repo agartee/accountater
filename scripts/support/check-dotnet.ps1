@@ -1,4 +1,4 @@
-$minVer = "8.0.0"
+$minVer = "9.0.0"
 
 $minMajorVer = $minVer.Split('.')[0]
 $maxMajorVer = [int]$minMajorVer + 1

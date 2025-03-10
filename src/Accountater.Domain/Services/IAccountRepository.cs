@@ -4,7 +4,7 @@ namespace Accountater.Domain.Services
 {
     public interface IAccountRepository
     {
-        Task<IEnumerable<AccountInfo>> GetAllAccounts(CancellationToken cancellationToken);
+        Task<IEnumerable<AccountInfo>> GetAccounts(CancellationToken cancellationToken);
         Task<AccountInfo> SaveAccount(Account account, CancellationToken cancellationToken);
         Task<Account> DemandAccount(AccountId id, CancellationToken cancellationToken);
         Task<AccountInfo> DemandAccountInfo(AccountId id, CancellationToken cancellationToken);

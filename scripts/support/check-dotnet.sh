@@ -1,6 +1,6 @@
 #!/bin/bash
 
-minVer="8.0.0"
+minVer="9.0.0"
 
 minMajorVer=$(echo $minVer | cut -d. -f1)
 maxMajorVer=$(($(echo $minVer | cut -d. -f1) + 1))

@@ -6,12 +6,12 @@
         public required string Description { get; init; }
         public required decimal Amount { get; init; }
 
-        public FinancialTransactionInfo ToFinancialTransactionInfo(FinancialTransactionId id, AccountInfo account)
+        public FinancialTransaction ToFinancialTransaction(FinancialTransactionId id, AccountInfo account)
         {
-            return new FinancialTransactionInfo
+            return new FinancialTransaction
             {
                 Id = id,
-                Account = account,
+                AccountId = account.Id,
                 Date = Date,
                 Description = Description,
                 Amount = Amount

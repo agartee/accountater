@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accountater.Persistence.Sql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accountater.WebApp.Tests", "test\Accountater.WebApp.Tests\Accountater.WebApp.Tests.csproj", "{3F2A16E5-2D58-49E0-B60B-E6FB1C483EC4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "utils", "utils", "{0CBF0C22-C13A-4F94-8D91-139B7B402AED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accountater.TestUtilities", "utils\Accountater.TestUtilities\Accountater.TestUtilities.csproj", "{7ED79410-AA41-4CAB-A5EE-4DB6CDBBD112}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{3F2A16E5-2D58-49E0-B60B-E6FB1C483EC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F2A16E5-2D58-49E0-B60B-E6FB1C483EC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F2A16E5-2D58-49E0-B60B-E6FB1C483EC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ED79410-AA41-4CAB-A5EE-4DB6CDBBD112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ED79410-AA41-4CAB-A5EE-4DB6CDBBD112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ED79410-AA41-4CAB-A5EE-4DB6CDBBD112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ED79410-AA41-4CAB-A5EE-4DB6CDBBD112}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +68,7 @@ Global
 		{E1DB1392-21A6-4290-A449-1A93BBF015AC} = {515034C4-679D-4745-8F18-011173FC338E}
 		{62788644-DD8D-448F-B960-FDE72A24000C} = {515034C4-679D-4745-8F18-011173FC338E}
 		{3F2A16E5-2D58-49E0-B60B-E6FB1C483EC4} = {515034C4-679D-4745-8F18-011173FC338E}
+		{7ED79410-AA41-4CAB-A5EE-4DB6CDBBD112} = {0CBF0C22-C13A-4F94-8D91-139B7B402AED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66BC3B4A-137D-4CBE-9B39-3F4B96631B1C}

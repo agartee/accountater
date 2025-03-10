@@ -11,18 +11,14 @@ namespace Accountater.Domain.Tests.Services
         [Fact]
         public void SimpleTest()
         {
-            var financialTransaction = new FinancialTransactionInfo
+            var financialTransaction = new FinancialTransaction
             {
                 Id = FinancialTransactionId.NewId(),
-                Account = new AccountInfo
-                {
-                    Id = AccountId.NewId(),
-                    Name = "Account 1",
-                },
+                AccountId = AccountId.NewId(),
                 Amount = 11,
                 Description = "description",
                 Date = DateTime.UtcNow,
-                Tags = new[] { "VERIZON" }
+                Tags = [ "VERIZON" ]
             };
 
             var rule = new TagRule

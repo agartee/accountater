@@ -9,22 +9,5 @@
         public required string Description { get; init; }
         public required decimal Amount { get; init; }
         public IEnumerable<string> Tags { get; init; } = new List<string>().AsReadOnly();
-
-        public FinancialTransaction ToFinancialTransaction()
-        {
-            var financialTransaction = new FinancialTransaction
-            {
-                Id = Id,
-                AccountId = Account.Id,
-                Date = Date,
-                Description = Description,
-                Amount = Amount
-            };
-
-            foreach (var tag in Tags)
-                financialTransaction.AddTag(tag);
-
-            return financialTransaction;
-        }
     }
 }

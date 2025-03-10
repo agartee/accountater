@@ -9,6 +9,7 @@ namespace Accountater.Persistence.SqlServer
 
         public DbSet<AccountData> Accounts { get; set; }
         public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
+        public DbSet<CsvImportSchemaData> CsvImportSchemas { get; set; }
         public DbSet<TagData> Tags { get; set; }
         public DbSet<TagRuleData> TagRules { get; set; }
 
@@ -31,6 +32,15 @@ namespace Accountater.Persistence.SqlServer
                         vt.HasKey(xref => new { xref.TransactionId, xref.TagId });
                     });
 
+            modelBuilder.Entity<CsvImportSchemaData>()
+                .HasMany(s => s.Mappings)
+                .WithOne(m => m.ImportSchema)
+                .HasForeignKey(m => m.ImportSchemaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CsvImportSchemaMappingData>()
+                .HasKey(m => new { m.ImportSchemaId, m.MappedProperty });
+                
             modelBuilder.Entity<TagData>()
                 .HasIndex(t => t.Value)
                 .IsUnique();

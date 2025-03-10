@@ -33,26 +33,23 @@ namespace Accountater.Domain.Commands
         {
             var imports = financialTransactionCsvParser.Parse(request.CsvFileStream);
             var account = await accountRepository.DemandAccountInfo(request.AccountId, cancellationToken);
-            var tagRules = await tagRuleRepository.GetAllTagRules(cancellationToken);
+            var tagRules = await tagRuleRepository.GetTagRules(cancellationToken);
 
             var financialTransactions = new List<FinancialTransaction>();
 
-            foreach (var financialTransactionImport in imports)
+            foreach (var import in imports)
             {
-                // rich object graph for rule processing
-                var financialTransactionInfo = financialTransactionImport.ToFinancialTransactionInfo(
+                var financialTransaction = import.ToFinancialTransaction(
                     FinancialTransactionId.NewId(), account);
 
-                // persisted object
-                var financialTransaction = financialTransactionInfo.ToFinancialTransaction();
                 financialTransactions.Add(financialTransaction);
 
                 foreach (var tagRule in tagRules)
                 {
-                    if (!financialTransactionInfo.Tags.Contains(tagRule.Tag)
-                        && ruleEvaluator.Evaluate(tagRule.Expression, financialTransactionInfo))
+                    if (!financialTransaction.Tags.Contains(tagRule.Tag)
+                        && ruleEvaluator.Evaluate(tagRule.Expression, financialTransaction))
                     {
-                        financialTransaction.AddTag(tagRule.Tag);
+                        financialTransaction.Tags.Add(tagRule.Tag);
                     }
                 }
             }

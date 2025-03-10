@@ -44,7 +44,7 @@ namespace Accountater.Persistence.SqlServer.Services
                 .SingleAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<AccountInfo>> GetAllAccounts(CancellationToken cancellationToken)
+        public async Task<IEnumerable<AccountInfo>> GetAccounts(CancellationToken cancellationToken)
         {
             return await dbContext.Accounts
                 .OrderBy(r => r.Name)

@@ -46,7 +46,7 @@ namespace Accountater.Persistence.SqlServer.Services
                 .SingleAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<TagRuleInfo>> GetAllTagRules(CancellationToken cancellationToken)
+        public async Task<IEnumerable<TagRuleInfo>> GetTagRules(CancellationToken cancellationToken)
         {
             return await dbContext.TagRules
                 .Include(r => r.Tag)
