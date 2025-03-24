@@ -47,6 +47,7 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<CsvImportSchemaInfo> SaveImportSchema(CsvImportSchema csvImportSchema, CancellationToken cancellationToken)
         {
             var data = await dbContext.CsvImportSchemas
+                .Include(s => s.Mappings)
                 .SingleOrDefaultAsync(s => s.Id == csvImportSchema.Id.Value, cancellationToken);
 
             if (data == null)
