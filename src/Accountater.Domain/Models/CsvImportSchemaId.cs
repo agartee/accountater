@@ -6,9 +6,9 @@
         {
         }
 
-        public static AccountId NewId()
+        public static CsvImportSchemaId NewId()
         {
-            return new AccountId(Guid.NewGuid());
+            return new CsvImportSchemaId(Guid.NewGuid());
         }
     }
 }

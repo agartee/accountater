@@ -18,7 +18,7 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task DeleteImportMap(CsvImportSchemaId id, CancellationToken cancellationToken)
         {
             var data = await dbContext.CsvImportSchemas
-                .SingleOrDefaultAsync(r => r.Id == id.Value, cancellationToken);
+                .SingleOrDefaultAsync(s => s.Id == id.Value, cancellationToken);
 
             if (data == null)
                 return;
@@ -30,23 +30,24 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<CsvImportSchema> DemandCsvImportSchema(CsvImportSchemaId id, CancellationToken cancellationToken)
         {
             return await dbContext.CsvImportSchemas
-                .Where(r => r.Id == id.Value)
-                .Select(r => r.ToCsvImportSchema())
+                .Include(s => s.Mappings)
+                .Where(s => s.Id == id.Value)
+                .Select(s => s.ToCsvImportSchema())
                 .SingleAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<CsvImportSchemaInfo>> GetCsvImportSchemas(CancellationToken cancellationToken)
+        public async Task<IEnumerable<CsvImportSchemaInfo>> ListCsvImportSchemas(CancellationToken cancellationToken)
         {
             return await dbContext.CsvImportSchemas
-                .OrderBy(r => r.Name)
-                .Select(r => r.ToCsvImportSchemaInfo())
+                .OrderBy(s => s.Name)
+                .Select(s => s.ToCsvImportSchemaInfo())
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<CsvImportSchemaInfo> SaveImportMap(CsvImportSchema csvImportSchema, CancellationToken cancellationToken)
+        public async Task<CsvImportSchemaInfo> SaveImportSchema(CsvImportSchema csvImportSchema, CancellationToken cancellationToken)
         {
             var data = await dbContext.CsvImportSchemas
-                .SingleOrDefaultAsync(r => r.Id == csvImportSchema.Id.Value, cancellationToken);
+                .SingleOrDefaultAsync(s => s.Id == csvImportSchema.Id.Value, cancellationToken);
 
             if (data == null)
                 data = CreateCsvImportSchema(csvImportSchema);

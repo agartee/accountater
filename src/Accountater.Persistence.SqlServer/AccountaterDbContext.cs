@@ -5,16 +5,20 @@ namespace Accountater.Persistence.SqlServer
 {
     public class AccountaterDbContext : DbContext
     {
+        public static string SchemaName = "Accountater";
+
         public AccountaterDbContext(DbContextOptions<AccountaterDbContext> options) : base(options) { }
 
         public DbSet<AccountData> Accounts { get; set; }
-        public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
         public DbSet<CsvImportSchemaData> CsvImportSchemas { get; set; }
+        public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
         public DbSet<TagData> Tags { get; set; }
         public DbSet<TagRuleData> TagRules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema(SchemaName);
+
             modelBuilder.Entity<FinancialTransactionData>()
                 .HasOne(t => t.Account)
                 .WithMany(a => a.Transactions)

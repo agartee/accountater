@@ -6,10 +6,6 @@ namespace Accountater.Domain.Services
     {
         Task InsertFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
             CancellationToken cancellationToken);
-        Task InsertCheckingTransactions(IEnumerable<CheckingTransaction> transactions,
-            CancellationToken cancellationToken);
-        Task InsertCreditTransactions(IEnumerable<CreditTransaction> transactions,
-            CancellationToken cancellationToken);
         Task<FinancialTransactionSearchResults> SearchFinancialTransactions(
             FinancialTransactionSearchCriteria criteria, CancellationToken cancellationToken);
         Task<FinancialTransactionInfo> DemandFinancialTransaction(FinancialTransactionId id,

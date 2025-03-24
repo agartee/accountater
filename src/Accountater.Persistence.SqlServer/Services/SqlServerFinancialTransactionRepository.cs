@@ -16,46 +16,6 @@ namespace Accountater.Persistence.SqlServer.Services
             this.dbContext = dbContext;
         }
 
-        public async Task InsertCreditTransactions(IEnumerable<CreditTransaction> transactions,
-            CancellationToken cancellationToken)
-        {
-            foreach (var financialTransaction in transactions)
-            {
-                var account = await GetOrAddAccount(financialTransaction.AccountName, cancellationToken);
-
-                account.Transactions.Add(new FinancialTransactionData
-                {
-                    Id = Guid.NewGuid(),
-                    AccountId = account.Id,
-                    Date = financialTransaction.Date,
-                    Description = financialTransaction.Merchant,
-                    Amount = financialTransaction.Amount,
-                });
-            }
-
-            await dbContext.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task InsertCheckingTransactions(IEnumerable<CheckingTransaction> transactions,
-            CancellationToken cancellationToken)
-        {
-            foreach (var financialTransaction in transactions)
-            {
-                var account = await GetOrAddAccount("Checking", cancellationToken);
-
-                account.Transactions.Add(new FinancialTransactionData
-                {
-                    Id = Guid.NewGuid(),
-                    AccountId = account.Id,
-                    Date = financialTransaction.Date,
-                    Description = financialTransaction.Description,
-                    Amount = financialTransaction.Amount,
-                });
-            }
-
-            await dbContext.SaveChangesAsync(cancellationToken);
-        }
-
         public async Task InsertFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
             CancellationToken cancellationToken)
         {
