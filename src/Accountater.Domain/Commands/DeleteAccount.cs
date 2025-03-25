@@ -11,16 +11,16 @@ namespace Accountater.Domain.Commands
 
     public class DeleteAccountHandler : IRequestHandler<DeleteAccount>
     {
-        private readonly IAccountRepository tagRuleRepository;
+        private readonly IAccountRepository accountRepository;
 
-        public DeleteAccountHandler(IAccountRepository tagRuleRepository)
+        public DeleteAccountHandler(IAccountRepository accountRepository)
         {
-            this.tagRuleRepository = tagRuleRepository;
+            this.accountRepository = accountRepository;
         }
 
         public async Task Handle(DeleteAccount request, CancellationToken cancellationToken)
         {
-            await tagRuleRepository.DeleteAccount(request.Id, cancellationToken);
+            await accountRepository.DeleteAccount(request.Id, cancellationToken);
         }
     }
 }

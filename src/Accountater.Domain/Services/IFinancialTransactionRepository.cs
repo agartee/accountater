@@ -4,7 +4,7 @@ namespace Accountater.Domain.Services
 {
     public interface IFinancialTransactionRepository
     {
-        Task InsertFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
+        Task CreateFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
             CancellationToken cancellationToken);
         Task<FinancialTransactionSearchResults> SearchFinancialTransactions(
             FinancialTransactionSearchCriteria criteria, CancellationToken cancellationToken);

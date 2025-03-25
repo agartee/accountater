@@ -4,20 +4,20 @@ using MediatR;
 
 namespace Accountater.Domain.Queries
 {
-    public record GetAllAccounts : IRequest<IEnumerable<AccountInfo>>
+    public record ListAllAccounts : IRequest<IEnumerable<AccountInfo>>
     {
     }
 
-    public class GetAllAccountsHandler : IRequestHandler<GetAllAccounts, IEnumerable<AccountInfo>>
+    public class ListAllAccountsHandler : IRequestHandler<ListAllAccounts, IEnumerable<AccountInfo>>
     {
         private readonly IAccountRepository accountRepository;
 
-        public GetAllAccountsHandler(IAccountRepository accountRepository)
+        public ListAllAccountsHandler(IAccountRepository accountRepository)
         {
             this.accountRepository = accountRepository;
         }
 
-        public async Task<IEnumerable<AccountInfo>> Handle(GetAllAccounts request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<AccountInfo>> Handle(ListAllAccounts request, CancellationToken cancellationToken)
         {
             return await accountRepository.GetAccounts(cancellationToken);
         }

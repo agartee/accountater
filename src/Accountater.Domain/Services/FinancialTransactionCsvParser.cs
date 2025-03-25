@@ -7,33 +7,27 @@ namespace Accountater.Domain.Services
 {
     public interface IFinancialTransactionCsvParser
     {
-        IEnumerable<FinancialTransactionImport> Parse(Stream stream);
+        Task<IEnumerable<FinancialTransactionImport>> Parse(CsvImportSchemaId csvImportSchemaId, Stream stream, 
+            CancellationToken cancellationToken);
     }
 
     public class FinancialTransactionCsvParser : IFinancialTransactionCsvParser
     {
-        public record CvsFinancialTransaction
+        private readonly ICsvImportSchemaInfoReader csvImportSchemaInfoReader;
+
+        public FinancialTransactionCsvParser(ICsvImportSchemaInfoReader csvImportSchemaInfoReader)
         {
-            public DateTime? Date { get; init; }
-            public string? Description { get; init; }
-            public decimal? Amount { get; init; }
+            this.csvImportSchemaInfoReader = csvImportSchemaInfoReader;
         }
 
-        private class FinancialTransactionCsvMapping : CsvMapping<CvsFinancialTransaction>
+        public async Task<IEnumerable<FinancialTransactionImport>> Parse(CsvImportSchemaId csvImportSchemaId, Stream stream, CancellationToken cancellationToken)
         {
-            public FinancialTransactionCsvMapping() : base()
-            {
-                MapProperty(0, x => x.Date);
-                MapProperty(1, x => x.Description);
-                MapProperty(3, x => x.Amount);
-            }
-        }
+            var csvImportSchema = await csvImportSchemaInfoReader
+                .DemandCsvImportSchemaInfo(csvImportSchemaId, cancellationToken);
 
-        public IEnumerable<FinancialTransactionImport> Parse(Stream stream)
-        {
-            var csvParserOptions = new CsvParserOptions(true, ',');
-            var csvMapper = new FinancialTransactionCsvMapping();
-            var csvParser = new CsvParser<CvsFinancialTransaction>(csvParserOptions, csvMapper);
+            var csvParser = new CsvParser<TinyCsvFinancialTransaction>(
+                new CsvParserOptions(skipHeader: true, fieldsSeparator: ','),
+                new AccountaterFinancialTransactionCsvMapping(csvImportSchema));
 
             var result = csvParser
                 .ReadFromStream(stream, Encoding.ASCII)
@@ -43,10 +37,44 @@ namespace Accountater.Domain.Services
                     Description = r.Result.Description!,
                     Amount = r.Result.Amount!.Value
                 })
-
                 .ToList();
 
             return result;
         }
+
+        #region TinyCsvParser Implementation
+
+        private class AccountaterFinancialTransactionCsvMapping : CsvMapping<TinyCsvFinancialTransaction>
+        {
+            public AccountaterFinancialTransactionCsvMapping(CsvImportSchemaInfo csvImportSchema) : base()
+            {
+                var dateIndex = csvImportSchema.Mappings
+                    .SingleOrDefault(m => m.MappedProperty == "Date")?.ColumnIndex
+                    ?? throw new InvalidOperationException("Date mapping not found in import schema.");
+                
+                var descriptionIndex = csvImportSchema.Mappings
+                    .SingleOrDefault(m => m.MappedProperty == "Description")?.ColumnIndex
+                    ?? throw new InvalidOperationException("Description mapping not found in import schema.");
+                
+                var amountIndex = csvImportSchema.Mappings
+                    .SingleOrDefault(m => m.MappedProperty == "Amount")?.ColumnIndex
+                    ?? throw new InvalidOperationException("Amount mapping not found in import schema.");
+
+                MapProperty(dateIndex, x => x.Date);
+                MapProperty(descriptionIndex, x => x.Description);
+                MapProperty(amountIndex, x => x.Amount);
+            }
+        }
+
+        // note: defined to satisfy TinyCsvParser's "new()" constructor condition on the mapped type, and
+        // does not require that we pollute our domain model with nullable properties
+        private record TinyCsvFinancialTransaction
+        {
+            public DateTime? Date { get; init; }
+            public string? Description { get; init; }
+            public decimal? Amount { get; init; }
+        }
+
+        #endregion
     }
 }

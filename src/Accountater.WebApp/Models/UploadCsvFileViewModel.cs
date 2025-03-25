@@ -5,7 +5,8 @@ namespace Accountater.WebApp.Models
 {
     public record UploadCsvFileViewModel
     {
-        public required AccountId SelectedAccountId { get; init; }
+        public required CsvImportSchemaId CsvImportSchemaId { get; init; }
+        public required AccountId AccountId { get; init; }
 
         [ValidCsvFile]
         public IFormFile? File { get; init; }

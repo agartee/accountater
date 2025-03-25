@@ -48,7 +48,7 @@ namespace Accountater.Persistence.SqlServer.Tests.Services
                 ]
             };
 
-            var result = await repository.SaveImportSchema(config, CancellationToken.None);
+            var result = await repository.SaveCsvImportSchema(config, CancellationToken.None);
 
             result.Id.Should().Be(id);
             result.Name.Should().Be("TestSchema");
@@ -128,7 +128,7 @@ namespace Accountater.Persistence.SqlServer.Tests.Services
                 ]
             };
 
-            var result = await repository.SaveImportSchema(updatedConfig, CancellationToken.None);
+            var result = await repository.SaveCsvImportSchema(updatedConfig, CancellationToken.None);
 
             result.Id.Should().Be(id);
             result.Name.Should().Be("TestSchema (Updated)");
@@ -167,7 +167,7 @@ namespace Accountater.Persistence.SqlServer.Tests.Services
 
             await fixture.Seed([config]);
 
-            await repository.DeleteImportMap(id, CancellationToken.None);
+            await repository.DeleteCsvImportSchema(id, CancellationToken.None);
 
             var dbContext = fixture.CreateDbContext();
             var data = await dbContext.CsvImportSchemas

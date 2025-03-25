@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CsvImportSchema>
+
+@{
+    ViewData["Title"] = "CSV Import Schemas";
+}
+
+<h1>CSV Import Schemas</h1>
+
+<a href="/csvimportschema/create">Create New...</a>
+
+<table id="csvImportSchemasTable" class="pure-table pure-table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var csvimportschema in Model)
+        {
+            <tr>
+                <td>@csvimportschema.Name</td>
+                <td>
+                    <a href="/csvimportschema/@csvimportschema.Id.Value/edit">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#csvImportSchemasTable').DataTable({
+            paging: false,
+            searching: false,
+            info: false,
+            order: [[0, "desc"]]
+        });
+    });
+</script>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Accountater.Persistence.SqlServer.Services
 {
-    public class SqlServerCsvImportSchemaRepository : ICsvImportSchemaRepository
+    public class SqlServerCsvImportSchemaRepository : ICsvImportSchemaRepository, ICsvImportSchemaInfoReader
     {
         private readonly AccountaterDbContext dbContext;
 
@@ -15,7 +15,7 @@ namespace Accountater.Persistence.SqlServer.Services
             this.dbContext = dbContext;
         }
 
-        public async Task DeleteImportMap(CsvImportSchemaId id, CancellationToken cancellationToken)
+        public async Task DeleteCsvImportSchema(CsvImportSchemaId id, CancellationToken cancellationToken)
         {
             var data = await dbContext.CsvImportSchemas
                 .SingleOrDefaultAsync(s => s.Id == id.Value, cancellationToken);
@@ -36,6 +36,15 @@ namespace Accountater.Persistence.SqlServer.Services
                 .SingleAsync(cancellationToken);
         }
 
+        public async Task<CsvImportSchemaInfo> DemandCsvImportSchemaInfo(CsvImportSchemaId id, CancellationToken cancellationToken)
+        {
+            return await dbContext.CsvImportSchemas
+                .Include(s => s.Mappings)
+                .Where(s => s.Id == id.Value)
+                .Select(s => s.ToCsvImportSchemaInfo())
+                .SingleAsync(cancellationToken);
+        }
+
         public async Task<IEnumerable<CsvImportSchemaInfo>> ListCsvImportSchemas(CancellationToken cancellationToken)
         {
             return await dbContext.CsvImportSchemas
@@ -44,7 +53,7 @@ namespace Accountater.Persistence.SqlServer.Services
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<CsvImportSchemaInfo> SaveImportSchema(CsvImportSchema csvImportSchema, CancellationToken cancellationToken)
+        public async Task<CsvImportSchemaInfo> SaveCsvImportSchema(CsvImportSchema csvImportSchema, CancellationToken cancellationToken)
         {
             var data = await dbContext.CsvImportSchemas
                 .Include(s => s.Mappings)

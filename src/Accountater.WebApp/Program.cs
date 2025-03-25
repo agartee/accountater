@@ -23,6 +23,8 @@ builder.Services.AddTransient<IFinancialTransactionCsvParser, FinancialTransacti
 builder.Services.AddTransient<IFinancialTransactionRepository, SqlServerFinancialTransactionRepository>();
 builder.Services.AddTransient<ITagRuleRepository, SqlServerTagRuleRepository>();
 builder.Services.AddTransient<IAccountRepository, SqlServerAccountRepository>();
+builder.Services.AddTransient<ICsvImportSchemaRepository, SqlServerCsvImportSchemaRepository>();
+builder.Services.AddTransient<ICsvImportSchemaInfoReader, SqlServerCsvImportSchemaRepository>();
 builder.Services.AddTransient<IRuleEvaluator, JintRuleEvaluator>();
 
 builder.Services.AddDbContext<AccountaterDbContext>(options =>

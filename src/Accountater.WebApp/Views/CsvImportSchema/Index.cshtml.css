@@ -1,0 +1,16 @@
+﻿#accountsTable {
+    width: 100%;
+}
+
+#accountsTable th {
+    text-align: left;
+    padding: 4px 0px;
+}
+
+    #accountsTable td {
+        padding: 4px 0px;
+    }
+
+a:visited {
+    color: blue;
+}

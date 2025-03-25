@@ -16,7 +16,7 @@ namespace Accountater.Persistence.SqlServer.Services
             this.dbContext = dbContext;
         }
 
-        public async Task InsertFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
+        public async Task CreateFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
             CancellationToken cancellationToken)
         {
             var tags = await GetAndStageMissingTags(transactions);

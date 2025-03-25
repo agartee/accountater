@@ -23,8 +23,11 @@ namespace Accountater.WebApp.Controllers
         [Route("/fileupload")]
         public async Task<IActionResult> Index()
         {
-            var accounts = await mediator.Send(new GetAllAccounts());
+            var accounts = await mediator.Send(new ListAllAccounts());
+            var csvImportSchemas = await mediator.Send(new ListAllCsvImportSchemas());
+
             ViewBag.Accounts = accounts;
+            ViewBag.CsvImportSchemas = csvImportSchemas;
 
             return View();
         }
@@ -36,7 +39,8 @@ namespace Accountater.WebApp.Controllers
             using var csvFileStream = model.File!.OpenReadStream();
             await mediator.Send(new ImportFinancialTransactions
             {
-                AccountId = model.SelectedAccountId,
+                CsvImportSchemaId = model.CsvImportSchemaId,
+                AccountId = model.AccountId,
                 CsvFileStream = csvFileStream
             });
 

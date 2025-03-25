@@ -5,8 +5,14 @@
 <form asp-controller="FileUpload" asp-action="UploadFile" class="pure-form pure-form" method="post" enctype="multipart/form-data">
     
     <div class="pure-control-group">
-        <select asp-for="SelectedAccountId" asp-items="@(new SelectList(ViewBag.Accounts, "Id.Value", "Name"))">
+        <select asp-for="AccountId" asp-items="@(new SelectList(ViewBag.Accounts, "Id.Value", "Name"))">
             <option value="">Select Account...</option>
+        </select>
+    </div>
+
+    <div class="pure-control-group">
+        <select asp-for="CsvImportSchemaId" asp-items="@(new SelectList(ViewBag.CsvImportSchemas, "Id.Value", "Name"))">
+            <option value="">Select Import Schema...</option>
         </select>
     </div>
 

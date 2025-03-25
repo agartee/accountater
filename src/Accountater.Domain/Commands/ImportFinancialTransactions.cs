@@ -7,6 +7,7 @@ namespace Accountater.Domain.Commands
     public class ImportFinancialTransactions : IRequest
     {
         public required AccountId AccountId { get; init; }
+        public required CsvImportSchemaId CsvImportSchemaId { get; init; }
         public required Stream CsvFileStream { get; init; }
     }
 
@@ -31,31 +32,40 @@ namespace Accountater.Domain.Commands
 
         public async Task Handle(ImportFinancialTransactions request, CancellationToken cancellationToken)
         {
-            var imports = financialTransactionCsvParser.Parse(request.CsvFileStream);
+            var importedTransactions = await financialTransactionCsvParser.Parse(
+                request.CsvImportSchemaId, 
+                request.CsvFileStream, 
+                cancellationToken);
+
             var account = await accountRepository.DemandAccountInfo(request.AccountId, cancellationToken);
-            var tagRules = await tagRuleRepository.GetTagRules(cancellationToken);
+            var tagRules = await tagRuleRepository.GetTagRuleInfos(cancellationToken);
 
             var financialTransactions = new List<FinancialTransaction>();
 
-            foreach (var import in imports)
+            foreach (var import in importedTransactions)
             {
                 var financialTransaction = import.ToFinancialTransaction(
                     FinancialTransactionId.NewId(), account);
 
                 financialTransactions.Add(financialTransaction);
-
-                foreach (var tagRule in tagRules)
-                {
-                    if (!financialTransaction.Tags.Contains(tagRule.Tag)
-                        && ruleEvaluator.Evaluate(tagRule.Expression, financialTransaction))
-                    {
-                        financialTransaction.Tags.Add(tagRule.Tag);
-                    }
-                }
+                ApplyTagRules(tagRules, financialTransaction);
             }
 
-            await financialTransactionRepository.InsertFinancialTransactions(financialTransactions,
+            await financialTransactionRepository.CreateFinancialTransactions(
+                financialTransactions,
                 cancellationToken);
+        }
+
+        private void ApplyTagRules(IEnumerable<TagRuleInfo> tagRules, FinancialTransaction financialTransaction)
+        {
+            foreach (var tagRule in tagRules)
+            {
+                if (!financialTransaction.Tags.Contains(tagRule.Tag)
+                    && ruleEvaluator.Evaluate(tagRule.Expression, financialTransaction))
+                {
+                    financialTransaction.Tags.Add(tagRule.Tag);
+                }
+            }
         }
     }
 }

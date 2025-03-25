@@ -1,4 +1,3 @@
-[CmdletBinding(DefaultParameterSetName = 'default')]
 param(
   [Parameter(Mandatory = $false, HelpMessage = "Configuration name (e.g., Release, Debug)")]
   [Alias("c")]
