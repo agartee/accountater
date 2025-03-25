@@ -1,7 +1,7 @@
 ﻿@model CsvImportSchemaInfo
 
 @{
-    ViewData["Title"] = "CSV Import Schema Details";
+    ViewData["Title"] = "Edit CSV Import Schema";
 }
 
 <h1>Edit CSV Import Schema</h1>
@@ -15,6 +15,8 @@
         <input asp-for="Name" />
     </div>
 
+    <partial name="Shared/Mapping" model="Model" />
+
     <div class="pure-controls control-panel">
         <button type="submit" class="pure-button pure-button-primary">Save</button>
         <a href="/csvimportschema" class="pure-button pure-button-secondary">Back</a>
@@ -22,26 +24,27 @@
 
 </form>
 
-@if(Model != null)
-{
-    <h3>Danger Zone</h3>
+<partial name="Shared/MappingRowTemplate" model="Model" />
 
-    <div class="danger-zone">
-        <form action="@Url.Action("Delete", "CsvImportSchema", new { id = Model.Id.Value })" method="post" 
-              class="pure-form pure-form-aligned"
-              onsubmit="return confirm('Are you sure you want to delete this CSV import schema?');">
+<h3>Danger Zone</h3>
 
-            @Html.AntiForgeryToken()
-            <input type="hidden" asp-for="Id" />
+<div class="danger-zone">
+    <form action="@Url.Action("Delete", "CsvImportSchema", new { id = Model.Id.Value })" method="post"
+          class="pure-form pure-form-aligned"
+          onsubmit="return confirm('Are you sure you want to delete this CSV import schema?');">
 
-            <label>Delete this CSV import schema?</label>
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
 
-            <button type="submit" class="pure-button button-danger delete-button">Delete</button>
-            
-        </form>
-    </div>
-}
+        <label>Delete this CSV import schema?</label>
+
+        <button type="submit" class="pure-button button-danger delete-button">Delete</button>
+
+    </form>
+
+</div>
 
 @section Scripts {
     <script src="~/js/dirtyChecks.js"></script>
+    <script src="~/js/csvImportSchemaMappings.js"></script>
 }

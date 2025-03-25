@@ -28,13 +28,106 @@
 }
 
 .control-panel {
-    padding: 20px;
+    grid-column: 1 / -1;
     display: flex;
-    justify-content: right;
-    align-items: center;
-    background-color: #bddefc;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 .control-panel button {
     margin: 0 10px;
 }
+
+/* new */
+form.custom-form {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 1rem 2rem;
+    align-items: center;
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.form-group {
+    display: contents;
+}
+
+    .form-group label {
+        font-weight: bold;
+        text-align: left;
+        padding-right: 1rem;
+        white-space: nowrap;
+        align-self: center;
+    }
+
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group select,
+    .form-group textarea {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        width: 100%;
+    }
+
+.mapping-entry {
+    display: flex;
+    gap: 0.5rem;
+}
+
+button,
+.button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button-primary {
+    background-color: #0078D4;
+    color: white;
+}
+
+.button-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+button.remove-mapping {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* newer */
+.form-group label {
+    font-weight: bold;
+    text-align: right;
+    padding-right: 1rem;
+    white-space: nowrap;
+    align-self: start; /* Top-align the label */
+    padding-top: 0.3rem; /* Optional fine-tuning */
+}
+
+.mapping-entry {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem; /* Vertical spacing between mapping rows */
+}
+
+    .mapping-entry input[type="text"] {
+        flex: 1; /* Fills remaining width */
+    }
+
+    .mapping-entry input[type="number"] {
+        width: 50px; /* Fixed width for Column Index field */
+    }
+
+    .mapping-entry button {
+        white-space: nowrap;
+    }

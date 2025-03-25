@@ -6,24 +6,21 @@
 
 <h1>Create CSV Import Schema</h1>
 
-<form id="csv-import-form" method="post" class="pure-form pure-form-aligned">
+<form id="csv-import-form" method="post" class="custom-form">
     
-    <div class="pure-control-group">
+    <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" />
     </div>
 
     <partial name="Shared/Mapping" model="Model" />
 
-    <div class="pure-controls control-panel">
-        <button type="submit" class="pure-button pure-button-primary">Save</button>
-        <a href="/csvimportschema" class="pure-button pure-button-secondary">Back</a>
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/csvimportschema" class="button button-secondary">Back</a>
     </div>
 
 </form>
-
-<partial name="Shared/MappingRowTemplate" model="Model" />
-
 
 @section Scripts {
     <script src="~/js/dirtyChecks.js"></script>
