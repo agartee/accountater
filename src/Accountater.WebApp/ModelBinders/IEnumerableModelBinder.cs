@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text.RegularExpressions;
 
 namespace Accountater.WebApp.ModelBinders
 {
@@ -14,22 +15,35 @@ namespace Accountater.WebApp.ModelBinders
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var result = new List<T>();
-            int index = 0;
+            var modelName = bindingContext.ModelName;
 
-            while (true)
+            // This regex finds indices in names like "Mappings[2].MappedProperty"
+            var indexRegex = new Regex($@"^{Regex.Escape(modelName)}\[(\d+)\]", RegexOptions.Compiled);
+
+            // Use the ValueProvider to extract all keys by probing known prefixes
+            var indices = new SortedSet<int>();
+
+            // Try a reasonable range of indices (e.g., 0–99)
+            for (int i = 0; i < 100; i++)
             {
-                var modelName = $"{bindingContext.ModelName}[{index}]";
+                var prefix = $"{modelName}[{i}]";
+                if (!bindingContext.ValueProvider.ContainsPrefix(prefix))
+                    continue;
 
-                if (!bindingContext.ValueProvider.ContainsPrefix(modelName))
-                    break;
+                indices.Add(i);
+            }
 
+            foreach (var index in indices)
+            {
+                var itemPrefix = $"{modelName}[{index}]";
                 var elementMetadata = bindingContext.ModelMetadata.ElementMetadata!;
+
                 var childContext = DefaultModelBindingContext.CreateBindingContext(
                     bindingContext.ActionContext,
                     bindingContext.ValueProvider,
                     elementMetadata,
                     bindingInfo: null,
-                    modelName: modelName
+                    modelName: itemPrefix
                 );
 
                 await _elementBinder.BindModelAsync(childContext);
@@ -38,8 +52,6 @@ namespace Accountater.WebApp.ModelBinders
                 {
                     result.Add((T)childContext.Result.Model!);
                 }
-
-                index++;
             }
 
             bindingContext.Result = ModelBindingResult.Success(result);
