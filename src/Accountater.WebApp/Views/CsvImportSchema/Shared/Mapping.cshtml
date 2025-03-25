@@ -3,9 +3,8 @@
     var hasMappings = mappings.Count > 0;
 }
 
-<div class="form-group">
+<div class="form-group mapping-label-row">
     <label>CSV Column Mappings</label>
-
     <div id="mappings-container">
         @for (int i = 0; i < (hasMappings ? mappings.Count : 1); i++)
         {
@@ -15,25 +14,23 @@
             <div class="mapping-entry" data-index="@i">
                 <input type="text" name="Mappings[@i].MappedProperty" placeholder="Mapped Property"
                        value="@mappedProperty" />
-
-                <input type="number" name="Mappings[@i].ColumnIndex" placeholder="Column Index"
+                <input type="number" name="Mappings[@i].ColumnIndex" placeholder="Index"
                        value="@columnIndex" />
-
-                <button type="button" class="remove-mapping button">Remove</button>
+                <button type="button" class="button remove-mapping">Remove</button>
             </div>
         }
     </div>
 </div>
 
-<div class="form-group">
+<div class="form-group add-mapping-row">
     <label></label>
-    <button type="button" id="add-mapping" class="button">Add Mapping</button>
+    <button type="button" id="add-mapping" class="button add-mapping">Add Mapping</button>
 </div>
 
 <template id="mapping-template">
     <div class="mapping-entry" data-index="__index__">
         <input type="text" name="Mappings[__index__].MappedProperty" placeholder="Mapped Property" />
-        <input type="number" name="Mappings[__index__].ColumnIndex" placeholder="Column Index" />
-        <button type="button" class="remove-mapping button">Remove</button>
+        <input type="number" name="Mappings[__index__].ColumnIndex" placeholder="Index" />
+        <button type="button" class="button remove-mapping">Remove</button>
     </div>
 </template>

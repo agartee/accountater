@@ -1,15 +1,19 @@
 (() => {
     let isSubmitting = false;
-    let initialState = new Map();
     const form = document.querySelector('form');
 
-    // Gather all input/select/textarea elements (can expand later)
-    const fields = form.querySelectorAll('input, select, textarea');
+    function getFields() {
+        return form.querySelectorAll('input, select, textarea');
+    }
 
-    // Store initial values
-    fields.forEach(field => {
+    const initialState = new Map();
+    const initialKeys = new Set();
+
+    // Snapshot initial values and keys
+    getFields().forEach(field => {
         const key = getFieldKey(field);
         if (key) {
+            initialKeys.add(key);
             initialState.set(key, getFieldValue(field));
         }
     });
@@ -26,23 +30,32 @@
     }
 
     function isFormDirty() {
-        for (let field of fields) {
+        const currentKeys = new Set();
+        for (let field of getFields()) {
             const key = getFieldKey(field);
             if (!key) continue;
+
+            currentKeys.add(key);
 
             const initial = initialState.get(key);
             const current = getFieldValue(field);
             if (initial !== current) return true;
         }
+
+        // If any fields were removed or added
+        if (currentKeys.size !== initialKeys.size) return true;
+
+        for (let key of currentKeys) {
+            if (!initialKeys.has(key)) return true;
+        }
+
         return false;
     }
 
-    // Prevent warning on intentional submit
     form.addEventListener('submit', () => {
         isSubmitting = true;
     });
 
-    // Warn on accidental unload
     window.addEventListener('beforeunload', (e) => {
         if (isFormDirty() && !isSubmitting) {
             const message = 'You have unsaved changes! If you leave, your changes will be lost.';

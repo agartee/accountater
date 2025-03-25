@@ -6,31 +6,27 @@
 
 <h1>Edit CSV Import Schema</h1>
 
-<form method="post" class="pure-form pure-form-aligned">
-    
+<form id="csv-import-form" method="post" class="custom-form">
+
     <input type="hidden" asp-for="Id" />
 
-    <div class="pure-control-group">
+    <div class="form-group">
         <label asp-for="Name">Name</label>
         <input asp-for="Name" />
     </div>
 
     <partial name="Shared/Mapping" model="Model" />
 
-    <div class="pure-controls control-panel">
-        <button type="submit" class="pure-button pure-button-primary">Save</button>
-        <a href="/csvimportschema" class="pure-button pure-button-secondary">Back</a>
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/csvimportschema" class="button button-secondary">Back</a>
     </div>
-
 </form>
-
-<partial name="Shared/MappingRowTemplate" model="Model" />
 
 <h3>Danger Zone</h3>
 
 <div class="danger-zone">
     <form action="@Url.Action("Delete", "CsvImportSchema", new { id = Model.Id.Value })" method="post"
-          class="pure-form pure-form-aligned"
           onsubmit="return confirm('Are you sure you want to delete this CSV import schema?');">
 
         @Html.AntiForgeryToken()
@@ -38,7 +34,7 @@
 
         <label>Delete this CSV import schema?</label>
 
-        <button type="submit" class="pure-button button-danger delete-button">Delete</button>
+        <button type="submit" class="button button-danger">Delete</button>
 
     </form>
 

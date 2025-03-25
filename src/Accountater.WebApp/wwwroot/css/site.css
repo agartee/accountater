@@ -1,86 +1,69 @@
-.main {
-    margin: 10px;
-}
-
-.button-success,
-.button-danger,
-.button-warning,
-.button-secondary {
-    color: white;
-    border-radius: 4px;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.button-success {
-    background: rgb(28, 184, 65);
-}
-
-.button-danger {
-    background: rgb(202, 60, 60);
-}
-
-.button-warning {
-    background: rgb(223, 117, 20);
-}
-
-.button-secondary {
-    background: rgb(66, 184, 221);
-}
-
-.control-panel {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-.control-panel button {
-    margin: 0 10px;
-}
-
-/* new */
+/* Overall form layout */
 form.custom-form {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    gap: 1rem 2rem;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     max-width: 800px;
     margin: 2rem auto;
 }
 
+/* Each field row: label + control */
 .form-group {
-    display: contents;
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 0.5rem 1rem;
+    align-items: start;
 }
 
+    /* Label styles */
     .form-group label {
         font-weight: bold;
-        text-align: left;
-        padding-right: 1rem;
+        text-align: right;
         white-space: nowrap;
-        align-self: center;
+        padding-top: 0.5rem;
     }
 
-
+    /* Standard inputs */
     .form-group input[type="text"],
     .form-group input[type="number"],
-    .form-group input[type="email"],
-    .form-group input[type="password"],
     .form-group select,
     .form-group textarea {
         padding: 0.5rem;
+        font-size: 1rem;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 1rem;
         width: 100%;
+        box-sizing: border-box;
     }
 
+/* Mapping row layout */
 .mapping-entry {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-button,
+    /* Field sizing within mapping row */
+    .mapping-entry input[type="text"] {
+        flex: 1;
+    }
+
+    .mapping-entry input[type="number"] {
+        width: 50px;
+    }
+
+    .mapping-entry .remove-mapping {
+        background-color: #e74c3c;
+        color: white;
+    }
+
+/* Add mapping button */
+.add-mapping-row .add-mapping {
+    width: 150px;
+}
+
+/* Button base styles */
 .button {
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -99,35 +82,18 @@ button,
     color: #333;
 }
 
-button.remove-mapping {
-    background-color: #e74c3c;
+.button-danger {
+    background-color: red;
     color: white;
 }
 
-/* newer */
-.form-group label {
-    font-weight: bold;
-    text-align: right;
-    padding-right: 1rem;
-    white-space: nowrap;
-    align-self: start; /* Top-align the label */
-    padding-top: 0.3rem; /* Optional fine-tuning */
-}
-
-.mapping-entry {
+.control-panel {
     display: flex;
+    justify-content: flex-end;
     gap: 0.5rem;
-    margin-bottom: 0.5rem; /* Vertical spacing between mapping rows */
+    margin-top: 1rem;
 }
 
-    .mapping-entry input[type="text"] {
-        flex: 1; /* Fills remaining width */
-    }
-
-    .mapping-entry input[type="number"] {
-        width: 50px; /* Fixed width for Column Index field */
-    }
-
-    .mapping-entry button {
-        white-space: nowrap;
-    }
+.danger-zone {
+    width: 100%;
+}
