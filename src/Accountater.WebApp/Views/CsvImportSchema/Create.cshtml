@@ -1,0 +1,31 @@
+﻿@model CreateCsvImportSchema
+
+@{
+    ViewData["Title"] = "Create CSV Import Schema";
+}
+
+<h1>Create CSV Import Schema</h1>
+
+<form id="csv-import-form" method="post" class="pure-form pure-form-aligned">
+    
+    <div class="pure-control-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" />
+    </div>
+
+    <partial name="Shared/Mapping" model="Model" />
+
+    <div class="pure-controls control-panel">
+        <button type="submit" class="pure-button pure-button-primary">Save</button>
+        <a href="/csvimportschema" class="pure-button pure-button-secondary">Back</a>
+    </div>
+
+</form>
+
+<partial name="Shared/MappingRowTemplate" model="Model" />
+
+
+@section Scripts {
+    <script src="~/js/formModifiedChecks.js"></script>
+    <script src="~/js/csvImportSchemaMappings.js"></script>
+}

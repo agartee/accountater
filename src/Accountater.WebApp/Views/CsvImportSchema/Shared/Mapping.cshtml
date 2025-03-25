@@ -1,0 +1,23 @@
+﻿@{
+    var mappings = Model?.Mappings ?? new List<CsvImportSchemaMapping>();
+    var hasMappings = mappings.Count > 0;
+}
+
+<div class="pure-control-group">
+    <label>CSV Column Mappings</label>
+    <div id="mappings-container">
+        @for (int i = 0; i < (hasMappings ? mappings.Count : 1); i++)
+        {
+            var mappedProperty = hasMappings ? mappings[i].MappedProperty : "";
+            var columnIndex = hasMappings ? mappings[i].ColumnIndex : 0;
+            <div class="mapping-entry" data-index="@i">
+                <input type="text" name="Mappings[@i].MappedProperty" placeholder="Mapped Property"
+                       value="@mappedProperty" class="pure-input" />
+                <input type="number" name="Mappings[@i].ColumnIndex" placeholder="Column Index"
+                       value="@columnIndex" class="pure-input" />
+                <button type="button" class="remove-mapping pure-button">Remove</button>
+            </div>
+        }
+    </div>
+    <button type="button" id="add-mapping" class="pure-button">Add Mapping</button>
+</div>

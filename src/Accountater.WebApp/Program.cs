@@ -17,6 +17,7 @@ builder.Services.AddMediatR(options =>
 builder.Services.AddControllersWithViews(options =>
 {
     options.ModelBinderProviders.Insert(0, new IdModelBinderProvider());
+    options.ModelBinderProviders.Insert(0, new IEnumerableModelBinderProvider());
 });
 
 builder.Services.AddTransient<IFinancialTransactionCsvParser, FinancialTransactionCsvParser>();

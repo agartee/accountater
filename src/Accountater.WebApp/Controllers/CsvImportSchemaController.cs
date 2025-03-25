@@ -29,18 +29,14 @@ namespace Accountater.WebApp.Controllers
         [Route("/csvimportschema/create")]
         public IActionResult Create()
         {
-            return View("Edit");
+            return View();
         }
 
         [HttpPost]
         [Route("/csvimportschema/create")]
-        public async Task<IActionResult> Create([FromForm] CsvImportSchema model)
+        public async Task<IActionResult> Create([FromForm] CreateCsvImportSchema command)
         {
-            var result = await mediator.Send(new CreateCsvImportSchema
-            {
-                Name = model.Name,
-                Mappings = model.Mappings
-            });
+            var result = await mediator.Send(command);
 
             return Redirect($"/csvimportschema/{result.Id.Value}/edit");
         }

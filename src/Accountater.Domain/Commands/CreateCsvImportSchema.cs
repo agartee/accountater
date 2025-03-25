@@ -4,10 +4,10 @@ using MediatR;
 
 namespace Accountater.Domain.Commands
 {
-    public class CreateCsvImportSchema : IRequest<CsvImportSchemaInfo>
+    public record CreateCsvImportSchema : IRequest<CsvImportSchemaInfo>
     {
         public required string Name { get; init; }
-        public List<CsvImportSchemaMapping> Mappings { get; init; } = new();
+        public IEnumerable<CsvImportSchemaMapping> Mappings { get; init; } = [];
     }
 
     public class CreateCsvImportSchemaHandler : IRequestHandler<CreateCsvImportSchema, CsvImportSchemaInfo>
@@ -25,7 +25,7 @@ namespace Accountater.Domain.Commands
             {
                 Id = CsvImportSchemaId.NewId(),
                 Name = request.Name,
-                Mappings = request.Mappings
+                Mappings = [.. request.Mappings]
             };
 
             return await csvImportSchemaRepository.SaveCsvImportSchema(csvImportSchema, cancellationToken);
