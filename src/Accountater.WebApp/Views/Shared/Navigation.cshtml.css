@@ -1,0 +1,38 @@
+﻿.top-nav {
+    background-color: #2c3e50;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    .top-nav ul {
+        list-style: none;
+        display: flex;
+        gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .top-nav li {
+        margin: 0;
+    }
+
+    .top-nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        padding: 0.25rem 0;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+        .top-nav a:hover,
+        .top-nav a:focus {
+            border-bottom: 2px solid #1abc9c;
+            color: #1abc9c;
+        }
+
+        .top-nav a.active {
+            border-bottom: 2px solid #f39c12;
+            color: #f39c12;
+        }

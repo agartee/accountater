@@ -1,0 +1,28 @@
+﻿@{
+    var currentPath = ViewContext.HttpContext.Request.Path.Value?.ToLowerInvariant();
+}
+
+<nav class="top-nav">
+    <ul>
+        <li>
+            <a href="/financialtransaction" class="@(currentPath?.StartsWith("/financialtransaction") == true ? "active" : "")">Transactions</a>
+        </li>
+
+        <li>
+            <a href="/fileupload" class="@(currentPath?.StartsWith("/fileupload") == true ? "active" : "")">File Upload</a>
+        </li>
+        
+        <li>
+            <a href="/account" class="@(currentPath?.StartsWith("/account") == true ? "active" : "")">Accounts</a>
+        </li>
+        
+        <li>
+            <a href="/csvimportschema" class="@(currentPath?.StartsWith("/csvimportschema") == true ? "active" : "")">CSV Import Schemas</a>
+        </li>
+
+        <li>
+            <a href="/tagrule" class="@(currentPath?.StartsWith("/tagrule") == true ? "active" : "")">Tag Rules</a>
+        </li>
+        
+    </ul>
+</nav>
