@@ -8,15 +8,15 @@
 }
 
 <nav aria-label="Page navigation">
-    <ul class="pure-menu-list">
-        <li class="pure-menu-item @(showPrevious ? "" : "pure-menu-disabled")">
-            <a class="pure-menu-link" 
+    <ul>
+        <li class="@(showPrevious ? "" : "disabled")">
+            <a 
                href="@(showPrevious ? $"/{baseUrl}?SearchText={Model.SearchText}&PageSize={Model.PageSize}&PageIndex={Model.PageIndex - 1}" : "javascript:void(0);")"
                aria-label="Previous">&laquo; Previous
             </a>
         </li>
-        <li class="pure-menu-item @(showNext ? "" : "pure-menu-disabled")">
-            <a class="pure-menu-link" 
+        <li class="@(showNext ? "" : "disabled")">
+            <a 
                href="@(showNext ? $"/{baseUrl}?SearchText={Model.SearchText}&PageSize={Model.PageSize}&PageIndex={Model.PageIndex + 1}" : "javascript:void(0);")"
                aria-label="Next">Next &raquo;
             </a>

@@ -6,7 +6,6 @@ namespace Accountater.Domain.Commands
 {
     public record CreateTagRule : IRequest<TagRuleInfo>
     {
-        public required TagRuleId Id { get; init; }
         public required string Name { get; init; }
         public required string Expression { get; init; }
         public required string Tag { get; init; }
@@ -25,7 +24,7 @@ namespace Accountater.Domain.Commands
         {
             var tagRule = new TagRule
             {
-                Id = request.Id,
+                Id = TagRuleId.NewId(),
                 Name = request.Name,
                 Expression = request.Expression,
                 Tag = request.Tag,

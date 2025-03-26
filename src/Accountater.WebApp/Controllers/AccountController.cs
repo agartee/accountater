@@ -1,7 +1,6 @@
 ﻿using Accountater.Domain.Commands;
 using Accountater.Domain.Models;
 using Accountater.Domain.Queries;
-using Accountater.WebApp.Extensions;
 using Accountater.WebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,19 +29,14 @@ namespace Accountater.WebApp.Controllers
         [Route("/account/create")]
         public IActionResult Create()
         {
-            return View("Edit");
+            return View();
         }
 
         [HttpPost]
         [Route("/account/create")]
-        public async Task<IActionResult> Create([FromForm] CreateAccountViewModel viewModel)
+        public async Task<IActionResult> Create([FromForm] CreateAccount command)
         {
-            var result = await mediator.Send(new CreateAccount
-            {
-                Id = AccountId.NewId(),
-                Name = viewModel.Name,
-                Description = viewModel.Description
-            });
+            var result = await mediator.Send(command);
 
             return Redirect($"/account/{result.Id.Value}/edit");
         }
@@ -51,20 +45,20 @@ namespace Accountater.WebApp.Controllers
         [Route("/account/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] AccountId id)
         {
-            var results = await mediator.Send(new DemandAccount { Id = id });
+            var result = await mediator.Send(new DemandAccount { Id = id });
 
-            return View(results.ToAccountViewModel());
+            return View(result);
         }
 
         [HttpPost]
         [Route("/account/{id}/edit")]
-        public async Task<IActionResult> Edit([FromForm] EditAccountViewModel viewModel)
+        public async Task<IActionResult> Edit([FromForm] AccountForm form)
         {
             var result = await mediator.Send(new UpdateAccount
             {
-                Id = viewModel.Id ?? AccountId.NewId(),
-                Name = viewModel.Name,
-                Description = viewModel.Description
+                Id = form.Id ?? AccountId.NewId(),
+                Name = form.Name,
+                Description = form.Description
             });
 
             return Redirect($"/account/{result.Id.Value}/edit");

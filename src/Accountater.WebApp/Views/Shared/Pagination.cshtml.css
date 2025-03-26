@@ -1,5 +1,32 @@
-﻿.pure-menu-list {
-    display: flex;
-    justify-content: center;
-    padding: 0;
+﻿nav[aria-label="Page navigation"] {
+    width: 100%;
+    margin: 20px 0;
 }
+
+    nav[aria-label="Page navigation"] ul {
+        display: flex;
+        justify-content: space-between;
+        list-style-type: none;
+        padding: 0 20px; /* Push both links inward */
+        margin: 0;
+        width: 100%;
+        box-sizing: border-box; /* ensure padding doesn’t cause overflow */
+    }
+
+    /* Style for disabled links */
+    nav[aria-label="Page navigation"] li.disabled a {
+        pointer-events: none;
+        color: #aaa;
+        text-decoration: none;
+        cursor: default;
+    }
+
+    /* Links */
+    nav[aria-label="Page navigation"] a {
+        text-decoration: none;
+        color: #0078D4;
+    }
+
+        nav[aria-label="Page navigation"] a:hover:not(.disabled) {
+            text-decoration: underline;
+        }

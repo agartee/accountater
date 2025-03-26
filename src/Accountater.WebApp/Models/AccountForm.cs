@@ -2,7 +2,7 @@
 
 namespace Accountater.WebApp.Models
 {
-    public class EditAccountViewModel
+    public class AccountForm
     {
         public required AccountId Id { get; init; }
         public required string Name { get; set; }

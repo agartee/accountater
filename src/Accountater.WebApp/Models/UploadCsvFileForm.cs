@@ -3,7 +3,7 @@ using Accountater.WebApp.Attributes;
 
 namespace Accountater.WebApp.Models
 {
-    public record UploadCsvFileViewModel
+    public record UploadCsvFileForm
     {
         public required CsvImportSchemaId CsvImportSchemaId { get; init; }
         public required AccountId AccountId { get; init; }

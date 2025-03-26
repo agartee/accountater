@@ -34,13 +34,13 @@ namespace Accountater.WebApp.Controllers
 
         [HttpPost]
         [Route("/fileupload")]
-        public async Task<IActionResult> UploadFile(UploadCsvFileViewModel model)
+        public async Task<IActionResult> UploadFile(UploadCsvFileForm form)
         {
-            using var csvFileStream = model.File!.OpenReadStream();
+            using var csvFileStream = form.File!.OpenReadStream();
             await mediator.Send(new ImportFinancialTransactions
             {
-                CsvImportSchemaId = model.CsvImportSchemaId,
-                AccountId = model.AccountId,
+                CsvImportSchemaId = form.CsvImportSchemaId,
+                AccountId = form.AccountId,
                 CsvFileStream = csvFileStream
             });
 

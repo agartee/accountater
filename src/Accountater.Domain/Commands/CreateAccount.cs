@@ -6,7 +6,6 @@ namespace Accountater.Domain.Commands
 {
     public record CreateAccount : IRequest<AccountInfo>
     {
-        public required AccountId Id { get; init; }
         public required string Name { get; init; }
         public required string Description { get; init; }
     }
@@ -24,7 +23,7 @@ namespace Accountater.Domain.Commands
         {
             var account = new Account
             {
-                Id = request.Id,
+                Id = AccountId.NewId(),
                 Name = request.Name,
                 Description = request.Description
             };

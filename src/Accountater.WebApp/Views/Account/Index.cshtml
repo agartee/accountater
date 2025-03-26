@@ -2,21 +2,18 @@
 
 @{
     ViewData["Title"] = "Accounts";
-    ViewData["PaginationBaseUrl"] = "account";
 }
 
 <h1>Accounts</h1>
 
-<partial name="Pagination" model="Model" />
-
 <a href="/account/create">Create New...</a>
 
-<table id="accountsTable" class="pure-table pure-table-striped">
+<table id="accountsTable">
     <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th>Details</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -32,8 +29,6 @@
         }
     </tbody>
 </table>
-
-<partial name="Pagination" model="Model" />
 
 <script>
     $(document).ready(function () {

@@ -1,6 +1,7 @@
 ﻿using Accountater.Domain.Commands;
 using Accountater.Domain.Models;
 using Accountater.Domain.Queries;
+using Accountater.WebApp.Models;
 using CsvImportSchemaater.Domain.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -52,13 +53,13 @@ namespace Accountater.WebApp.Controllers
 
         [HttpPost]
         [Route("/csvimportschema/{id}/edit")]
-        public async Task<IActionResult> Edit([FromForm] CsvImportSchema model)
+        public async Task<IActionResult> Edit([FromForm] CsvImportSchemaForm form)
         {
             var result = await mediator.Send(new UpdateCsvImportSchema
             {
-                Id = model.Id ?? CsvImportSchemaId.NewId(),
-                Name = model.Name,
-                Mappings = model.Mappings
+                Id = form.Id ?? CsvImportSchemaId.NewId(),
+                Name = form.Name,
+                Mappings = form.Mappings
             });
 
             return Redirect($"/csvimportschema/{result.Id.Value}/edit");

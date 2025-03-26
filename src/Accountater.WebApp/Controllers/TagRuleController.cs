@@ -1,7 +1,6 @@
 ﻿using Accountater.Domain.Commands;
 using Accountater.Domain.Models;
 using Accountater.Domain.Queries;
-using Accountater.WebApp.Extensions;
 using Accountater.WebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -30,20 +29,14 @@ namespace Accountater.WebApp.Controllers
         [Route("/tagrule/create")]
         public IActionResult Create()
         {
-            return View("Edit");
+            return View();
         }
 
         [HttpPost]
         [Route("/tagrule/create")]
-        public async Task<IActionResult> Create([FromForm] CreateTagRuleViewModel viewModel)
+        public async Task<IActionResult> Create([FromForm] CreateTagRule command)
         {
-            var result = await mediator.Send(new CreateTagRule
-            {
-                Id = TagRuleId.NewId(),
-                Name = viewModel.Name,
-                Expression = viewModel.Expression,
-                Tag = viewModel.Tag,
-            });
+            var result = await mediator.Send(command);
 
             return Redirect($"/tagrule/{result.Id.Value}/edit");
         }
@@ -52,21 +45,21 @@ namespace Accountater.WebApp.Controllers
         [Route("/tagrule/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] TagRuleId id)
         {
-            var results = await mediator.Send(new DemandTagRule { Id = id });
+            var result = await mediator.Send(new DemandTagRule { Id = id });
 
-            return View(results.ToTagRuleViewModel());
+            return View(result);
         }
 
         [HttpPost]
         [Route("/tagrule/{id}/edit")]
-        public async Task<IActionResult> Edit([FromForm] EditTagRuleViewModel viewModel)
+        public async Task<IActionResult> Edit([FromForm] TagRuleForm form)
         {
             var result = await mediator.Send(new UpdateTagRule
             {
-                Id = viewModel.Id ?? TagRuleId.NewId(),
-                Name = viewModel.Name,
-                Expression = viewModel.Expression,
-                Tag = viewModel.Tag,
+                Id = form.Id,
+                Name = form.Name,
+                Expression = form.Expression,
+                Tag = form.Tag,
             });
 
             return Redirect($"/tagrule/{result.Id.Value}/edit");

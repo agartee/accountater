@@ -1,38 +1,39 @@
-﻿@model EditFinancialTransactionViewModel
+﻿@model FinancialTransactionInfo
 
 @{
     ViewData["Title"] = "Transaction Details";
+    var tags = string.Join(", ", Model.Tags);
 }
 
 <h1>Edit Transaction</h1>
 
-<form method="post" class="pure-form pure-form-aligned">
+<form method="post" class="custom-form">
     
     <input type="hidden" asp-for="Id" />
 
-    <div class="pure-control-group">
-        <label asp-for="TransactionDate">Date</label>
-        <input asp-for="TransactionDate" readonly />
+    <div class="form-group">
+        <label asp-for="Date">Date</label>
+        <input asp-for="Date" readonly disabled />
     </div>
 
-    <div class="pure-control-group">
+    <div class="form-group">
         <label asp-for="Description">Description</label>
-        <input asp-for="Description" readonly />
+        <input asp-for="Description" readonly disabled />
     </div>
 
-    <div class="pure-control-group">
+    <div class="form-group">
         <label asp-for="Amount">Amount</label>
-        <input asp-for="Amount" readonly />
+        <input asp-for="Amount" readonly disabled />
     </div>
 
-    <div class="pure-control-group">
+    <div class="form-group">
         <label>Tags</label>
-        <input asp-for="Tags" />
+        <input asp-for="Tags" value="@string.Join(", ", Model.Tags)" />
     </div>
 
-    <div class="pure-controls control-panel">
-        <button type="submit" class="pure-button pure-button-primary">Save</button>
-        <a href="/financialTransaction" class="pure-button pure-button-secondary">Back</a>
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/financialTransaction" class="button button-secondary">Back</a>
     </div>
 
 </form>

@@ -1,30 +1,32 @@
-﻿@model UploadCsvFileViewModel
+﻿@model UploadCsvFileForm
 
 <h1>Upload Data File</h1>
 
-<form asp-controller="FileUpload" asp-action="UploadFile" class="pure-form pure-form" method="post" enctype="multipart/form-data">
+<form asp-controller="FileUpload" asp-action="UploadFile" class="custom-form" method="post" enctype="multipart/form-data">
     
-    <div class="pure-control-group">
+    <div class="form-group">
+        <label asp-for="AccountId">Account</label>
         <select asp-for="AccountId" asp-items="@(new SelectList(ViewBag.Accounts, "Id.Value", "Name"))">
             <option value="">Select Account...</option>
         </select>
     </div>
 
-    <div class="pure-control-group">
+    <div class="form-group">
+        <label asp-for="CsvImportSchemaId">CSV Import Schema</label>
         <select asp-for="CsvImportSchemaId" asp-items="@(new SelectList(ViewBag.CsvImportSchemas, "Id.Value", "Name"))">
             <option value="">Select Import Schema...</option>
         </select>
     </div>
 
-    <div class="pure-control-group file-input">
-        <label for="file" class="pure-button pure-button-secondary">Choose CSV file</label>
+    <div class="form-group">
+        <label for="file" class="button button-secondary">Choose CSV file</label>
         <input type="file" id="file" name="file" accept=".csv" required style="display:none;" onchange="updateFileName(this)">
         
-        <span id="file-chosen" class="file-name">No file chosen</span>
+        <span id="file-chosen">No file chosen</span>
     </div>
 
-    <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Upload</button>
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Upload</button>
     </div>
 </form>
 
