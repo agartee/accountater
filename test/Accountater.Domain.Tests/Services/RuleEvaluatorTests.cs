@@ -11,10 +11,15 @@ namespace Accountater.Domain.Tests.Services
         [Fact]
         public void SimpleTest()
         {
-            var financialTransaction = new FinancialTransaction
+            var financialTransaction = new FinancialTransactionInfo
             {
                 Id = FinancialTransactionId.NewId(),
-                AccountId = AccountId.NewId(),
+                Account = new AccountInfo
+                {
+                    Id = AccountId.NewId(),
+                    Name = "test account",
+                    Description = "test account description"
+                },
                 Amount = 11,
                 Description = "description",
                 Date = DateTime.UtcNow,

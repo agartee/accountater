@@ -44,11 +44,16 @@ namespace Accountater.Domain.Commands
 
             foreach (var import in importedTransactions)
             {
+                // persisted object
                 var financialTransaction = import.ToFinancialTransaction(
+                    FinancialTransactionId.NewId(), request.AccountId);
+
+                // rich object graph for rule processing
+                var financialTransactionInfo = import.ToFinancialTransactionInfo(
                     FinancialTransactionId.NewId(), account);
 
                 financialTransactions.Add(financialTransaction);
-                ApplyTagRules(tagRules, financialTransaction);
+                ApplyTagRules(tagRules, financialTransaction, financialTransactionInfo);
             }
 
             await financialTransactionRepository.CreateFinancialTransactions(
@@ -56,12 +61,13 @@ namespace Accountater.Domain.Commands
                 cancellationToken);
         }
 
-        private void ApplyTagRules(IEnumerable<TagRuleInfo> tagRules, FinancialTransaction financialTransaction)
+        private void ApplyTagRules(IEnumerable<TagRuleInfo> tagRules, FinancialTransaction financialTransaction, 
+            FinancialTransactionInfo financialTransactionInfo)
         {
             foreach (var tagRule in tagRules)
             {
-                if (!financialTransaction.Tags.Contains(tagRule.Tag)
-                    && ruleEvaluator.Evaluate(tagRule.Expression, financialTransaction))
+                if (!financialTransactionInfo.Tags.Contains(tagRule.Tag)
+                    && ruleEvaluator.Evaluate(tagRule.Expression, financialTransactionInfo))
                 {
                     financialTransaction.Tags.Add(tagRule.Tag);
                 }

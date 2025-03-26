@@ -1,6 +1,6 @@
 (() => {
     const modelHints = {
-        financialTransaction: {
+        transaction: {
             account: {
                 name: {
                     _type: 'string',
