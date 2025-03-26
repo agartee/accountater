@@ -120,29 +120,22 @@ namespace Accountater.Persistence.SqlServer.Services
             await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        private async Task<AccountData> GetOrAddAccount(string accountName, CancellationToken cancellationToken)
+        public async Task UpdateFinancialTransactionTags(IEnumerable<FinancialTransaction> transactions,
+            CancellationToken cancellationToken)
         {
-            var localAccount = dbContext.Accounts.Local
-                .Where(a => a.Name == accountName)
-                .SingleOrDefault();
+            var tags = await GetAndStageMissingTags(transactions);
+            var existingFinancialTransactions = dbContext.FinancialTransactions
+                .Include(t => t.Tags)
+                .Where(t => transactions.Select(ft => ft.Id.Value).Contains(t.Id))
+                .ToList();
 
-            var account = localAccount
-                ?? await dbContext.Accounts
-                    .Where(a => a.Name == accountName)
-                    .SingleOrDefaultAsync(cancellationToken);
-
-            if (account == null)
+            foreach (var financialTransaction in transactions)
             {
-                account = new AccountData
-                {
-                    Id = Guid.NewGuid(),
-                    Name = accountName,
-                };
-
-                dbContext.Accounts.Add(account);
+                var data = existingFinancialTransactions.Single(t => t.Id == financialTransaction.Id.Value);
+                await UpdateTags(data, financialTransaction.Tags);
             }
 
-            return account;
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
 
         private async Task UpdateTags(FinancialTransactionData transactionData, IEnumerable<string> tags)

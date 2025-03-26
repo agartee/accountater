@@ -35,6 +35,23 @@
 
 </form>
 
+<h3>Power Tools</h3>
+
+<div class="power-tools">
+    <form action="@Url.Action("Run", "TagRule", new { id = Model.Id.Value })" method="post"
+          class="form form-aligned"
+          onsubmit="return confirm('Are you sure you want to run this tag rule?');">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <label>Run this Tag Rule?</label>
+
+        <button type="submit" class="button button-secondary">Run Rule</button>
+
+    </form>
+</div>
+
 <h3>Danger Zone</h3>
 
 <div class="danger-zone">

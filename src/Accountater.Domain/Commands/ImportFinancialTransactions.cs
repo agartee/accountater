@@ -42,14 +42,14 @@ namespace Accountater.Domain.Commands
 
             var financialTransactions = new List<FinancialTransaction>();
 
-            foreach (var import in importedTransactions)
+            foreach (var importedTransaction in importedTransactions)
             {
                 // persisted object
-                var financialTransaction = import.ToFinancialTransaction(
+                var financialTransaction = importedTransaction.ToFinancialTransaction(
                     FinancialTransactionId.NewId(), request.AccountId);
 
                 // rich object graph for rule processing
-                var financialTransactionInfo = import.ToFinancialTransactionInfo(
+                var financialTransactionInfo = importedTransaction.ToFinancialTransactionInfo(
                     FinancialTransactionId.NewId(), account);
 
                 financialTransactions.Add(financialTransaction);

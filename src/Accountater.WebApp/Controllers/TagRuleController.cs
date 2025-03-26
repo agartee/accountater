@@ -66,6 +66,15 @@ namespace Accountater.WebApp.Controllers
         }
 
         [HttpPost]
+        [Route("/tagrule/{id}/run")]
+        public async Task<IActionResult> Run([FromRoute] TagRuleId id)
+        {
+            await mediator.Send(new RunTagRule { Id = id });
+
+            return Redirect($"/tagrule/{id.Value}/edit");
+        }
+
+        [HttpPost]
         [Route("/tagrule/{id}/delete")]
         public async Task<IActionResult> Delete([FromRoute] TagRuleId id)
         {
