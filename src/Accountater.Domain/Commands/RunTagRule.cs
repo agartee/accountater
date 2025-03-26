@@ -13,16 +13,13 @@ namespace Accountater.Domain.Commands
     public class RunTagRuleHandler : IRequestHandler<RunTagRule>
     {
         private readonly IFinancialTransactionRepository financialTransactionRepository;
-        private readonly IAccountRepository accountRepository;
-
         private readonly ITagRuleRepository tagRuleRepository;
         private readonly IRuleEvaluator ruleEvaluator;
 
         public RunTagRuleHandler(IFinancialTransactionRepository financialTransactionRepository,
-            IAccountRepository accountRepository, ITagRuleRepository tagRuleRepository, IRuleEvaluator ruleEvaluator)
+            ITagRuleRepository tagRuleRepository, IRuleEvaluator ruleEvaluator)
         {
             this.financialTransactionRepository = financialTransactionRepository;
-            this.accountRepository = accountRepository;
             this.tagRuleRepository = tagRuleRepository;
             this.ruleEvaluator = ruleEvaluator;
         }
