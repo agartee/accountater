@@ -27,8 +27,7 @@ namespace Accountater.Domain.Commands
             if (request.Name != null)
                 account.Name = request.Name;
 
-            if (request.Description != null)
-                account.Description = request.Description;
+            account.Description = request.Description;
 
             return await accountRepository.SaveAccount(account, cancellationToken);
         }

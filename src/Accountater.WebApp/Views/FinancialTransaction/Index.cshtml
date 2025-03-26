@@ -7,6 +7,14 @@
 
 <h1>Financial Transactions</h1>
 
+<form id="transactionSearchForm" method="get" action="/financialTransaction" class="search-form">
+    <input type="hidden" name="PageSize" value="@Model.PageSize" />
+    <input type="hidden" name="PageIndex" value="0" />
+
+    <input type="text" name="SearchText" value="@Model.SearchText" placeholder="Search transactions..." />
+    <button type="submit" class="button button-primary">Search</button>
+</form>
+
 <partial name="Pagination" model="Model" />
 
 <table id="transactionsTable">
