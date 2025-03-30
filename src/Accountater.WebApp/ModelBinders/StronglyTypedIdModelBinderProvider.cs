@@ -14,23 +14,19 @@ namespace Accountater.WebApp.ModelBinders
             if (!modelType.IsValueType || modelType.IsPrimitive || modelType.IsEnum)
                 return null;
 
-            if (!modelType.IsLayoutSequential && !modelType.IsExplicitLayout && !modelType.IsDefined(typeof(StructLayoutAttribute)))
-                return null;
+            var ctors = modelType.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
-            var hasSupportedCtor = modelType
-                .GetConstructors(BindingFlags.Public | BindingFlags.Instance)
-                .Any(c =>
-                {
-                    var parameters = c.GetParameters();
-                    return parameters.Length == 1 &&
-                           (parameters[0].ParameterType == typeof(Guid) ||
-                            parameters[0].ParameterType == typeof(string));
-                });
+            var hasSupportedCtor = ctors.Any(c =>
+            {
+                var parameters = c.GetParameters();
+                return parameters.Length == 1 &&
+                       (parameters[0].ParameterType == typeof(Guid) ||
+                        parameters[0].ParameterType == typeof(string));
+            });
 
-            if (!hasSupportedCtor)
-                return null;
-
-            return new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder));
+            return hasSupportedCtor
+                ? new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder))
+                : null;
         }
     }
 }
