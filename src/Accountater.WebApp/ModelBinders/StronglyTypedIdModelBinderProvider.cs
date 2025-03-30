@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using System.Reflection;
 
 namespace Accountater.WebApp.ModelBinders
 {
@@ -9,18 +10,16 @@ namespace Accountater.WebApp.ModelBinders
         {
             var modelType = context.Metadata.ModelType;
 
-            // Must be a user-defined struct (not primitive or enum)
             if (!modelType.IsValueType || modelType.IsPrimitive || modelType.IsEnum)
                 return null;
 
-            // Check for exactly one public readable property of type Guid or string
-            var property = modelType
-                .GetProperties()
-                .Where(p => p.CanRead &&
-                            (p.PropertyType == typeof(Guid) || p.PropertyType == typeof(string)))
-                .SingleOrDefault();
+            // ✅ Use explicit binding flags to ensure we get the primary constructor property
+            var props = modelType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-            if (property == null)
+            var hasSingleValueProperty = props.Length == 1 &&
+                (props[0].PropertyType == typeof(Guid) || props[0].PropertyType == typeof(string));
+
+            if (!hasSingleValueProperty)
                 return null;
 
             return new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder));
