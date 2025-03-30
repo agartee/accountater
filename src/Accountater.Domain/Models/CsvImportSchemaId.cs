@@ -1,10 +1,8 @@
 ﻿namespace Accountater.Domain.Models
 {
-    public record CsvImportSchemaId : Id<Guid>
+    public readonly record struct CsvImportSchemaId(Guid Value)
     {
-        public CsvImportSchemaId(Guid value) : base(value)
-        {
-        }
+        public override string ToString() => Value.ToString();
 
         public static CsvImportSchemaId NewId()
         {

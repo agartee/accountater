@@ -1,10 +1,8 @@
 ﻿namespace Accountater.Domain.Models
 {
-    public record AccountId : Id<Guid>
+    public readonly record struct AccountId(Guid Value)
     {
-        public AccountId(Guid value) : base(value)
-        {
-        }
+        public override string ToString() => Value.ToString();
 
         public static AccountId NewId()
         {

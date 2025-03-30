@@ -1,10 +1,8 @@
 ﻿namespace Accountater.Domain.Models
 {
-    public record FinancialTransactionId : Id<Guid>
+    public readonly record struct FinancialTransactionId(Guid Value)
     {
-        public FinancialTransactionId(Guid value) : base(value)
-        {
-        }
+        public override string ToString() => Value.ToString();
 
         public static FinancialTransactionId NewId()
         {

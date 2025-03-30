@@ -56,7 +56,7 @@ namespace Accountater.WebApp.Controllers
         {
             var result = await mediator.Send(new UpdateAccount
             {
-                Id = form.Id ?? AccountId.NewId(),
+                Id = form.Id,
                 Name = form.Name,
                 Description = form.Description
             });

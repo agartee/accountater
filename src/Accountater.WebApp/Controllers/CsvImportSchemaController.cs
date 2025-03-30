@@ -57,7 +57,7 @@ namespace Accountater.WebApp.Controllers
         {
             var result = await mediator.Send(new UpdateCsvImportSchema
             {
-                Id = form.Id ?? CsvImportSchemaId.NewId(),
+                Id = form.Id,
                 Name = form.Name,
                 Mappings = form.Mappings
             });
