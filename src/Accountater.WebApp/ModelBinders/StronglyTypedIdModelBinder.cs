@@ -9,27 +9,20 @@ namespace Accountater.WebApp.ModelBinders
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
             if (valueProviderResult == ValueProviderResult.None)
-            {
                 return Task.CompletedTask;
-            }
 
             bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
 
-            var value = valueProviderResult.FirstValue;
+            var rawValue = valueProviderResult.FirstValue;
 
-            if (string.IsNullOrEmpty(value))
-            {
+            if (string.IsNullOrWhiteSpace(rawValue))
                 return Task.CompletedTask;
-            }
-
-            if (!Guid.TryParse(value, out var guidValue))
-            {
-                bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "Invalid GUID format.");
-                return Task.CompletedTask;
-            }
 
             var modelType = bindingContext.ModelType;
-            var ctor = modelType.GetConstructor(new[] { typeof(Guid) });
+
+            // Try to find a constructor with a single parameter (Guid or string)
+            var ctor = modelType.GetConstructor(new[] { typeof(Guid) }) ??
+                       modelType.GetConstructor(new[] { typeof(string) });
 
             if (ctor == null)
             {
@@ -37,7 +30,23 @@ namespace Accountater.WebApp.ModelBinders
                 return Task.CompletedTask;
             }
 
-            var model = ctor.Invoke(new object[] { guidValue });
+            object? convertedValue = null;
+
+            if (ctor.GetParameters()[0].ParameterType == typeof(Guid))
+            {
+                if (!Guid.TryParse(rawValue, out var guid))
+                {
+                    bindingContext.ModelState.TryAddModelError(bindingContext.ModelName, "Invalid GUID format.");
+                    return Task.CompletedTask;
+                }
+                convertedValue = guid;
+            }
+            else if (ctor.GetParameters()[0].ParameterType == typeof(string))
+            {
+                convertedValue = rawValue;
+            }
+
+            var model = ctor.Invoke(new[] { convertedValue! });
             bindingContext.Result = ModelBindingResult.Success(model);
             return Task.CompletedTask;
         }
