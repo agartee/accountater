@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace Accountater.WebApp.ModelBinders
 {
@@ -11,22 +9,21 @@ namespace Accountater.WebApp.ModelBinders
         {
             var modelType = context.Metadata.ModelType;
 
+            // Must be a user-defined struct (not primitive or enum)
             if (!modelType.IsValueType || modelType.IsPrimitive || modelType.IsEnum)
                 return null;
 
-            var ctors = modelType.GetConstructors(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            // Check for exactly one public readable property of type Guid or string
+            var property = modelType
+                .GetProperties()
+                .Where(p => p.CanRead &&
+                            (p.PropertyType == typeof(Guid) || p.PropertyType == typeof(string)))
+                .SingleOrDefault();
 
-            var hasSupportedCtor = ctors.Any(c =>
-            {
-                var parameters = c.GetParameters();
-                return parameters.Length == 1 &&
-                       (parameters[0].ParameterType == typeof(Guid) ||
-                        parameters[0].ParameterType == typeof(string));
-            });
+            if (property == null)
+                return null;
 
-            return hasSupportedCtor
-                ? new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder))
-                : null;
+            return new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder));
         }
     }
 }
