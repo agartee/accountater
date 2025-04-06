@@ -10,7 +10,7 @@ namespace Accountater.WebApp.ModelBinders
             var modelType = context.Metadata.ModelType;
 
             if (modelType.IsValueType && 
-               (modelType.GetConstructor([typeof(Guid)]) != null || modelType.GetConstructor([typeof(Guid)]) != null))
+               (modelType.GetConstructor([typeof(Guid)]) != null || modelType.GetConstructor([typeof(string)]) != null))
             {
                 return new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder));
             }

@@ -1,10 +1,9 @@
 ﻿namespace Accountater.Domain.Models
 {
-    public record TagRuleId : Id<Guid>
+    public readonly record struct TagRuleId(Guid Value)
     {
-        public TagRuleId(Guid value) : base(value)
-        {
-        }
+        public override string ToString() => Value.ToString();
+
 
         public static TagRuleId NewId()
         {
