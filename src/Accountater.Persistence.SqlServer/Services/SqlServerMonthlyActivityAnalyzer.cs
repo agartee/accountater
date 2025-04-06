@@ -19,7 +19,7 @@ namespace Accountater.Persistence.SqlServer.Services
                     new MonthlyIncomeInfo { Month = 6, Year = 2025, Amount = 3200 }
                 ],
 
-                CategorySpending =
+                MonthlyCategorySpending =
                 [
                     new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Rent", Amount = 1200 },
                     new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Other", Amount = 200 },

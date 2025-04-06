@@ -4,7 +4,7 @@ namespace Accountater.Domain.Models
 {
     public record MonthlyActivityInfo
     {
-        public IEnumerable<MonthlyCategorySpendingInfo> CategorySpending { get; init; } = [];
+        public IEnumerable<MonthlyCategorySpendingInfo> MonthlyCategorySpending { get; init; } = [];
         public IEnumerable<MonthlyIncomeInfo> MonthlyIncome { get; init; } = [];
     }
 

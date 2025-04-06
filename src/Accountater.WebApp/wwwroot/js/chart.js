@@ -1,6 +1,6 @@
-﻿export function renderMonthlyChart(baseData, incomeByMonth) {
+﻿export function renderMonthlyChart(monthlyCategorySpending, monthlyIncome, tags) {
     const incomeLookup = (month, year) => {
-        return incomeByMonth.find(i => i.month === month && i.year === year)?.amount ?? 0;
+        return monthlyIncome.find(i => i.month === month && i.year === year)?.amount ?? 0;
     };
 
     const getMonthKey = (month, year) => {
@@ -8,22 +8,12 @@
         return `${date.toLocaleString('en-US', { month: 'short' })} ${year}`;
     };
 
-    const tags = {
-        Groceries: { color: "#f28e2b", order: 1 },
-        Dining: { color: "#e15759", order: 1 },
-        Entertainment: { color: "#76b7b2", order: 1 },
-        Other: { color: "#000000", order: 1 },
-        Rent: { color: "#4e79a7", order: 1 },
-        Remaining: { color: "#59a14f", order: 0 },
-        Overspending: { color: "#d62728", order: 0 }
-    };
-
     const svg = d3.select("#chart"),
         width = 1000,
         height = 600,
         margin = { top: 20, right: 20, bottom: 40, left: 80 };
 
-    const grouped = d3.groups(baseData, d => getMonthKey(d.month, d.year));
+    const grouped = d3.groups(monthlyCategorySpending, d => getMonthKey(d.month, d.year));
     const months = grouped.map(([key]) => key);
 
     const fullData = grouped.flatMap(([monthKey, rows]) => {
