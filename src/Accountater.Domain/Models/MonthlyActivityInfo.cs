@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Accountater.Domain.Models
+﻿namespace Accountater.Domain.Models
 {
     public record MonthlyActivityInfo
     {
