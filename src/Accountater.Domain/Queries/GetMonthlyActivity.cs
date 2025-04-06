@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Accountater.Domain.Queries
 {
-    public record GetMonthlySpending : IRequest<IEnumerable<MonthlySpendingSummaryInfo>>
+    public record GetMonthlyActivity : IRequest<MonthlyActivityInfo>
     {
         public int? StartMonth { get; init; }
         public int? StartYear { get; init; }
@@ -12,18 +12,18 @@ namespace Accountater.Domain.Queries
         public int? EndYear { get; init; }
     }
 
-    public class GetMonthlySpendingHandler : IRequestHandler<GetMonthlySpending, IEnumerable<MonthlySpendingSummaryInfo>>
+    public class GetMonthlyActivityHandler : IRequestHandler<GetMonthlyActivity, MonthlyActivityInfo>
     {
-        private readonly IMonthlySpendingAnalyzer monthlySpendingAnalyzer;
+        private readonly IMonthlyActivityAnalyzer monthlySpendingAnalyzer;
 
-        public GetMonthlySpendingHandler(IMonthlySpendingAnalyzer monthlySpendingAnalyzer)
+        public GetMonthlyActivityHandler(IMonthlyActivityAnalyzer monthlySpendingAnalyzer)
         {
             this.monthlySpendingAnalyzer = monthlySpendingAnalyzer;
         }
 
-        public async Task<IEnumerable<MonthlySpendingSummaryInfo>> Handle(GetMonthlySpending request, CancellationToken cancellationToken)
+        public async Task<MonthlyActivityInfo> Handle(GetMonthlyActivity request, CancellationToken cancellationToken)
         {
-            return await monthlySpendingAnalyzer.GetMonthlySpending(new MonthlySpendingCriteria
+            return await monthlySpendingAnalyzer.GetMonthlyActivity(new MonthlySpendingCriteria
             {
                 StartMonth = request.StartMonth ?? 0,
                 StartYear = request.StartYear ?? 0,

@@ -15,7 +15,7 @@ namespace Accountater.WebApp.Controllers
 
         [HttpGet]
         [Route("/analysis")]
-        public async Task<IActionResult> Index([FromQuery] GetMonthlySpending request)
+        public async Task<IActionResult> Index([FromQuery] GetMonthlyActivity request)
         {
             var results = await mediator.Send(request);
 

@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @RenderSection("Styles", required: false)
+    
     <link rel="stylesheet" href="~/Accountater.WebApp.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -24,6 +27,8 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

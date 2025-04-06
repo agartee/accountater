@@ -2,9 +2,9 @@
 
 namespace Accountater.Domain.Services
 {
-    public interface IMonthlySpendingAnalyzer
+    public interface IMonthlyActivityAnalyzer
     {
-        Task<IEnumerable<MonthlySpendingSummaryInfo>> GetMonthlySpending(MonthlySpendingCriteria criteria);
+        Task<MonthlyActivityInfo> GetMonthlyActivity(MonthlySpendingCriteria criteria);
     }
 
     public record MonthlySpendingCriteria
