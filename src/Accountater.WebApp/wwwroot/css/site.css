@@ -153,3 +153,19 @@ table {
     table tbody tr:hover {
         background-color: #f1f1f1;
     }
+
+.dataTables_wrapper .dataTables_scroll {
+    border: none !important;
+}
+
+table.dataTable,
+table.dataTable th,
+table.dataTable td,
+table.dataTable thead,
+table.dataTable tfoot,
+table.dataTable tr {
+    border: none !important;
+    box-shadow: none;
+    outline: none;
+    margin: 1rem 0;
+}

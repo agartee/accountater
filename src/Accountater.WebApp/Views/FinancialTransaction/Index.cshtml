@@ -47,13 +47,16 @@
 
 <partial name="Pagination" model="Model" />
 
-<script>
-    $(document).ready(function () {
-        $('#transactionsTable').DataTable({
-            paging: false,
-            searching: false,
-            info: false,
-            order: [[0, "desc"]]
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#transactionsTable').DataTable({
+                paging: false,
+                searching: false,
+                info: false,
+                ordering: false,
+                order: [[0, "desc"]]
+            });
         });
-    });
-</script>
+    </script>
+}

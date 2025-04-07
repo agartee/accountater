@@ -17,7 +17,7 @@
         </li>
 
         <li>
-            <a href="/tag" class="@(currentPath?.StartsWith("/tag") == true ? "active" : "")">Tags</a>
+            <a href="/tag" class="@(currentPath != null && (currentPath == "/tag" || currentPath.StartsWith("/tag/")) ? "active" : "")">Tags</a>
         </li>
 
         <li>
