@@ -68,8 +68,11 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<FinancialTransactionSearchResults> SearchFinancialTransactions(
             FinancialTransactionSearchCriteria criteria, CancellationToken cancellationToken)
         {
+            var amountFilter = ParseAmountFilter(criteria.SearchText);
+
             Expression<Func<FinancialTransactionData, bool>> predicate = t => criteria.SearchText == null
                 || t.Tags.Any(t => t.Value.Contains(criteria.SearchText ?? ""))
+                || (amountFilter.HasValue && (t.Amount == amountFilter.Value || t.Amount == -amountFilter.Value))
                 || t.Description.Contains(criteria.SearchText!);
 
             var totalCount = await dbContext.FinancialTransactions
@@ -95,6 +98,18 @@ namespace Accountater.Persistence.SqlServer.Services
                 PageIndex = criteria.PageIndex,
                 TotalCount = totalCount
             };
+        }
+
+        private static decimal? ParseAmountFilter(string? searchText)
+        {
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                var cleaned = searchText.Replace("$", "").Trim();
+                if (decimal.TryParse(cleaned, out var parsedAmount))
+                    return parsedAmount;
+            }
+
+            return null;
         }
 
         public async Task<FinancialTransactionInfo> DemandFinancialTransaction(FinancialTransactionId id,
