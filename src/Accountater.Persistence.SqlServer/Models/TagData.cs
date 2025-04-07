@@ -14,6 +14,7 @@ namespace Accountater.Persistence.SqlServer.Models
         [MaxLength(200)]
         public required string Value { get; set; }
 
+        [MaxLength(30)]
         public string? Color { get; set; }
         public decimal? Order { get; set; }
 
