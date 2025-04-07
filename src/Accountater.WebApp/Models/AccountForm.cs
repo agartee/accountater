@@ -6,6 +6,7 @@ namespace Accountater.WebApp.Models
     {
         public required AccountId Id { get; init; }
         public required string Name { get; set; }
+        public required AccountType Type { get; set; }
         public string? Description { get; set; }
     }
 }

@@ -112,6 +112,7 @@ namespace Accountater.Persistence.SqlServer.Services
         private void UpdateAccount(Account account, AccountData data)
         {
             data.Name = account.Name;
+            data.Type = account.Type;
             data.Description = account.Description;
         }
     }

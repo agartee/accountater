@@ -8,6 +8,7 @@ namespace Accountater.Domain.Commands
     {
         public required AccountId Id { get; init; }
         public string? Name { get; init; }
+        public AccountType? Type { get; init; }
         public string? Description { get; init; }
     }
 
@@ -27,7 +28,11 @@ namespace Accountater.Domain.Commands
             if (request.Name != null)
                 account.Name = request.Name;
 
-            account.Description = request.Description;
+            if (request.Type.HasValue)
+                account.Type = request.Type.Value;
+
+            if(request.Description != null)
+                account.Description = request.Description;
 
             return await accountRepository.SaveAccount(account, cancellationToken);
         }

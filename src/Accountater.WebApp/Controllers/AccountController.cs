@@ -63,6 +63,7 @@ namespace Accountater.WebApp.Controllers
             {
                 Id = form.Id,
                 Name = form.Name,
+                Type = form.Type,
                 Description = form.Description
             });
 
