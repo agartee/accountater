@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Accountater.Domain.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accountater.Persistence.SqlServer.Models
 {
@@ -9,6 +10,7 @@ namespace Accountater.Persistence.SqlServer.Models
 
         public required Guid Id { get; init; }
         public required string Name { get; set; }
+        public required AccountType Type { get; set; }
         public string? Description { get; set; }
 
         public List<FinancialTransactionData> Transactions { get; set; } = new();
