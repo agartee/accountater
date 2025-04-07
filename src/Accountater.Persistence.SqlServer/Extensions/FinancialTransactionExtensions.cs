@@ -15,6 +15,7 @@ namespace Accountater.Persistence.SqlServer.Extensions
                 {
                     Id = new AccountId(model.AccountId),
                     Name = model.Account!.Name,
+                    Type = model.Account!.Type,
                     Description = model.Account!.Description
                 },
                 Date = model.Date,

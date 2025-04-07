@@ -11,6 +11,7 @@ namespace Accountater.Persistence.SqlServer.Extensions
             {
                 Id = new AccountId(model.Id),
                 Name = model.Name,
+                Type = model.Type,
                 Description = model.Description
             };
         }
@@ -21,6 +22,7 @@ namespace Accountater.Persistence.SqlServer.Extensions
             {
                 Id = new AccountId(model.Id),
                 Name = model.Name,
+                Type = model.Type,
                 Description = model.Description
             };
         }

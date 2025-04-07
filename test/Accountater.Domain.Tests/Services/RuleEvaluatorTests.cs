@@ -18,6 +18,7 @@ namespace Accountater.Domain.Tests.Services
                 {
                     Id = AccountId.NewId(),
                     Name = "test account",
+                    Type = AccountType.Bank,
                     Description = "test account description"
                 },
                 Amount = 11,

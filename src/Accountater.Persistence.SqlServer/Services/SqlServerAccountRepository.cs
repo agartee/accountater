@@ -100,6 +100,7 @@ namespace Accountater.Persistence.SqlServer.Services
             {
                 Id = account.Id.Value,
                 Name = account.Name,
+                Type = account.Type,
                 Description = account.Description,
             };
 

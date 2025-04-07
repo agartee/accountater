@@ -1,6 +1,7 @@
 ﻿using Accountater.Domain.Commands;
 using Accountater.Domain.Models;
 using Accountater.Domain.Queries;
+using Accountater.WebApp.Helpers;
 using Accountater.WebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,8 @@ namespace Accountater.WebApp.Controllers
         [Route("/account/create")]
         public IActionResult Create()
         {
+            ViewBag.AccountTypes = EnumHelper.CreateSelectList<AccountType>();
+
             return View();
         }
 
@@ -45,6 +48,8 @@ namespace Accountater.WebApp.Controllers
         [Route("/account/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] AccountId id)
         {
+            ViewBag.AccountTypes = EnumHelper.CreateSelectList<AccountType>();
+
             var result = await mediator.Send(new DemandAccount { Id = id });
 
             return View(result);
