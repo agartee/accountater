@@ -19,6 +19,19 @@ namespace Accountater.Persistence.SqlServer
         {
             modelBuilder.HasDefaultSchema(SchemaName);
 
+            modelBuilder.Entity<CategoryData>()
+                .HasIndex(t => t.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<CsvImportSchemaData>()
+                .HasMany(s => s.Mappings)
+                .WithOne(m => m.ImportSchema)
+                .HasForeignKey(m => m.ImportSchemaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CsvImportSchemaMappingData>()
+                .HasKey(m => new { m.ImportSchemaId, m.MappedProperty });
+
             modelBuilder.Entity<FinancialTransactionData>()
                 .HasOne(t => t.Account)
                 .WithMany(a => a.Transactions)
@@ -36,15 +49,11 @@ namespace Accountater.Persistence.SqlServer
                         vt.HasKey(xref => new { xref.TransactionId, xref.TagId });
                     });
 
-            modelBuilder.Entity<CsvImportSchemaData>()
-                .HasMany(s => s.Mappings)
-                .WithOne(m => m.ImportSchema)
-                .HasForeignKey(m => m.ImportSchemaId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<FinancialTransactionData>()
+                .HasOne(t => t.Category)
+                .WithMany(a => a.Transactions)
+                .HasForeignKey(t => t.CategoryId);
 
-            modelBuilder.Entity<CsvImportSchemaMappingData>()
-                .HasKey(m => new { m.ImportSchemaId, m.MappedProperty });
-                
             modelBuilder.Entity<TagData>()
                 .HasIndex(t => t.Value)
                 .IsUnique();

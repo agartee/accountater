@@ -7,7 +7,7 @@ namespace Accountater.Domain.Commands
     public record UpdateTag : IRequest<TagInfo>
     {
         public required TagId Id { get; init; }
-        public required string Value { get; init; }
+        public string? Value { get; init; }
         public string? Color { get; init; }
         public decimal? Order { get; init; }
     }
