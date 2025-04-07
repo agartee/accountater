@@ -2,7 +2,7 @@
 
 namespace Accountater.WebApp.Models
 {
-    public class FinancialTransactionForm
+    public record FinancialTransactionForm
     {
         public required FinancialTransactionId Id { get; init; }
         public string? Tags { get; init; }

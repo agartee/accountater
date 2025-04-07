@@ -1,0 +1,45 @@
+﻿@model TagSearchResults
+
+@{
+    ViewData["Title"] = "Tags";
+    ViewData["PaginationBaseUrl"] = "tag";
+}
+
+<h1>Tags</h1>
+
+<partial name="Pagination" model="Model" />
+
+<a href="/tag/create">Create New...</a>
+
+<table id="tagsTable">
+    <thead>
+        <tr>
+            <th>Value</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var tag in Model.Tags)
+        {
+            <tr>
+                <td>@tag.Value</td>
+                <td>
+                    <a href="/tag/@tag.Id.Value/edit">View Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<partial name="Pagination" model="Model" />
+
+<script>
+    $(document).ready(function () {
+        $('#tagsTable').DataTable({
+            paging: false,
+            searching: false,
+            info: false,
+            order: [[0, "desc"]]
+        });
+    });
+</script>

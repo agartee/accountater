@@ -9,20 +9,24 @@
         </li>
 
         <li>
-            <a href="/fileupload" class="@(currentPath?.StartsWith("/fileupload") == true ? "active" : "")">File Upload</a>
-        </li>
-        
-        <li>
             <a href="/account" class="@(currentPath?.StartsWith("/account") == true ? "active" : "")">Accounts</a>
         </li>
         
+        <li>
+            <a href="/tagrule" class="@(currentPath?.StartsWith("/tagrule") == true ? "active" : "")">Tag Rules</a>
+        </li>
+
+        <li>
+            <a href="/tag" class="@(currentPath?.StartsWith("/tag") == true ? "active" : "")">Tags</a>
+        </li>
+
         <li>
             <a href="/csvimportschema" class="@(currentPath?.StartsWith("/csvimportschema") == true ? "active" : "")">CSV Import Schemas</a>
         </li>
 
         <li>
-            <a href="/tagrule" class="@(currentPath?.StartsWith("/tagrule") == true ? "active" : "")">Tag Rules</a>
+            <a href="/fileupload" class="@(currentPath?.StartsWith("/fileupload") == true ? "active" : "")">File Upload</a>
         </li>
-        
+
     </ul>
 </nav>

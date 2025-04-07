@@ -1,0 +1,54 @@
+﻿@model TagInfo
+
+@{
+    ViewData["Title"] = "Edit Tag";
+}
+
+<h1>Edit Tag</h1>
+
+<form method="post" class="custom-form">
+    
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Value">Value</label>
+        <input asp-for="Value" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" type="color" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Order">Order</label>
+        <input asp-for="Order" type="number" />
+    </div>
+
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/tag" class="button button-secondary">Back</a>
+    </div>
+
+</form>
+
+<h3>Danger Zone</h3>
+
+<div class="danger-zone">
+    <form action="@Url.Action("Delete", "Tag", new { id = Model.Id.Value })" method="post"
+          class="form form-aligned"
+          onsubmit="return confirm('Are you sure you want to delete this tag?');">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <label>Delete this Tag?</label>
+
+        <button type="submit" class="button button-danger delete-button">Delete</button>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/dirtyChecks.js"></script>
+}

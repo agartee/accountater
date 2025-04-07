@@ -1,0 +1,35 @@
+﻿@model CreateTag
+
+@{
+    ViewData["Title"] = "Create Tag";
+}
+
+<h1>Create Tag Rule</h1>
+
+<form method="post" class="custom-form">
+    
+    <div class="form-group">
+        <label asp-for="Value">Value</label>
+        <input asp-for="Value" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Color">Color</label>
+        <input asp-for="Color" type="color" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Order">Order</label>
+        <input asp-for="Order" type="number" />
+    </div>
+
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/tagrule" class="button button-secondary">Back</a>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="~/js/dirtyChecks.js"></script>
+}

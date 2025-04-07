@@ -2,7 +2,7 @@
 
 namespace Accountater.WebApp.Models
 {
-    public class TagRuleForm
+    public record TagRuleForm
     {
         public required TagRuleId Id { get; init; }
         public required string Name { get; set; }
