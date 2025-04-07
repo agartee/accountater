@@ -64,7 +64,8 @@ namespace Accountater.WebApp.Controllers
                 Id = form.Id,
                 Name = form.Name,
                 Type = form.Type,
-                Description = form.Description
+                // note: is there a way to control this null check in the AccountForm?
+                Description = form.Description ?? string.Empty
             });
 
             return Redirect($"/account/{result.Id.Value}/edit");
