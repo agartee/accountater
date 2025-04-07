@@ -29,6 +29,7 @@ builder.Services.AddTransient<ICsvImportSchemaInfoReader, SqlServerCsvImportSche
 builder.Services.AddTransient<IRuleEvaluator, JintRuleEvaluator>();
 builder.Services.AddTransient<IMonthlyActivityAnalyzer, SqlServerMonthlyActivityAnalyzer>();
 builder.Services.AddTransient<ITagRepository, SqlServerTagRepository>();
+builder.Services.AddTransient<ICategoryRepository, SqlServerCategoryRepository>();
 
 builder.Services.AddDbContext<AccountaterDbContext>(options =>
     options.UseSqlServer(builder.Configuration[$"connectionStrings:database"]));
