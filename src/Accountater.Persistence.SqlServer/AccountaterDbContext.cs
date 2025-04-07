@@ -10,6 +10,7 @@ namespace Accountater.Persistence.SqlServer
         public AccountaterDbContext(DbContextOptions<AccountaterDbContext> options) : base(options) { }
 
         public DbSet<AccountData> Accounts { get; set; }
+        public DbSet<CategoryData> Categories { get; set; }
         public DbSet<CsvImportSchemaData> CsvImportSchemas { get; set; }
         public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
         public DbSet<TagData> Tags { get; set; }
