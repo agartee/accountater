@@ -14,7 +14,7 @@ namespace Accountater.Persistence.SqlServer
         public DbSet<CsvImportSchemaData> CsvImportSchemas { get; set; }
         public DbSet<FinancialTransactionData> FinancialTransactions { get; set; }
         public DbSet<TagData> Tags { get; set; }
-        public DbSet<TagRuleData> TagRules { get; set; }
+        public DbSet<FinancialTransactionMetadataRuleData> Rules { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,13 +59,13 @@ namespace Accountater.Persistence.SqlServer
                 .HasIndex(t => t.Value)
                 .IsUnique();
 
-            modelBuilder.Entity<TagRuleData>()
+            modelBuilder.Entity<FinancialTransactionMetadataRuleData>()
                 .HasOne(r => r.Tag)
-                .WithMany(r => r.TagRules)
+                .WithMany(r => r.FinancialTransactionMetadataRules)
                 .HasForeignKey(r => r.TagId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<TagRuleData>()
+            modelBuilder.Entity<FinancialTransactionMetadataRuleData>()
                 .HasIndex(r => r.Name)
                 .IsUnique();
         }

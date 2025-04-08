@@ -17,11 +17,11 @@
         </li>
 
         <li>
-            <a href="/tagrule" class="@(currentPath?.StartsWith("/tagrule") == true ? "active" : "")">Tag Rules</a>
+            <a href="/rule" class="@(currentPath?.StartsWith("/rule") == true ? "active" : "")">Rules</a>
         </li>
 
         <li>
-            <a href="/tag" class="@(currentPath != null && (currentPath == "/tag" || currentPath.StartsWith("/tag/")) ? "active" : "")">Tags</a>
+            <a href="/tag" class="@(currentPath?.StartsWith("/tag") == true ? "active" : "")">Tags</a>
         </li>
 
         <li>

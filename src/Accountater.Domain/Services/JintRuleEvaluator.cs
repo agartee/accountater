@@ -3,12 +3,12 @@ using Jint;
 
 namespace Accountater.Domain.Services
 {
-    public interface IRuleEvaluator
+    public interface IFinancialTransactionRuleEvaluator
     {
         bool Evaluate(string expression, FinancialTransactionInfo financialTransaction);
     }
 
-    public class JintRuleEvaluator : IRuleEvaluator
+    public class JintRuleEvaluator : IFinancialTransactionRuleEvaluator
     {
         public bool Evaluate(string expression, FinancialTransactionInfo financialTransaction)
         {

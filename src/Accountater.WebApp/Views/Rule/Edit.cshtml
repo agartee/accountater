@@ -1,10 +1,10 @@
-﻿@model TagRuleInfo
+﻿@model FinancialTransactionMetadataRuleInfo
 
 @{
-    ViewData["Title"] = "Edit Tag Rule";
+    ViewData["Title"] = "Edit Rule";
 }
 
-<h1>Edit Tag Rule</h1>
+<h1>Edit Rule</h1>
 
 <form method="post" class="custom-form">
     
@@ -30,7 +30,7 @@
 
     <div class="control-panel">
         <button type="submit" class="button button-primary">Save</button>
-        <a href="/tagrule" class="button button-secondary">Back</a>
+        <a href="/rule" class="button button-secondary">Back</a>
     </div>
 
 </form>
@@ -38,14 +38,14 @@
 <h3>Power Tools</h3>
 
 <div class="power-tools">
-    <form action="@Url.Action("Run", "TagRule", new { id = Model.Id.Value })" method="post"
+    <form action="@Url.Action("Run", "Rule", new { id = Model.Id.Value })" method="post"
           class="form form-aligned"
-          onsubmit="return confirm('Are you sure you want to run this tag rule?');">
+          onsubmit="return confirm('Are you sure you want to run this rule?');">
 
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
 
-        <label>Run this Tag Rule?</label>
+        <label>Run this Rule?</label>
 
         <button type="submit" class="button button-secondary">Run Rule</button>
 
@@ -55,14 +55,14 @@
 <h3>Danger Zone</h3>
 
 <div class="danger-zone">
-    <form action="@Url.Action("Delete", "TagRule", new { id = Model.Id.Value })" method="post"
+    <form action="@Url.Action("Delete", "Rule", new { id = Model.Id.Value })" method="post"
           class="form form-aligned"
-          onsubmit="return confirm('Are you sure you want to delete this tag rule?');">
+          onsubmit="return confirm('Are you sure you want to delete this rule?');">
 
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="Id" />
 
-        <label>Delete this Tag Rule?</label>
+        <label>Delete this Rule?</label>
 
         <button type="submit" class="button button-danger delete-button">Delete</button>
 

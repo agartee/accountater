@@ -49,7 +49,7 @@ namespace Accountater.Persistence.SqlServer.Tests.Fixtures
                 new { Order = 1, SqlCommand = $"DELETE FROM [{AccountaterDbContext.SchemaName}].[{CsvImportSchemaMappingData.TableName}]" },
                 new { Order = 3, SqlCommand = $"DELETE FROM [{AccountaterDbContext.SchemaName}].[{FinancialTransactionData.TableName}]" },
                 new { Order = 3, SqlCommand = $"DELETE FROM [{AccountaterDbContext.SchemaName}].[{TagData.TableName}]" },
-                new { Order = 2, SqlCommand = $"DELETE FROM [{AccountaterDbContext.SchemaName}].[{TagRuleData.TableName}]" },
+                new { Order = 2, SqlCommand = $"DELETE FROM [{AccountaterDbContext.SchemaName}].[{FinancialTransactionMetadataRuleData.TableName}]" },
                 new { Order = 1, SqlCommand = $"DELETE FROM [{AccountaterDbContext.SchemaName}].[{TransactionTagData.TableName}]" });
 
             var sql = string.Join(Environment.NewLine, sqlCommandList

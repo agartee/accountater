@@ -5,27 +5,27 @@ using MediatR;
 
 namespace Accountater.Domain.Commands
 {
-    public record RunTagRule : IRequest
+    public record RunFinancialTransactionMetadataRule : IRequest
     {
-        public required TagRuleId Id { get; init; }
+        public required FinancialTransactionMetadataRuleId Id { get; init; }
     }
 
-    public class RunTagRuleHandler : IRequestHandler<RunTagRule>
+    public class RunFinancialTransactionMetadataRuleHandler : IRequestHandler<RunFinancialTransactionMetadataRule>
     {
         private readonly IFinancialTransactionRepository financialTransactionRepository;
-        private readonly ITagRuleRepository tagRuleRepository;
-        private readonly IRuleEvaluator ruleEvaluator;
+        private readonly IFinancialTransactionMetadataRuleRepository ruleRepository;
+        private readonly IFinancialTransactionRuleEvaluator ruleEvaluator;
 
-        public RunTagRuleHandler(IFinancialTransactionRepository financialTransactionRepository,
-            ITagRuleRepository tagRuleRepository, IRuleEvaluator ruleEvaluator)
+        public RunFinancialTransactionMetadataRuleHandler(IFinancialTransactionRepository financialTransactionRepository,
+            IFinancialTransactionMetadataRuleRepository ruleRepository, IFinancialTransactionRuleEvaluator ruleEvaluator)
         {
             this.financialTransactionRepository = financialTransactionRepository;
-            this.tagRuleRepository = tagRuleRepository;
+            this.ruleRepository = ruleRepository;
             this.ruleEvaluator = ruleEvaluator;
         }
-        public async Task Handle(RunTagRule request, CancellationToken cancellationToken)
+        public async Task Handle(RunFinancialTransactionMetadataRule request, CancellationToken cancellationToken)
         {
-            var tagRule = await tagRuleRepository.DemandTagRuleInfo(request.Id, cancellationToken);
+            var rule = await ruleRepository.DemandRuleInfo(request.Id, cancellationToken);
 
             var financialTransactionsSearchResults = await financialTransactionRepository.SearchFinancialTransactions(
                 new FinancialTransactionSearchCriteria(), cancellationToken);
@@ -36,11 +36,11 @@ namespace Accountater.Domain.Commands
             {
                 foreach(var financialTransactionInfo in financialTransactionsSearchResults.FinancialTransactions)
                 {
-                    if(!financialTransactionInfo.Tags.Contains(tagRule.Tag)
-                       && ruleEvaluator.Evaluate(tagRule.Expression, financialTransactionInfo))
+                    if(!financialTransactionInfo.Tags.Contains(rule.Tag)
+                       && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
                     {
                         var financialTransaction = financialTransactionInfo.ToFinancialTransaction();
-                        financialTransaction.Tags.Add(tagRule.Tag);
+                        financialTransaction.Tags.Add(rule.Tag);
 
                         updatedFinancialTransactions.Add(financialTransaction);
                     }
@@ -50,7 +50,7 @@ namespace Accountater.Domain.Commands
                     new FinancialTransactionSearchCriteria { PageIndex = i + 1 }, cancellationToken);
             }
 
-            await financialTransactionRepository.UpdateFinancialTransactionTags(updatedFinancialTransactions, cancellationToken);
+            await financialTransactionRepository.UpdateFinancialTransactions(updatedFinancialTransactions, cancellationToken);
         }
     }
 }

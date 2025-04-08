@@ -27,9 +27,9 @@ namespace Accountater.Domain.Tests.Services
                 Tags = [ "VERIZON" ]
             };
 
-            var rule = new TagRule
+            var rule = new FinancialTransactionMetadataRule
             {
-                Id = TagRuleId.NewId(),
+                Id = FinancialTransactionMetadataRuleId.NewId(),
                 Name = "test rule",
                 Expression = "financialTransaction.tags.includes('VERIZON')",
                 Tag = "tag"

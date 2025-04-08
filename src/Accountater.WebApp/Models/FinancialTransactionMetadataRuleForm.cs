@@ -2,9 +2,9 @@
 
 namespace Accountater.WebApp.Models
 {
-    public record TagRuleForm
+    public record FinancialTransactionMetadataRuleForm
     {
-        public required TagRuleId Id { get; init; }
+        public required FinancialTransactionMetadataRuleId Id { get; init; }
         public required string Name { get; set; }
         public required string Expression { get; set; }
         public required string Tag { get; set; }

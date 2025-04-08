@@ -22,11 +22,11 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddTransient<IFinancialTransactionCsvParser, FinancialTransactionCsvParser>();
 builder.Services.AddTransient<IFinancialTransactionRepository, SqlServerFinancialTransactionRepository>();
-builder.Services.AddTransient<ITagRuleRepository, SqlServerTagRuleRepository>();
+builder.Services.AddTransient<IFinancialTransactionMetadataRuleRepository, SqlServerFinancialTransactionMetadataRuleRepository>();
 builder.Services.AddTransient<IAccountRepository, SqlServerAccountRepository>();
 builder.Services.AddTransient<ICsvImportSchemaRepository, SqlServerCsvImportSchemaRepository>();
 builder.Services.AddTransient<ICsvImportSchemaInfoReader, SqlServerCsvImportSchemaRepository>();
-builder.Services.AddTransient<IRuleEvaluator, JintRuleEvaluator>();
+builder.Services.AddTransient<IFinancialTransactionRuleEvaluator, JintRuleEvaluator>();
 builder.Services.AddTransient<IMonthlyActivityAnalyzer, SqlServerMonthlyActivityAnalyzer>();
 builder.Services.AddTransient<ITagRepository, SqlServerTagRepository>();
 builder.Services.AddTransient<ICategoryRepository, SqlServerCategoryRepository>();

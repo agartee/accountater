@@ -150,7 +150,7 @@ namespace Accountater.Persistence.SqlServer.Services
             await dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateFinancialTransactionTags(IEnumerable<FinancialTransaction> transactions,
+        public async Task UpdateFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
             CancellationToken cancellationToken)
         {
             var tags = await GetAndStageMissingTags(transactions);

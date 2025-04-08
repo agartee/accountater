@@ -3,9 +3,9 @@
 namespace Accountater.Persistence.SqlServer.Models
 {
     [Table(TableName)]
-    public class TagRuleData
+    public class FinancialTransactionMetadataRuleData
     {
-        public const string TableName = "TagRule";
+        public const string TableName = "TransactionMetadataRule";
 
         public required Guid Id { get; set; }
         public required string Name { get; set; }

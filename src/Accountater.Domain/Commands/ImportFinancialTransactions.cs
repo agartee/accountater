@@ -16,17 +16,17 @@ namespace Accountater.Domain.Commands
         private readonly IFinancialTransactionCsvParser financialTransactionCsvParser;
         private readonly IFinancialTransactionRepository financialTransactionRepository;
         private readonly IAccountRepository accountRepository;
-        private readonly ITagRuleRepository tagRuleRepository;
-        private readonly IRuleEvaluator ruleEvaluator;
+        private readonly IFinancialTransactionMetadataRuleRepository ruleRepository;
+        private readonly IFinancialTransactionRuleEvaluator ruleEvaluator;
 
         public ImportFinancialTransactionsHandler(IFinancialTransactionCsvParser financialTransactionCsvParser,
             IFinancialTransactionRepository financialTransactionRepository, IAccountRepository accountRepository,
-            ITagRuleRepository tagRuleRepository, IRuleEvaluator ruleEvaluator)
+            IFinancialTransactionMetadataRuleRepository ruleRepository, IFinancialTransactionRuleEvaluator ruleEvaluator)
         {
             this.financialTransactionCsvParser = financialTransactionCsvParser;
             this.financialTransactionRepository = financialTransactionRepository;
             this.accountRepository = accountRepository;
-            this.tagRuleRepository = tagRuleRepository;
+            this.ruleRepository = ruleRepository;
             this.ruleEvaluator = ruleEvaluator;
         }
 
@@ -38,7 +38,7 @@ namespace Accountater.Domain.Commands
                 cancellationToken);
 
             var account = await accountRepository.DemandAccountInfo(request.AccountId, cancellationToken);
-            var tagRules = await tagRuleRepository.GetTagRuleInfos(cancellationToken);
+            var rules = await ruleRepository.GetRuleInfos(cancellationToken);
 
             var financialTransactions = new List<FinancialTransaction>();
 
@@ -53,7 +53,7 @@ namespace Accountater.Domain.Commands
                     FinancialTransactionId.NewId(), account);
 
                 financialTransactions.Add(financialTransaction);
-                ApplyTagRules(tagRules, financialTransaction, financialTransactionInfo);
+                ApplyRules(rules, financialTransaction, financialTransactionInfo);
             }
 
             await financialTransactionRepository.CreateFinancialTransactions(
@@ -61,15 +61,15 @@ namespace Accountater.Domain.Commands
                 cancellationToken);
         }
 
-        private void ApplyTagRules(IEnumerable<TagRuleInfo> tagRules, FinancialTransaction financialTransaction, 
+        private void ApplyRules(IEnumerable<FinancialTransactionMetadataRuleInfo> rules, FinancialTransaction financialTransaction, 
             FinancialTransactionInfo financialTransactionInfo)
         {
-            foreach (var tagRule in tagRules)
+            foreach (var rule in rules)
             {
-                if (!financialTransactionInfo.Tags.Contains(tagRule.Tag)
-                    && ruleEvaluator.Evaluate(tagRule.Expression, financialTransactionInfo))
+                if (!financialTransactionInfo.Tags.Contains(rule.Tag)
+                    && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
                 {
-                    financialTransaction.Tags.Add(tagRule.Tag);
+                    financialTransaction.Tags.Add(rule.Tag);
                 }
             }
         }
