@@ -16,6 +16,8 @@ namespace Accountater.Persistence.SqlServer.Models
 
         [MaxLength(30)]
         public string? Color { get; set; }
+
+        [Column(TypeName = "decimal(8,4)")]
         public decimal? Order { get; set; }
 
         public List<FinancialTransactionData> Transactions { get; set; } = new();
