@@ -20,7 +20,7 @@ namespace Accountater.Domain.Queries
 
         public Task<FinancialTransactionInfo> Handle(DemandFinancialTransaction request, CancellationToken cancellationToken)
         {
-            return financialTransactionRepository.DemandFinancialTransaction(request.Id, cancellationToken);
+            return financialTransactionRepository.DemandFinancialTransactionInfo(request.Id, cancellationToken);
         }
     }
 }

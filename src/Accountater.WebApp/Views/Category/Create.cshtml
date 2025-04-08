@@ -1,0 +1,25 @@
+﻿@model CreateCategory
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<h1>Create Category</h1>
+
+<form method="post" class="custom-form">
+    
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" />
+    </div>
+
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/category" class="button button-secondary">Back</a>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="~/js/dirtyChecks.js"></script>
+}

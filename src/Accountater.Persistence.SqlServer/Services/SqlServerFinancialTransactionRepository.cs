@@ -82,6 +82,7 @@ namespace Accountater.Persistence.SqlServer.Services
             var financialTransactions = await dbContext.FinancialTransactions
                 .AsNoTracking()
                 .Include(t => t.Account)
+                .Include(t => t.Category)
                 .Include(t => t.Tags)
                 .Where(predicate)
                 .OrderByDescending(t => t.Date)
@@ -112,25 +113,39 @@ namespace Accountater.Persistence.SqlServer.Services
             return null;
         }
 
-        public async Task<FinancialTransactionInfo> DemandFinancialTransaction(FinancialTransactionId id,
+        public async Task<FinancialTransaction> DemandFinancialTransaction(FinancialTransactionId id,
             CancellationToken cancellationToken)
         {
             return await dbContext.FinancialTransactions
                 .Include(t => t.Account)
+                .Include(t => t.Category)
+                .Include(t => t.Tags)
+                .Where(t => t.Id == id.Value)
+                .Select(t => t.ToFinancialTransaction())
+                .SingleAsync(cancellationToken);
+        }
+
+        public async Task<FinancialTransactionInfo> DemandFinancialTransactionInfo(FinancialTransactionId id,
+            CancellationToken cancellationToken)
+        {
+            return await dbContext.FinancialTransactions
+                .Include(t => t.Account)
+                .Include(t => t.Category)
                 .Include(t => t.Tags)
                 .Where(t => t.Id == id.Value)
                 .Select(t => t.ToFinancialTransactionInfo())
                 .SingleAsync(cancellationToken);
         }
 
-        public async Task UpdateFinancialTransactionTags(FinancialTransactionId id, IEnumerable<string> tags,
+        public async Task UpdateFinancialTransaction(FinancialTransaction financialTransaction,
             CancellationToken cancellationToken)
         {
             var data = await dbContext.FinancialTransactions
                 .Include(v => v.Tags)
-                .SingleAsync(v => v.Id == id.Value, cancellationToken);
+                .SingleAsync(v => v.Id == financialTransaction.Id.Value, cancellationToken);
 
-            await UpdateTags(data, tags);
+            data.CategoryId = financialTransaction.CategoryId?.Value;
+            await UpdateTags(data, financialTransaction.Tags);
 
             await dbContext.SaveChangesAsync(cancellationToken);
         }

@@ -14,7 +14,7 @@ namespace Accountater.Persistence.SqlServer.Models
 
         [Column(TypeName = "decimal(10,2)")]
         public required decimal Amount { get; init; }
-        public Guid? CategoryId { get; init; }
+        public Guid? CategoryId { get; set; }
 
         public AccountData? Account { get; set; }
         public CategoryData? Category { get; set; }

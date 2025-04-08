@@ -2,6 +2,7 @@
 using Accountater.Domain.Models;
 using Accountater.Domain.Queries;
 using Accountater.WebApp.Models;
+using Categoryater.Domain.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,6 +30,7 @@ namespace Accountater.WebApp.Controllers
         [Route("/financialTransaction/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] FinancialTransactionId id)
         {
+            ViewBag.Categories = await mediator.Send(new ListAllCategories());
             var result = await mediator.Send(new DemandFinancialTransaction { Id = id });
 
             return View(result);
@@ -41,6 +43,7 @@ namespace Accountater.WebApp.Controllers
             await mediator.Send(new UpdateFinancialTransaction
             {
                 Id = form.Id,
+                CategoryId = form.CategoryId,
                 Tags = !string.IsNullOrWhiteSpace(form.Tags)
                     ? form.Tags!.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(t => t.Trim())
                     : Enumerable.Empty<string>()

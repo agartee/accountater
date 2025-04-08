@@ -9,8 +9,13 @@ namespace Accountater.WebApp.ModelBinders
         {
             var modelType = context.Metadata.ModelType;
 
-            if (modelType.IsValueType && 
-               (modelType.GetConstructor([typeof(Guid)]) != null || modelType.GetConstructor([typeof(string)]) != null))
+            // Unwrap nullable types
+            var underlyingType = Nullable.GetUnderlyingType(modelType) ?? modelType;
+
+            // Check for strongly-typed ID pattern: value type with a Guid or string constructor
+            if ((underlyingType.IsValueType || underlyingType.IsClass) &&
+                (underlyingType.GetConstructor(new[] { typeof(Guid) }) != null ||
+                 underlyingType.GetConstructor(new[] { typeof(string) }) != null))
             {
                 return new BinderTypeModelBinder(typeof(StronglyTypedIdModelBinder));
             }

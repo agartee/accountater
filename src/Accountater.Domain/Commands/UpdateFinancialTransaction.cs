@@ -7,6 +7,7 @@ namespace Accountater.Domain.Commands
     public record UpdateFinancialTransaction : IRequest
     {
         public required FinancialTransactionId Id { get; init; }
+        public CategoryId? CategoryId { get; init; }
         public IEnumerable<string> Tags { get; init; } = new List<string>().AsReadOnly();
     }
 
@@ -21,8 +22,14 @@ namespace Accountater.Domain.Commands
 
         public async Task Handle(UpdateFinancialTransaction request, CancellationToken cancellationToken)
         {
-            await financialTransactionRepository.UpdateFinancialTransactionTags(
-                request.Id, request.Tags, cancellationToken);
+            var transaction = await financialTransactionRepository.DemandFinancialTransaction(request.Id, cancellationToken);
+
+            transaction.CategoryId = request.CategoryId;
+
+            transaction.Tags.Clear();
+            transaction.Tags.AddRange(request.Tags);
+
+            await financialTransactionRepository.UpdateFinancialTransaction(transaction, cancellationToken);
         }
     }
 }

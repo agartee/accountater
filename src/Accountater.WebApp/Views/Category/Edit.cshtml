@@ -1,0 +1,44 @@
+﻿@model CategoryInfo
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<h1>Edit Category</h1>
+
+<form method="post" class="custom-form">
+    
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name">Name</label>
+        <input asp-for="Name" />
+    </div>
+
+    <div class="control-panel">
+        <button type="submit" class="button button-primary">Save</button>
+        <a href="/category" class="button button-secondary">Back</a>
+    </div>
+
+</form>
+
+<h3>Danger Zone</h3>
+
+<div class="danger-zone">
+    <form action="@Url.Action("Delete", "Category", new { id = Model.Id.Value })" method="post"
+          class="form form-aligned"
+          onsubmit="return confirm('Are you sure you want to delete this category?');">
+
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <label>Delete this Category?</label>
+
+        <button type="submit" class="button button-danger delete-button">Delete</button>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/dirtyChecks.js"></script>
+}

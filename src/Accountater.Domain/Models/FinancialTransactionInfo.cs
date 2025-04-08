@@ -8,6 +8,7 @@
         public required DateTime Date { get; init; }
         public required string Description { get; init; }
         public required decimal Amount { get; init; }
+        public CategoryInfo? Category { get; init; }
         public IEnumerable<string> Tags { get; init; } = new List<string>().AsReadOnly();
     }
 }

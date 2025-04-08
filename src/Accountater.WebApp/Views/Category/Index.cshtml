@@ -1,30 +1,30 @@
-﻿@model TagSearchResults
+﻿@model CategorySearchResults
 
 @{
-    ViewData["Title"] = "Tags";
-    ViewData["PaginationBaseUrl"] = "tag";
+    ViewData["Title"] = "Categorys";
+    ViewData["PaginationBaseUrl"] = "category";
 }
 
-<h1>Tags</h1>
+<h1>Categorys</h1>
 
 <partial name="Pagination" model="Model" />
 
-<a href="/tag/create">Create New...</a>
+<a href="/category/create">Create New...</a>
 
-<table id="tagsTable">
+<table id="categorysTable">
     <thead>
         <tr>
-            <th>Value</th>
+            <th>Name</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var tag in Model.Tags)
+        @foreach (var category in Model.Categories)
         {
             <tr>
-                <td>@tag.Value</td>
+                <td>@category.Name</td>
                 <td>
-                    <a href="/tag/@tag.Id.Value/edit">View Details</a>
+                    <a href="/category/@category.Id.Value/edit">View Details</a>
                 </td>
             </tr>
         }
@@ -36,7 +36,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('#tagsTable').DataTable({
+            $('#categorysTable').DataTable({
                 paging: false,
                 searching: false,
                 info: false,

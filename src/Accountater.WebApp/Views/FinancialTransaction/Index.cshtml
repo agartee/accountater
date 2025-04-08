@@ -24,6 +24,7 @@
             <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
+            <th>Category</th>
             <th>Tags</th>
             <th>Details</th>
         </tr>
@@ -36,6 +37,7 @@
                 <td>@financialTransaction.Date.ToString("yyyy-MM-dd")</td>
                 <td>@financialTransaction.Description</td>
                 <td>$@financialTransaction.Amount.ToString("N2")</td>
+                <td>@financialTransaction.Category?.Name</td>
                 <td>@string.Join(", ", financialTransaction.Tags)</td>
                 <td>
                     <a href="/financialTransaction/@financialTransaction.Id.Value/edit">View Details</a>

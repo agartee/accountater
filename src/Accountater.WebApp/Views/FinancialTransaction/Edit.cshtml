@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Transaction Details";
     var tags = string.Join(", ", Model.Tags);
+
+    var selectedCategoryId = Model?.Category?.Id.Value;
+    var categories = (IEnumerable<CategoryInfo>)ViewBag.Categories;
 }
 
 <h1>Edit Transaction</h1>
@@ -24,6 +27,24 @@
     <div class="form-group">
         <label asp-for="Amount">Amount</label>
         <input asp-for="Amount" readonly disabled />
+    </div>
+
+    <div class="form-group">
+        <label for="CategoryId">Category</label>
+        <select name="CategoryId" id="CategoryId" class="form-control">
+            <option value="">-- Select a Category --</option>
+            @foreach (var category in categories)
+            {
+                if (category.Id == Model?.Category?.Id)
+                {
+                    <option value="@category.Id.Value" selected>@category.Name</option>
+                }
+                else
+                {
+                    <option value="@category.Id.Value">@category.Name</option>
+                }
+            }
+        </select>
     </div>
 
     <div class="form-group">

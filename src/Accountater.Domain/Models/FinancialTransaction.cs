@@ -7,6 +7,7 @@
         public required DateTime Date { get; init; }
         public required string Description { get; init; }
         public required decimal Amount { get; init; }
+        public CategoryId? CategoryId { get; set; }
         public List<string> Tags { get; init; } = new();
     }
 }

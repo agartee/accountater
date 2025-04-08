@@ -7,20 +7,24 @@ namespace Accountater.WebApp.ModelBinders
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
-
             if (valueProviderResult == ValueProviderResult.None)
                 return Task.CompletedTask;
 
             bindingContext.ModelState.SetModelValue(bindingContext.ModelName, valueProviderResult);
-
             var rawValue = valueProviderResult.FirstValue;
 
             if (string.IsNullOrWhiteSpace(rawValue))
+            {
+                // If it's a nullable type, just return null
+                if (IsNullable(bindingContext.ModelType))
+                {
+                    bindingContext.Result = ModelBindingResult.Success(null);
+                }
                 return Task.CompletedTask;
+            }
 
-            var modelType = bindingContext.ModelType;
+            var modelType = Nullable.GetUnderlyingType(bindingContext.ModelType) ?? bindingContext.ModelType;
 
-            // Try to find a constructor with a single parameter (Guid or string)
             var ctor = modelType.GetConstructor(new[] { typeof(Guid) }) ??
                        modelType.GetConstructor(new[] { typeof(string) });
 
@@ -50,5 +54,9 @@ namespace Accountater.WebApp.ModelBinders
             bindingContext.Result = ModelBindingResult.Success(model);
             return Task.CompletedTask;
         }
+
+        private static bool IsNullable(Type type) =>
+            Nullable.GetUnderlyingType(type) != null || !type.IsValueType;
     }
+
 }

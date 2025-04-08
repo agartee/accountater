@@ -21,10 +21,30 @@ namespace Accountater.Persistence.SqlServer.Extensions
                 Date = model.Date,
                 Description = model.Description,
                 Amount = model.Amount,
+                Category = model.Category?.ToCategoryInfo(),
                 Tags = model.Tags
                     .OrderBy(t => t.Value)
                     .Select(t => t.Value)
                     .ToImmutableList(),
+            };
+        }
+
+        public static FinancialTransaction ToFinancialTransaction(this FinancialTransactionData model)
+        {
+            return new FinancialTransaction
+            {
+                Id = new FinancialTransactionId(model.Id),
+                AccountId = new AccountId(model.AccountId),
+                Date = model.Date,
+                Description = model.Description,
+                Amount = model.Amount,
+                CategoryId = model.CategoryId != null 
+                    ? new CategoryId(model.CategoryId.Value) 
+                    : null,
+                Tags = model.Tags
+                    .OrderBy(t => t.Value)
+                    .Select(t => t.Value)
+                    .ToList(),
             };
         }
     }
