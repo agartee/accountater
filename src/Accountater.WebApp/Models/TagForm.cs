@@ -6,7 +6,7 @@ namespace Accountater.WebApp.Models
     {
         public required TagId Id { get; init; }
         public required string Value { get; set; }
-        public string? Color { get; set; }
-        public decimal? Order { get; set; }
+        public required string Color { get; set; }
+        public decimal Order { get; set; }
     }
 }

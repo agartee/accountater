@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Accountater.Domain.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accountater.Persistence.SqlServer.Models
 {
@@ -9,9 +10,8 @@ namespace Accountater.Persistence.SqlServer.Models
 
         public required Guid Id { get; set; }
         public required string Name { get; set; }
-        public required Guid TagId { get; set; }
         public required string Expression { get; set; }
-
-        public TagData? Tag { get; set; }
+        public required FinancialTransactionMetadataType MetadataType { get; set; }
+        public required string MetadataValue { get; set; }
     }
 }

@@ -7,9 +7,9 @@ namespace Accountater.Domain.Commands
     public record UpdateTag : IRequest<TagInfo>
     {
         public required TagId Id { get; init; }
-        public string? Value { get; init; }
-        public string? Color { get; init; }
-        public decimal? Order { get; init; }
+        public required string Value { get; init; }
+        public required string Color { get; init; }
+        public required decimal Order { get; init; }
     }
 
     public class UpdateTagHandler : IRequestHandler<UpdateTag, TagInfo>
@@ -25,14 +25,9 @@ namespace Accountater.Domain.Commands
         {
             var tag = await tagRepository.DemandTag(request.Id, cancellationToken);
 
-            if (request.Value != null)
-                tag.Value = request.Value;
-
-            if (request.Color != null)
-                tag.Color = request.Color;
-
-            if (request.Order != null)
-                tag.Order = request.Order;
+            tag.Value = request.Value;
+            tag.Color = request.Color;
+            tag.Order = request.Order;
 
             return await tagRepository.SaveTag(tag, cancellationToken);
         }

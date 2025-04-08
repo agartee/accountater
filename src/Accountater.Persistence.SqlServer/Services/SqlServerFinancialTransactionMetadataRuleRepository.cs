@@ -31,7 +31,6 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<FinancialTransactionMetadataRule> DemandRule(FinancialTransactionMetadataRuleId id, CancellationToken cancellationToken)
         {
             return await dbContext.Rules
-                .Include(r => r.Tag)
                 .Where(r => r.Id == id.Value)
                 .Select(r => r.ToFinancialTransactionMetadataRule())
                 .SingleAsync(cancellationToken);
@@ -40,7 +39,6 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<FinancialTransactionMetadataRuleInfo> DemandRuleInfo(FinancialTransactionMetadataRuleId id, CancellationToken cancellationToken)
         {
             return await dbContext.Rules
-                .Include(r => r.Tag)
                 .Where(r => r.Id == id.Value)
                 .Select(r => r.ToFinancialTransactionMetadataRuleInfo())
                 .SingleAsync(cancellationToken);
@@ -49,7 +47,6 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<IEnumerable<FinancialTransactionMetadataRuleInfo>> GetRuleInfos(CancellationToken cancellationToken)
         {
             return await dbContext.Rules
-                .Include(r => r.Tag)
                 .OrderBy(r => r.Name)
                 .Select(r => r.ToFinancialTransactionMetadataRuleInfo())
                 .ToListAsync(cancellationToken);
@@ -58,7 +55,7 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<FinancialTransactionMetadataRuleSearchResults> SearchRules(SearchCriteria criteria, CancellationToken cancellationToken)
         {
             Expression<Func<FinancialTransactionMetadataRuleData, bool>> predicate = r => criteria.SearchText == null
-                || r.Tag!.Value.Contains(criteria.SearchText)
+                || r.MetadataValue.Contains(criteria.SearchText)
                 || r.Name.Contains(criteria.SearchText!);
 
             var totalCount = await dbContext.Rules
@@ -66,7 +63,6 @@ namespace Accountater.Persistence.SqlServer.Services
                 .CountAsync(predicate, cancellationToken);
 
             var rules = await dbContext.Rules
-                .Include(r => r.Tag)
                 .Where(predicate)
                 .OrderBy(r => r.Name)
                 .Skip((criteria.PageIndex) * criteria.PageSize)
@@ -87,34 +83,26 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<FinancialTransactionMetadataRuleInfo> SaveRule(FinancialTransactionMetadataRule rule, CancellationToken cancellationToken)
         {
             var data = await dbContext.Rules
-                .Include(r => r.Tag)
                 .SingleOrDefaultAsync(r => r.Id == rule.Id.Value, cancellationToken);
 
             if (data == null)
-                data = await CreateRule(rule, cancellationToken);
+                data = CreateRule(rule, cancellationToken);
             else
-                await UpdateRule(rule, data, cancellationToken);
+                UpdateRule(rule, data, cancellationToken);
 
             await dbContext.SaveChangesAsync(cancellationToken);
 
             return data.ToFinancialTransactionMetadataRuleInfo();
         }
 
-        private async Task<FinancialTransactionMetadataRuleData> CreateRule(FinancialTransactionMetadataRule rule, CancellationToken cancellationToken)
+        private FinancialTransactionMetadataRuleData CreateRule(FinancialTransactionMetadataRule rule, CancellationToken cancellationToken)
         {
-            var tagData = await dbContext.Tags
-                .SingleOrDefaultAsync(t => t.Value == rule.Tag, cancellationToken);
-
-            var tagId = tagData?.Id ?? Guid.NewGuid();
-
             var data = new FinancialTransactionMetadataRuleData
             {
                 Id = rule.Id.Value,
                 Name = rule.Name,
-                TagId = tagId,
-                Tag = tagData == null
-                    ? new TagData { Id = tagId, Value = rule.Tag }
-                    : null,
+                MetadataType = rule.MetadataType,
+                MetadataValue = rule.MetadataValue,
                 Expression = rule.Expression,
             };
 
@@ -123,20 +111,12 @@ namespace Accountater.Persistence.SqlServer.Services
             return data;
         }
 
-        private async Task UpdateRule(FinancialTransactionMetadataRule rule, FinancialTransactionMetadataRuleData data, CancellationToken cancellationToken)
+        private void UpdateRule(FinancialTransactionMetadataRule rule, FinancialTransactionMetadataRuleData data, CancellationToken cancellationToken)
         {
             data.Name = rule.Name;
             data.Expression = rule.Expression;
-
-            var tagData = await dbContext.Tags
-                .SingleOrDefaultAsync(t => t.Value == rule.Tag, cancellationToken);
-            data.TagId = tagData?.Id ?? Guid.NewGuid();
-
-            if (tagData == null)
-            {
-                var tag = new TagData { Id = data.TagId, Value = rule.Tag };
-                dbContext.Tags.Add(tag);
-            }
+            data.MetadataType = rule.MetadataType;
+            data.MetadataValue = rule.MetadataValue;
         }
     }
 }

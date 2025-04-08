@@ -32,7 +32,8 @@ namespace Accountater.Domain.Tests.Services
                 Id = FinancialTransactionMetadataRuleId.NewId(),
                 Name = "test rule",
                 Expression = "financialTransaction.tags.includes('VERIZON')",
-                Tag = "tag"
+                MetadataType = FinancialTransactionMetadataType.Tag,
+                MetadataValue = "test"
             };
 
             var result = ruleEvaluator.Evaluate(rule.Expression, financialTransaction);

@@ -36,11 +36,11 @@ namespace Accountater.Domain.Commands
             {
                 foreach(var financialTransactionInfo in financialTransactionsSearchResults.FinancialTransactions)
                 {
-                    if(!financialTransactionInfo.Tags.Contains(rule.Tag)
+                    if(!financialTransactionInfo.Tags.Contains(rule.MetadataValue)
                        && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
                     {
                         var financialTransaction = financialTransactionInfo.ToFinancialTransaction();
-                        financialTransaction.Tags.Add(rule.Tag);
+                        financialTransaction.Tags.Add(rule.MetadataValue);
 
                         updatedFinancialTransactions.Add(financialTransaction);
                     }

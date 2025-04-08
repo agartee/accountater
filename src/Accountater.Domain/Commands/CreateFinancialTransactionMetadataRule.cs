@@ -8,7 +8,8 @@ namespace Accountater.Domain.Commands
     {
         public required string Name { get; init; }
         public required string Expression { get; init; }
-        public required string Tag { get; init; }
+        public required FinancialTransactionMetadataType MetadataType { get; init; }
+        public required string MetadataValue { get; init; }
     }
 
     public class CreateFinancialTransactionMetadataRuleHandler : IRequestHandler<CreateFinancialTransactionMetadataRule, FinancialTransactionMetadataRuleInfo>
@@ -27,7 +28,8 @@ namespace Accountater.Domain.Commands
                 Id = FinancialTransactionMetadataRuleId.NewId(),
                 Name = request.Name,
                 Expression = request.Expression,
-                Tag = request.Tag,
+                MetadataType = request.MetadataType,
+                MetadataValue = request.MetadataValue,
             };
 
             return await ruleRepository.SaveRule(rule, cancellationToken);

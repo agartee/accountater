@@ -59,7 +59,8 @@ namespace Accountater.WebApp.Controllers
                 Id = form.Id,
                 Name = form.Name,
                 Expression = form.Expression,
-                Tag = form.Tag,
+                MetadataType = form.MetadataType,
+                MetadataValue = form.MetadataValue,
             });
 
             return Redirect($"/rule/{result.Id.Value}/edit");

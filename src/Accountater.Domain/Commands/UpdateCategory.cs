@@ -23,8 +23,7 @@ namespace Accountater.Domain.Commands
         {
             var category = await categoryRepository.DemandCategory(request.Id, cancellationToken);
 
-            if (request.Name != null)
-                category.Name = request.Name;
+            category.Name = request.Name;
 
             return await categoryRepository.SaveCategory(category, cancellationToken);
         }

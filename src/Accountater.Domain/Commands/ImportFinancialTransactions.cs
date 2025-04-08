@@ -66,10 +66,10 @@ namespace Accountater.Domain.Commands
         {
             foreach (var rule in rules)
             {
-                if (!financialTransactionInfo.Tags.Contains(rule.Tag)
+                if (!financialTransactionInfo.Tags.Contains(rule.MetadataValue)
                     && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
                 {
-                    financialTransaction.Tags.Add(rule.Tag);
+                    financialTransaction.Tags.Add(rule.MetadataValue);
                 }
             }
         }

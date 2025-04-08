@@ -11,7 +11,8 @@ namespace Accountater.Persistence.SqlServer.Extensions
             {
                 Id = new FinancialTransactionMetadataRuleId(model.Id),
                 Name = model.Name,
-                Tag = model.Tag!.Value,
+                MetadataType = model.MetadataType,
+                MetadataValue = model.MetadataValue,
                 Expression = model.Expression
             };
         }
@@ -22,7 +23,8 @@ namespace Accountater.Persistence.SqlServer.Extensions
             {
                 Id = new FinancialTransactionMetadataRuleId(model.Id),
                 Name = model.Name,
-                Tag = model.Tag!.Value,
+                MetadataType = model.MetadataType,
+                MetadataValue = model.MetadataValue,
                 Expression = model.Expression
             };
         }

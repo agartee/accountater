@@ -60,12 +60,6 @@ namespace Accountater.Persistence.SqlServer
                 .IsUnique();
 
             modelBuilder.Entity<FinancialTransactionMetadataRuleData>()
-                .HasOne(r => r.Tag)
-                .WithMany(r => r.FinancialTransactionMetadataRules)
-                .HasForeignKey(r => r.TagId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<FinancialTransactionMetadataRuleData>()
                 .HasIndex(r => r.Name)
                 .IsUnique();
         }
