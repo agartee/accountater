@@ -55,7 +55,8 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<CategorySearchResults> SearchCategorys(SearchCriteria criteria, CancellationToken cancellationToken)
         {
             Expression<Func<CategoryData, bool>> predicate = c => criteria.SearchText == null
-                || c.Name.Contains(criteria.SearchText);
+                || (criteria.IsExactMatch == true && c.Name.Equals(criteria.SearchText))
+                || (criteria.IsExactMatch == false && c.Name.Contains(criteria.SearchText));
 
             var totalCount = await dbContext.Categories
                 .AsNoTracking()

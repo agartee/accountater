@@ -24,7 +24,12 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="MetadataValue">Tag</label>
+        <label asp-for="MetadataType">Metadata Type</label>
+        <select asp-for="MetadataType" asp-items="@(ViewBag.MetadataTypes as IEnumerable<SelectListItem>)"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MetadataValue">Metadata Value</label>
         <input asp-for="MetadataValue" />
     </div>
 

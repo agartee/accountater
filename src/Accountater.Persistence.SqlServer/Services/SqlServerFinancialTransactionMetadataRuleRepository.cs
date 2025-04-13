@@ -55,8 +55,10 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<FinancialTransactionMetadataRuleSearchResults> SearchRules(SearchCriteria criteria, CancellationToken cancellationToken)
         {
             Expression<Func<FinancialTransactionMetadataRuleData, bool>> predicate = r => criteria.SearchText == null
-                || r.MetadataValue.Contains(criteria.SearchText)
-                || r.Name.Contains(criteria.SearchText!);
+                || (criteria.IsExactMatch == true && r.MetadataValue.Equals(criteria.SearchText))
+                || (criteria.IsExactMatch == false && r.MetadataValue.Contains(criteria.SearchText))
+                || (criteria.IsExactMatch == true && r.Name.Equals(criteria.SearchText!))
+                || (criteria.IsExactMatch == false && r.Name.Contains(criteria.SearchText!));
 
             var totalCount = await dbContext.Rules
                 .AsNoTracking()

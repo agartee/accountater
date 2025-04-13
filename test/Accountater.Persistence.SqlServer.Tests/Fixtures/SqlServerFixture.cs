@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace Accountater.Persistence.SqlServer.Tests.Fixtures
 {
@@ -29,7 +28,7 @@ namespace Accountater.Persistence.SqlServer.Tests.Fixtures
                 .UseSqlServer(config.GetConnectionString("testDatabase")).Options);
         }
 
-        public async Task Seed(object[] entities, [CallerMemberName] string? caller = null)
+        public async Task Seed(params object[] entities)
         {
             var dbContext = CreateDbContext();
 

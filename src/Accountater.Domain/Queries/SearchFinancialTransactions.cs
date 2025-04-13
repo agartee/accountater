@@ -25,7 +25,7 @@ namespace Accountater.Domain.Queries
             SearchFinancialTransactions request, CancellationToken cancellationToken)
         {
             return await financialTransactionRepository.SearchFinancialTransactions(
-                new FinancialTransactionSearchCriteria
+                new SearchCriteria
                 {
                     SearchText = request.SearchText,
                     PageIndex = request.PageIndex,

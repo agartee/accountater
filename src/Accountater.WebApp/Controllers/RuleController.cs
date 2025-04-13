@@ -1,6 +1,7 @@
 ﻿using Accountater.Domain.Commands;
 using Accountater.Domain.Models;
 using Accountater.Domain.Queries;
+using Accountater.WebApp.Helpers;
 using Accountater.WebApp.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,8 @@ namespace Accountater.WebApp.Controllers
         [Route("/rule/create")]
         public IActionResult Create()
         {
+            ViewBag.MetadataTypes = EnumHelper.CreateSelectList<FinancialTransactionMetadataType>();
+
             return View();
         }
 
@@ -45,6 +48,8 @@ namespace Accountater.WebApp.Controllers
         [Route("/rule/{id}/edit")]
         public async Task<IActionResult> Edit([FromRoute] FinancialTransactionMetadataRuleId id)
         {
+            ViewBag.MetadataTypes = EnumHelper.CreateSelectList<FinancialTransactionMetadataType>();
+
             var result = await mediator.Send(new DemandFinancialTransactionMetadataRule { Id = id });
 
             return View(result);

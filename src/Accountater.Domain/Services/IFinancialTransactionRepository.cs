@@ -9,7 +9,7 @@ namespace Accountater.Domain.Services
         Task UpdateFinancialTransactions(IEnumerable<FinancialTransaction> transactions,
             CancellationToken cancellationToken);
         Task<FinancialTransactionSearchResults> SearchFinancialTransactions(
-            FinancialTransactionSearchCriteria criteria, CancellationToken cancellationToken);
+            SearchCriteria criteria, CancellationToken cancellationToken);
         Task<FinancialTransactionInfo> DemandFinancialTransactionInfo(FinancialTransactionId id,
             CancellationToken cancellationToken);
         Task<FinancialTransaction> DemandFinancialTransaction(FinancialTransactionId id,

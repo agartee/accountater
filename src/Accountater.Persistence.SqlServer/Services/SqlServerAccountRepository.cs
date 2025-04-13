@@ -55,7 +55,8 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<AccountSearchResults> SearchAccounts(SearchCriteria criteria, CancellationToken cancellationToken)
         {
             Expression<Func<AccountData, bool>> predicate = r => criteria.SearchText == null
-                || r.Name.Contains(criteria.SearchText!);
+                || (criteria.IsExactMatch == true && r.Name.Equals(criteria.SearchText))
+                || (criteria.IsExactMatch == false && r.Name.Contains(criteria.SearchText));
 
             var totalCount = await dbContext.Accounts
                 .AsNoTracking()

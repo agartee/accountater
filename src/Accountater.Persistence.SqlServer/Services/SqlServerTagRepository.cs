@@ -47,7 +47,8 @@ namespace Accountater.Persistence.SqlServer.Services
         public async Task<TagSearchResults> SearchTags(SearchCriteria criteria, CancellationToken cancellationToken)
         {
             Expression<Func<TagData, bool>> predicate = r => criteria.SearchText == null
-                || r.Value.Contains(criteria.SearchText);
+                || (criteria.IsExactMatch == true && r.Value.Equals(criteria.SearchText))
+                || (criteria.IsExactMatch == false && r.Value.Contains(criteria.SearchText));
 
             var totalCount = await dbContext.Tags
                 .AsNoTracking()

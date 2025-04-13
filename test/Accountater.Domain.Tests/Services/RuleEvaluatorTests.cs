@@ -40,5 +40,41 @@ namespace Accountater.Domain.Tests.Services
 
             result.Should().BeTrue();
         }
+
+        [Fact]
+        public void Evaluate_WithMultilineExpression_ReturnsExpectedResult()
+        {
+            var expression = @"transaction.tags.includes('VERIZON') 
+                && transaction.account.type == 1 
+                && transaction.amount > 10";
+
+            var financialTransaction = new FinancialTransactionInfo
+            {
+                Id = FinancialTransactionId.NewId(),
+                Account = new AccountInfo
+                {
+                    Id = AccountId.NewId(),
+                    Name = "Test Account",
+                    Type = AccountType.Bank,
+                },
+                Amount = 11,
+                Description = "test transaction",
+                Date = DateTime.UtcNow,
+                Tags = ["VERIZON"]
+            };
+
+            var rule = new FinancialTransactionMetadataRule
+            {
+                Id = FinancialTransactionMetadataRuleId.NewId(),
+                Name = "test rule",
+                Expression = expression,
+                MetadataType = FinancialTransactionMetadataType.Tag,
+                MetadataValue = "test"
+            };
+
+            var result = ruleEvaluator.Evaluate(rule.Expression, financialTransaction);
+
+            result.Should().BeTrue();
+        }
     }
 }
