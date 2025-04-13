@@ -28,11 +28,10 @@
         const monthlyIncome = @Html.Raw(monthlyIncomeJson);
 
         const tags = {
+            Auto: { color: "#e15759", order: 1 },
             Groceries: { color: "#f28e2b", order: 1 },
-            Dining: { color: "#e15759", order: 1 },
-            Entertainment: { color: "#76b7b2", order: 1 },
-            Other: { color: "#000000", order: 1 },
             Rent: { color: "#4e79a7", order: 1 },
+            Uncategorized: { color: "#000000", order: 1 },
             Remaining: { color: "#59a14f", order: 0 },
             Overspending: { color: "#d62728", order: 0 }
         };

@@ -1,4 +1,5 @@
-﻿using Accountater.Persistence.SqlServer.Models;
+﻿using Accountater.Domain.Models;
+using Accountater.Persistence.SqlServer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Accountater.Persistence.SqlServer
@@ -62,6 +63,14 @@ namespace Accountater.Persistence.SqlServer
             modelBuilder.Entity<FinancialTransactionMetadataRuleData>()
                 .HasIndex(r => r.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<CategoryData>().HasData(
+                new CategoryData
+                {
+                    Id = CategoryId.CreditCardPayment().Value,
+                    Name = "Credit Card Payment"
+                }
+            );
         }
     }
 }

@@ -25,11 +25,11 @@ namespace Accountater.Domain.Queries
         {
             return await monthlySpendingAnalyzer.GetMonthlyActivity(new MonthlySpendingCriteria
             {
-                StartMonth = request.StartMonth ?? 0,
-                StartYear = request.StartYear ?? 0,
-                EndMonth = request.EndMonth ?? 0,
-                EndYear = request.EndYear ?? 0
-            });
+                StartMonth = request.StartMonth ?? 1,
+                StartYear = request.StartYear ?? 1,
+                EndMonth = request.EndMonth ?? 12,
+                EndYear = request.EndYear ?? 2100
+            }, cancellationToken);
         }
     }
 }

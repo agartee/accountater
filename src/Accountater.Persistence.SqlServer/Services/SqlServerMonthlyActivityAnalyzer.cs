@@ -1,64 +1,58 @@
 ﻿using Accountater.Domain.Models;
 using Accountater.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Accountater.Persistence.SqlServer.Services
 {
     public class SqlServerMonthlyActivityAnalyzer : IMonthlyActivityAnalyzer
     {
-        public async Task<MonthlyActivityInfo> GetMonthlyActivity(MonthlySpendingCriteria criteria)
+        private readonly AccountaterDbContext dbContext;
+
+        public SqlServerMonthlyActivityAnalyzer(AccountaterDbContext dbContext)
         {
+            this.dbContext = dbContext;
+        }
+
+        public async Task<MonthlyActivityInfo> GetMonthlyActivity(MonthlySpendingCriteria criteria, CancellationToken cancellationToken)
+        {
+            var startDate = new DateTime(criteria.StartYear, criteria.StartMonth, 1);
+            var endDate = new DateTime(criteria.EndYear, criteria.EndMonth, 1).AddMonths(1).AddDays(-1);
+
+            var transactions = await dbContext.FinancialTransactions
+                .Include(t => t.Account)
+                .Include(t => t.Category)
+                .Where(t => t.Date >= startDate && t.Date <= endDate)
+                .ToListAsync(cancellationToken);
+
+            var monthlyIncome = transactions
+                .Where(t => t.Amount > 0)
+                .Where(t => t.Account!.Type == AccountType.Bank)
+                .GroupBy(t => new { t.Date.Year, t.Date.Month })
+                .Select(g => new MonthlyIncomeInfo
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Amount = g.Sum(t => t.Amount)
+                })
+                .ToList();
+
+            var monthlyCategorySpending = transactions
+                .Where(t => t.Amount < 0)
+                .GroupBy(t => new { t.Date.Year, t.Date.Month, Category = t.Category != null ? t.Category.Name : "Uncategorized" })
+                .Select(g => new MonthlyCategorySpendingInfo
+                {
+                    Year = g.Key.Year,
+                    Month = g.Key.Month,
+                    Category = g.Key.Category,
+                    Amount = g.Sum(t => Math.Abs(t.Amount))
+                })
+                .ToList();
+
             return new MonthlyActivityInfo
             {
-                MonthlyIncome =
-                [
-                    new MonthlyIncomeInfo { Month = 1, Year = 2025, Amount = 2200 },
-                    new MonthlyIncomeInfo { Month = 2, Year = 2025, Amount = 1200 },
-                    new MonthlyIncomeInfo { Month = 3, Year = 2025, Amount = 2200 },
-                    new MonthlyIncomeInfo { Month = 4, Year = 2025, Amount = 2500 },
-                    new MonthlyIncomeInfo { Month = 5, Year = 2025, Amount = 2200 },
-                    new MonthlyIncomeInfo { Month = 6, Year = 2025, Amount = 3200 }
-                ],
-
-                MonthlyCategorySpending =
-                [
-                    new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Rent", Amount = 1200 },
-                    new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Other", Amount = 200 },
-                    new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Groceries", Amount = 400 },
-                    new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Dining", Amount = 150 },
-                    new MonthlyCategorySpendingInfo { Month = 1, Year = 2025, Category = "Entertainment", Amount = 100 },
-
-                    new MonthlyCategorySpendingInfo { Month = 2, Year = 2025, Category = "Rent", Amount = 1200 },
-                    new MonthlyCategorySpendingInfo { Month = 2, Year = 2025, Category = "Other", Amount = 200 },
-                    new MonthlyCategorySpendingInfo { Month = 2, Year = 2025, Category = "Groceries", Amount = 350 },
-                    new MonthlyCategorySpendingInfo { Month = 2, Year = 2025, Category = "Dining", Amount = 200 },
-                    new MonthlyCategorySpendingInfo { Month = 2, Year = 2025, Category = "Entertainment", Amount = 80 },
-
-                    new MonthlyCategorySpendingInfo { Month = 3, Year = 2025, Category = "Rent", Amount = 1200 },
-                    new MonthlyCategorySpendingInfo { Month = 3, Year = 2025, Category = "Other", Amount = 0 },
-                    new MonthlyCategorySpendingInfo { Month = 3, Year = 2025, Category = "Groceries", Amount = 370 },
-                    new MonthlyCategorySpendingInfo { Month = 3, Year = 2025, Category = "Dining", Amount = 180 },
-                    new MonthlyCategorySpendingInfo { Month = 3, Year = 2025, Category = "Entertainment", Amount = 90 },
-
-                    new MonthlyCategorySpendingInfo { Month = 4, Year = 2025, Category = "Rent", Amount = 1200 },
-                    new MonthlyCategorySpendingInfo { Month = 4, Year = 2025, Category = "Other", Amount = 0 },
-                    new MonthlyCategorySpendingInfo { Month = 4, Year = 2025, Category = "Groceries", Amount = 390 },
-                    new MonthlyCategorySpendingInfo { Month = 4, Year = 2025, Category = "Dining", Amount = 220 },
-                    new MonthlyCategorySpendingInfo { Month = 4, Year = 2025, Category = "Entertainment", Amount = 70 },
-
-                    new MonthlyCategorySpendingInfo { Month = 5, Year = 2025, Category = "Rent", Amount = 1200 },
-                    new MonthlyCategorySpendingInfo { Month = 5, Year = 2025, Category = "Other", Amount = 0 },
-                    new MonthlyCategorySpendingInfo { Month = 5, Year = 2025, Category = "Groceries", Amount = 390 },
-                    new MonthlyCategorySpendingInfo { Month = 5, Year = 2025, Category = "Dining", Amount = 220 },
-                    new MonthlyCategorySpendingInfo { Month = 5, Year = 2025, Category = "Entertainment", Amount = 70 },
-
-                    new MonthlyCategorySpendingInfo { Month = 6, Year = 2025, Category = "Rent", Amount = 1200 },
-                    new MonthlyCategorySpendingInfo { Month = 6, Year = 2025, Category = "Other", Amount = 0 },
-                    new MonthlyCategorySpendingInfo { Month = 6, Year = 2025, Category = "Groceries", Amount = 390 },
-                    new MonthlyCategorySpendingInfo { Month = 6, Year = 2025, Category = "Dining", Amount = 220 },
-                    new MonthlyCategorySpendingInfo { Month = 6, Year = 2025, Category = "Entertainment", Amount = 70 }
-                ]
+                MonthlyIncome = monthlyIncome,
+                MonthlyCategorySpending = monthlyCategorySpending
             };
-
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Accountater.Domain.Services
 {
     public interface IMonthlyActivityAnalyzer
     {
-        Task<MonthlyActivityInfo> GetMonthlyActivity(MonthlySpendingCriteria criteria);
+        Task<MonthlyActivityInfo> GetMonthlyActivity(MonthlySpendingCriteria criteria, CancellationToken cancellationToken);
     }
 
     public record MonthlySpendingCriteria
