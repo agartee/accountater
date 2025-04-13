@@ -38,6 +38,7 @@ namespace Accountater.Persistence.SqlServer.Services
 
             var monthlyCategorySpending = transactions
                 .Where(t => t.Amount < 0)
+                .Where(t => t.CategoryId != CategoryId.CreditCardPaymentCategoryId().Value)
                 .GroupBy(t => new { t.Date.Year, t.Date.Month, Category = t.Category != null ? t.Category.Name : "Uncategorized" })
                 .Select(g => new MonthlyCategorySpendingInfo
                 {
@@ -46,6 +47,9 @@ namespace Accountater.Persistence.SqlServer.Services
                     Category = g.Key.Category,
                     Amount = g.Sum(t => Math.Abs(t.Amount))
                 })
+                .OrderBy(t => t.Year)
+                .ThenBy(t => t.Month)
+                .ThenBy(t => t.Category)
                 .ToList();
 
             return new MonthlyActivityInfo

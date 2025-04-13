@@ -30,6 +30,7 @@ namespace Accountater.Persistence.SqlServer.Services
                     Date = financialTransaction.Date,
                     Description = financialTransaction.Description,
                     Amount = financialTransaction.Amount,
+                    CategoryId = financialTransaction.CategoryId?.Value,
                     Tags = tags
                         .Where(t => financialTransaction.Tags.Contains(t.Value))
                         .ToList()

@@ -1,6 +1,8 @@
-﻿using Accountater.Domain.Models;
+﻿using Accountater.Domain.Extensions;
+using Accountater.Domain.Models;
 using Accountater.Domain.Services;
 using MediatR;
+using System.Threading;
 
 namespace Accountater.Domain.Commands
 {
@@ -18,16 +20,18 @@ namespace Accountater.Domain.Commands
         private readonly IAccountRepository accountRepository;
         private readonly IFinancialTransactionMetadataRuleRepository ruleRepository;
         private readonly IFinancialTransactionRuleEvaluator ruleEvaluator;
+        private readonly ICategoryRepository categoryRepository;
 
         public ImportFinancialTransactionsHandler(IFinancialTransactionCsvParser financialTransactionCsvParser,
             IFinancialTransactionRepository financialTransactionRepository, IAccountRepository accountRepository,
-            IFinancialTransactionMetadataRuleRepository ruleRepository, IFinancialTransactionRuleEvaluator ruleEvaluator)
+            IFinancialTransactionMetadataRuleRepository ruleRepository, IFinancialTransactionRuleEvaluator ruleEvaluator, ICategoryRepository categoryRepository)
         {
             this.financialTransactionCsvParser = financialTransactionCsvParser;
             this.financialTransactionRepository = financialTransactionRepository;
             this.accountRepository = accountRepository;
             this.ruleRepository = ruleRepository;
             this.ruleEvaluator = ruleEvaluator;
+            this.categoryRepository = categoryRepository;
         }
 
         public async Task Handle(ImportFinancialTransactions request, CancellationToken cancellationToken)
@@ -53,7 +57,7 @@ namespace Accountater.Domain.Commands
                     FinancialTransactionId.NewId(), account);
 
                 financialTransactions.Add(financialTransaction);
-                ApplyRules(rules, financialTransaction, financialTransactionInfo);
+                await ApplyRules(rules, financialTransaction, financialTransactionInfo, cancellationToken);
             }
 
             await financialTransactionRepository.CreateFinancialTransactions(
@@ -61,17 +65,53 @@ namespace Accountater.Domain.Commands
                 cancellationToken);
         }
 
-        private void ApplyRules(IEnumerable<FinancialTransactionMetadataRuleInfo> rules, FinancialTransaction financialTransaction, 
-            FinancialTransactionInfo financialTransactionInfo)
+        private async Task ApplyRules(IEnumerable<FinancialTransactionMetadataRuleInfo> rules, FinancialTransaction financialTransaction, 
+            FinancialTransactionInfo financialTransactionInfo, CancellationToken cancellationToken)
         {
             foreach (var rule in rules)
             {
-                if (!financialTransactionInfo.Tags.Contains(rule.MetadataValue)
-                    && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
+                if (rule.MetadataType == FinancialTransactionMetadataType.Tag)
                 {
-                    financialTransaction.Tags.Add(rule.MetadataValue);
+                    if (!financialTransactionInfo.Tags.Contains(rule.MetadataValue)
+                        && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
+                    {
+                        financialTransaction.Tags.Add(rule.MetadataValue);
+                    }
+                }
+
+                if (rule.MetadataType == FinancialTransactionMetadataType.Category)
+                {
+                    var category = await CreateCategoryIfNotExists(rule, cancellationToken);
+
+                    if (financialTransactionInfo.Category?.Id != category.Id
+                       && ruleEvaluator.Evaluate(rule.Expression, financialTransactionInfo))
+                    {
+                        financialTransaction.CategoryId = category.Id;
+                    }
                 }
             }
+        }
+
+        private async Task<CategoryInfo> CreateCategoryIfNotExists(FinancialTransactionMetadataRuleInfo rule, CancellationToken cancellationToken)
+        {
+            var categorySearchResults = await categoryRepository.SearchCategorys(
+                new SearchCriteria { SearchText = rule.MetadataValue, IsExactMatch = true }, cancellationToken);
+
+            var categoryInfo = categorySearchResults.Categories.FirstOrDefault();
+
+            if (categoryInfo == null)
+            {
+                var category = new Category
+                {
+                    Id = new CategoryId(Guid.NewGuid()),
+                    Name = rule.MetadataValue,
+                };
+
+                await categoryRepository.SaveCategory(category, cancellationToken);
+                categoryInfo = category.ToCategoryInfo();
+            }
+
+            return categoryInfo;
         }
     }
 }

@@ -9,7 +9,7 @@
             return new CategoryId(Guid.NewGuid());
         }
 
-        public static CategoryId CreditCardPayment()
+        public static CategoryId CreditCardPaymentCategoryId()
         {
             return new CategoryId(Guid.Parse("DDB64599-57AD-40D1-BCA1-FB006B55FE56"));
         }

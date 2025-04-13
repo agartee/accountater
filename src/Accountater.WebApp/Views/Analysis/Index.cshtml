@@ -28,12 +28,24 @@
         const monthlyIncome = @Html.Raw(monthlyIncomeJson);
 
         const tags = {
-            Auto: { color: "#e15759", order: 1 },
-            Groceries: { color: "#f28e2b", order: 1 },
-            Rent: { color: "#4e79a7", order: 1 },
-            Uncategorized: { color: "#000000", order: 1 },
-            Remaining: { color: "#59a14f", order: 0 },
-            Overspending: { color: "#d62728", order: 0 }
+            "Auto": { color: "#1f77b4", order: 1 }, // Blue
+            "Beauty": { color: "#9467bd", order: 1 }, // Purple
+            "Cell Phones": { color: "#8c564b", order: 1 }, // Brown
+            "Counseling": { color: "#17becf", order: 1 }, // Cyan
+            "Credit Card Payment": { color: "#bcbd22", order: 1 }, // Olive
+            "Fuel": { color: "#7f7f7f", order: 1 }, // Gray
+            "Groceries": { color: "#ff7f0e", order: 1 }, // Orange
+            "Income": { color: "#9c755f", order: 1 }, // Tan
+            "Internet Service Provider": { color: "#c5b0d5", order: 1 }, // Light Purple
+            "Medical": { color: "#aec7e8", order: 1 }, // Light Blue
+            "Mortgage": { color: "#f7b6d2", order: 1 }, // Pink
+            "Online Shopping": { color: "#98df8a", order: 1 }, // Light Green
+            "Restaurants": { color: "#ffbb78", order: 1 }, // Peach
+            "Subscription": { color: "#b07aa1", order: 1 }, // Dark Purple
+            "Utilities": { color: "#2ca02c", order: 1 }, // Teal
+            "Uncategorized": { color: "#000000", order: 1 }, // Black
+            "Remaining": { color: "#59a14f", order: 0 }, // Green
+            "Overspending": { color: "#d62728", order: 0 } // Red
         };
 
         renderMonthlyChart(monthlyCategorySpending, monthlyIncome, tags);

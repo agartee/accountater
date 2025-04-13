@@ -67,7 +67,7 @@ namespace Accountater.Persistence.SqlServer
             modelBuilder.Entity<CategoryData>().HasData(
                 new CategoryData
                 {
-                    Id = CategoryId.CreditCardPayment().Value,
+                    Id = CategoryId.CreditCardPaymentCategoryId().Value,
                     Name = "Credit Card Payment"
                 }
             );
